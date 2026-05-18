@@ -1,0 +1,200 @@
+/* Xontrix Dark Cyberpunk Theme */
+:root {
+  /* Core Colors */
+  --background: #111111;
+  --surface: #1e1e1e;
+  --accent: #00BFDF;
+  --text-primary: #ffffff;
+  --text-secondary: #aaaaaa;
+  --border: rgba(255, 255, 255, 0.1);
+
+  /* Accent variations */
+  --accent-hover: #00d4f5;
+  --accent-glow: rgba(0, 191, 223, 0.3);
+
+  /* Typography */
+  --font-heading: 'Orbitron', sans-serif;
+  --font-body: 'Rajdhani', sans-serif;
+  --font-alt: 'Exo 2', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+}
+
+/* Utility classes for cyberpunk effects */
+.cyber-border {
+  border: 1px solid var(--border);
+  transition: border-color 0.3s ease;
+}
+
+.cyber-border:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.cyber-glow {
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.cyber-button {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.cyber-button:hover {
+  background: var(--accent);
+  color: var(--background);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* Grid pattern background */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0, 191, 223, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 191, 223, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* PCB trace patterns */
+.pcb-pattern {
+  position: relative;
+  overflow: hidden;
+}
+
+.pcb-pattern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(90deg, var(--accent) 1px, transparent 1px),
+    linear-gradient(var(--accent) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* Scrollbar hide utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ───────────────────────────────
+   ANIMATIONS
+─────────────────────────────── */
+
+/* Marquee ticker for announcement bar */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+  will-change: transform;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Fade-in-up scroll reveal */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.reveal-visible {
+  animation: fadeInUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Pulsing urgency badge */
+@keyframes pulseUrgent {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.8); }
+  60%       { box-shadow: 0 0 0 7px rgba(220, 38, 38, 0); }
+}
+.animate-pulse-urgent {
+  animation: pulseUrgent 1.4s ease-in-out infinite;
+}
+
+/* Progress bar animated fill */
+@keyframes fillBar {
+  from { width: 0%; }
+  to   { width: var(--bar-target, 0%); }
+}
+.animate-fill-bar {
+  animation: fillBar 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--bar-delay, 0.2s);
+  width: 0%;
+}
+
+/* Countdown digit glow */
+.timer-digit {
+  text-shadow:
+    0 0 12px rgba(220, 38, 38, 0.9),
+    0 0 28px rgba(220, 38, 38, 0.5),
+    0 0 50px rgba(220, 38, 38, 0.25);
+}
+
+/* Card hover lift */
+.card-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.card-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 191, 223, 0.15);
+}
+.card-lift-orange:hover {
+  box-shadow: 0 12px 32px rgba(255, 107, 53, 0.15);
+}
+
+/* Back-to-top button */
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.75); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.back-to-top-enter {
+  animation: fadeInScale 0.25s ease forwards;
+}
