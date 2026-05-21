@@ -13,7 +13,7 @@ export function Cart() {
 
 if (cart.length === 0) {
   return (
-    <div className="min-h-screen bg-[#111111] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#ffffff] flex items-center justify-center px-4">
       <div className="text-center max-w-md mx-auto">
 
         {/* Animated cart icon */}
@@ -21,18 +21,18 @@ if (cart.length === 0) {
           <div
             className="w-32 h-32 rounded-none flex items-center justify-center mx-auto"
             style={{
-              background: 'rgba(0,191,223,0.08)',
-              border: '2px solid rgba(0,191,223,0.3)',
-              boxShadow: '0 0 40px rgba(0,191,223,0.15)',
+              background: 'rgba(219,68,68,0.08)',
+              border: '2px solid rgba(219,68,68,0.3)',
+              boxShadow: '0 0 40px rgba(219,68,68,0.15)',
             }}
           >
-            <ShoppingBag className="w-16 h-16 text-[#00BFDF]" />
+            <ShoppingBag className="w-16 h-16 text-[#db4444]" />
           </div>
           {/* Glow ring */}
           <div
             className="absolute inset-0 rounded-none"
             style={{
-              border: '1px solid rgba(0,191,223,0.15)',
+              border: '1px solid rgba(219,68,68,0.15)',
               transform: 'scale(1.15)',
             }}
           />
@@ -40,14 +40,14 @@ if (cart.length === 0) {
 
         {/* Text */}
         <h2
-          className="text-3xl sm:text-4xl text-white mb-4"
-          style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}
+          className="text-3xl sm:text-4xl text-[#111111] mb-4"
+          style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}
         >
           CART IS EMPTY
         </h2>
         <p
-          className="text-[#aaaaaa] mb-8 text-lg"
-          style={{ fontFamily: 'Rajdhani, sans-serif' }}
+          className="text-[#7d8184] mb-8 text-lg"
+          style={{ fontFamily: 'Inter, sans-serif' }}
         >
           Wala pang laman ang cart mo. 😢{'\n'}
           Mag-browse ng mga products at mag-dagdag!
@@ -59,8 +59,8 @@ if (cart.length === 0) {
             <Link
               key={item}
               to="/products"
-              className="p-3 border border-[rgba(255,255,255,0.08)] hover:border-[#00BFDF] text-[#aaaaaa] hover:text-[#00BFDF] transition-all text-sm"
-              style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}
+              className="p-3 border border-[rgba(0,0,0,0.08)] hover:border-[#db4444] text-[#7d8184] hover:text-[#db4444] transition-all text-sm"
+              style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}
             >
               {item}
             </Link>
@@ -71,7 +71,7 @@ if (cart.length === 0) {
         <Link to="/products">
           <button
             className="cyber-button px-10 py-3"
-            style={{ fontFamily: 'Orbitron, sans-serif' }}
+            style={{ fontFamily: 'Inter, sans-serif' }}
           >
             START SHOPPING
             <ArrowRight className="ml-2 w-4 h-4 inline" />
@@ -87,16 +87,16 @@ if (cart.length === 0) {
   const total = cartTotal + shipping;
 
   return (
-    <div className="min-h-screen bg-[#111111]">
+    <div className="min-h-screen bg-[#ffffff]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl text-white" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}>
+          <h1 className="text-4xl text-[#111111]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
             SHOPPING CART
           </h1>
           <button
             onClick={clearCart}
-            className="px-6 py-2 text-sm bg-transparent text-[#dc2626] border border-[#dc2626] hover:bg-[#dc2626] hover:text-white transition-all"
-            style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}
+            className="px-6 py-2 text-sm bg-transparent text-[#dc2626] border border-[#dc2626] hover:bg-[#dc2626] hover:text-[#111111] transition-all"
+            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}
           >
             Clear Cart
           </button>
@@ -106,7 +106,7 @@ if (cart.length === 0) {
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             {cart.map((item) => (
-              <Card key={item.id} className="bg-[#1e1e1e] border border-[rgba(255,255,255,0.1)]">
+              <Card key={item.id} className="bg-[#f5f5f5] border border-[rgba(0,0,0,0.1)]">
                 <CardContent className="p-4">
                   <div className="flex flex-col sm:flex-row gap-4">
                     {/* Product Image */}
@@ -114,7 +114,7 @@ if (cart.length === 0) {
                       to={`/products/${item.id}`}
                       className="flex-shrink-0"
                     >
-                      <div className="w-24 h-24 bg-[#111111] overflow-hidden">
+                      <div className="w-24 h-24 bg-[#ffffff] overflow-hidden">
                         <img
                           src={item.image}
                           alt={item.name}
@@ -127,16 +127,16 @@ if (cart.length === 0) {
                     <div className="flex-1 min-w-0">
                       <Link
                         to={`/products/${item.id}`}
-                        className="hover:text-[#00BFDF]"
+                        className="hover:text-[#db4444]"
                       >
-                        <h3 className="text-lg mb-1 line-clamp-1 text-white" style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}>
+                        <h3 className="text-lg mb-1 line-clamp-1 text-[#111111]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
                           {item.name}
                         </h3>
                       </Link>
-                      <p className="text-sm text-[#aaaaaa] mb-2" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                      <p className="text-sm text-[#7d8184] mb-2" style={{ fontFamily: 'Inter, sans-serif' }}>
                         {item.category}
                       </p>
-                      <p className="text-xl text-[#ff6b35]" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}>
+                      <p className="text-xl text-[#db4444]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
                         ₱{item.price.toFixed(2)}
                       </p>
                     </div>
@@ -156,11 +156,11 @@ if (cart.length === 0) {
                           onClick={() =>
                             updateQuantity(item.id, item.quantity - 1)
                           }
-                          className="w-8 h-8 bg-[#111111] border border-[rgba(255,255,255,0.1)] hover:border-[#00BFDF] text-white flex items-center justify-center transition-all"
+                          className="w-8 h-8 bg-[#ffffff] border border-[rgba(0,0,0,0.1)] hover:border-[#db4444] text-[#111111] flex items-center justify-center transition-all"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
-                        <span className="w-8 text-center text-white" style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}>
+                        <span className="w-8 text-center text-[#111111]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
                           {item.quantity}
                         </span>
                         <button
@@ -168,7 +168,7 @@ if (cart.length === 0) {
                             updateQuantity(item.id, item.quantity + 1)
                           }
                           disabled={typeof item.stock === 'number' && item.quantity >= item.stock}
-                          className="w-8 h-8 bg-[#111111] border border-[rgba(255,255,255,0.1)] hover:border-[#00BFDF] text-white flex items-center justify-center transition-all"
+                          className="w-8 h-8 bg-[#ffffff] border border-[rgba(0,0,0,0.1)] hover:border-[#db4444] text-[#111111] flex items-center justify-center transition-all"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
@@ -182,22 +182,22 @@ if (cart.length === 0) {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-20 bg-[#1e1e1e] border border-[rgba(255,255,255,0.1)]">
+            <Card className="sticky top-20 bg-[#f5f5f5] border border-[rgba(0,0,0,0.1)]">
               <CardContent className="p-6">
-                <h2 className="text-2xl mb-6 text-white" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}>
+                <h2 className="text-2xl mb-6 text-[#111111]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
                   ORDER SUMMARY
                 </h2>
 
                 <div className="space-y-3 mb-4">
                   <div className="flex justify-between">
-                    <span className="text-[#aaaaaa]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>Subtotal</span>
-                    <span className="text-white" style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}>
+                    <span className="text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Subtotal</span>
+                    <span className="text-[#111111]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
                       ₱{cartTotal.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#aaaaaa]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>Shipping</span>
-                    <span className="text-white" style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}>
+                    <span className="text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Shipping</span>
+                    <span className="text-[#111111]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
                       {shipping === 0 ? (
                         <span className="text-[#10b981]">FREE</span>
                       ) : (
@@ -207,25 +207,25 @@ if (cart.length === 0) {
                   </div>
                 </div>
 
-                <Separator className="my-4 bg-[rgba(255,255,255,0.1)]" />
+                <Separator className="my-4 bg-[rgba(0,0,0,0.1)]" />
 
                 <div className="flex justify-between mb-6">
-                  <span className="text-xl text-white" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}>Total</span>
-                  <span className="text-2xl text-[#ff6b35]" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}>
+                  <span className="text-xl text-[#111111]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>Total</span>
+                  <span className="text-2xl text-[#db4444]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
                     ₱{total.toFixed(2)}
                   </span>
                 </div>
 
                 {shipping > 0 && (
-                  <div className="mb-4 p-3 bg-[rgba(0,191,223,0.1)] border border-[rgba(0,191,223,0.3)] text-sm text-[#00BFDF]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                  <div className="mb-4 p-3 bg-[rgba(219,68,68,0.1)] border border-[rgba(219,68,68,0.3)] text-sm text-[#db4444]" style={{ fontFamily: 'Inter, sans-serif' }}>
                     Add ₱{(999 - cartTotal).toFixed(2)} more for free shipping!
                   </div>
                 )}
 
                 {/* Payment Method */}
                 <div className="mb-4">
-                  <p className="text-sm text-[#aaaaaa] mb-3"
-                    style={{ fontFamily: 'Rajdhani, sans-serif', letterSpacing: '0.05em' }}>
+                  <p className="text-sm text-[#7d8184] mb-3"
+                    style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.05em' }}>
                     PAYMENT METHOD
                   </p>
                   <div className="space-y-2">
@@ -238,8 +238,8 @@ if (cart.length === 0) {
                         key={method.id}
                         className={`flex items-center gap-3 p-3 border cursor-pointer transition-all ${
                           paymentMethod === method.id
-                          ? 'border-[#00BFDF] bg-[rgba(0,191,223,0.08)] text-white'
-                          : 'border-[rgba(255,255,255,0.1)] text-[#aaaaaa] hover:border-[#00BFDF]'
+                          ? 'border-[#db4444] bg-[rgba(219,68,68,0.08)] text-[#111111]'
+                          : 'border-[rgba(0,0,0,0.1)] text-[#7d8184] hover:border-[#db4444]'
                         }`}
                       >
                         <input
@@ -248,10 +248,10 @@ if (cart.length === 0) {
                           value={method.id}
                           checked={paymentMethod === method.id}
                           onChange={() => setPaymentMethod(method.id)}
-                          className="accent-[#00BFDF]"
+                          className="accent-[#db4444]"
                         />
                         <span>{method.emoji}</span>
-                        <span style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}>
+                        <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
                           {method.label}
                         </span>
                       </label>
@@ -271,12 +271,12 @@ if (cart.length === 0) {
               </Link>
 
                 <Link to="/products">
-                  <button className="w-full py-3 text-sm bg-transparent text-[#00BFDF] border border-[#00BFDF] hover:bg-[#00BFDF] hover:text-black transition-all" style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}>
+                  <button className="w-full py-3 text-sm bg-transparent text-[#db4444] border border-[#db4444] hover:bg-[#db4444] hover:text-white transition-all" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
                     Continue Shopping
                   </button>
                 </Link>
 
-                <div className="mt-6 space-y-3 text-sm text-[#aaaaaa]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                <div className="mt-6 space-y-3 text-sm text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
                   <div className="flex items-center gap-2">
                     <span className="text-[#10b981]">✓</span>
                     <span>Secure checkout</span>

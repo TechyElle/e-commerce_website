@@ -90,18 +90,18 @@ export function ProductDetail() {
     return (
       <div
         className="min-h-screen flex flex-col items-center justify-center gap-4"
-        style={{ background: '#111111' }}
+        style={{ background: '#ffffff' }}
       >
         <h1
-          className="text-3xl text-white"
-          style={{ fontFamily: 'Orbitron, sans-serif' }}
+          className="text-3xl text-[#111111]"
+          style={{ fontFamily: 'Inter, sans-serif' }}
         >
           Product Not Found
         </h1>
         <Link to="/products">
           <Button
-            className="border border-[#00BFDF] text-[#00BFDF] bg-transparent hover:bg-[#00BFDF] hover:text-black"
-            style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700 }}
+            className="border border-[#db4444] text-[#db4444] bg-transparent hover:bg-[#db4444] hover:text-white"
+            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}
           >
             Back to Products
           </Button>
@@ -132,19 +132,19 @@ export function ProductDetail() {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: '#111111', fontFamily: 'Rajdhani, sans-serif' }}>
+    <div className="min-h-screen" style={{ background: '#ffffff', fontFamily: 'Inter, sans-serif' }}>
 
       {/* Breadcrumb */}
-      <div style={{ background: '#1a1a1a', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+      <div style={{ background: '#ffffff', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex items-center gap-2 text-sm" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-            <Link to="/" className="text-[#aaaaaa] hover:text-[#00BFDF] transition-colors">Home</Link>
-            <span className="text-[#444]">›</span>
-            <Link to="/products" className="text-[#aaaaaa] hover:text-[#00BFDF] transition-colors">Products</Link>
-            <span className="text-[#444]">›</span>
-            <Link to="/products" className="text-[#aaaaaa] hover:text-[#00BFDF] transition-colors">{product.category}</Link>
-            <span className="text-[#444]">›</span>
-            <span className="text-[#00BFDF]">{product.name}</span>
+          <div className="flex items-center gap-2 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
+            <Link to="/" className="text-[#7d8184] hover:text-[#db4444] transition-colors">Home</Link>
+            <span className="text-[#bdbdbd]">›</span>
+            <Link to="/products" className="text-[#7d8184] hover:text-[#db4444] transition-colors">Products</Link>
+            <span className="text-[#bdbdbd]">›</span>
+            <Link to="/products" className="text-[#7d8184] hover:text-[#db4444] transition-colors">{product.category}</Link>
+            <span className="text-[#bdbdbd]">›</span>
+            <span className="text-[#db4444]">{product.name}</span>
           </div>
         </div>
       </div>
@@ -154,8 +154,8 @@ export function ProductDetail() {
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 mb-6 text-[#aaaaaa] hover:text-[#00BFDF] transition-colors text-sm font-semibold"
-          style={{ fontFamily: 'Rajdhani, sans-serif', background: 'transparent', border: 'none', cursor: 'pointer' }}
+          className="flex items-center gap-2 mb-6 text-[#7d8184] hover:text-[#db4444] transition-colors text-sm font-semibold"
+          style={{ fontFamily: 'Inter, sans-serif', background: 'transparent', border: 'none', cursor: 'pointer' }}
         >
           <ArrowLeft className="w-4 h-4" />
           Back
@@ -169,7 +169,7 @@ export function ProductDetail() {
             {/* Main Image */}
             <div
               className="w-full aspect-square flex items-center justify-center overflow-hidden mb-4"
-              style={{ background: '#1e1e1e', border: '1px solid rgba(255,255,255,0.08)' }}
+              style={{ background: '#f5f5f5', border: '1px solid rgba(0,0,0,0.08)' }}
             >
               <img
                 src={imageSrc}
@@ -186,10 +186,10 @@ export function ProductDetail() {
                   key={i}
                   className="w-20 h-20 flex items-center justify-center overflow-hidden cursor-pointer transition-all"
                   style={{
-                    background: '#1e1e1e',
+                    background: '#f5f5f5',
                     border: i === 0
-                      ? '1px solid #00BFDF'
-                      : '1px solid rgba(255,255,255,0.08)',
+                      ? '1px solid #db4444'
+                      : '1px solid rgba(0,0,0,0.08)',
                   }}
                 >
                   <img
@@ -207,8 +207,8 @@ export function ProductDetail() {
             {/* Category + Stock */}
             <div className="flex items-center gap-3 mb-3">
               <Badge
-                className="bg-transparent text-[#00BFDF] border border-[#00BFDF] text-xs"
-                style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700 }}
+                className="bg-transparent text-[#db4444] border border-[#db4444] text-xs"
+                style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}
               >
                 {product.category}
               </Badge>
@@ -224,8 +224,8 @@ export function ProductDetail() {
 
             {/* Name */}
             <h1
-              className="text-white mb-4 leading-tight"
-              style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '26px' }}
+              className="text-[#111111] mb-4 leading-tight"
+              style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '26px' }}
             >
               {product.name}
             </h1>
@@ -238,32 +238,32 @@ export function ProductDetail() {
                     key={i}
                     className={`w-4 h-4 ${
                       i < Math.floor(product.rating)
-                        ? 'text-[#00BFDF] fill-[#00BFDF]'
-                        : 'text-[#333]'
+                        ? 'text-[#db4444] fill-[#db4444]'
+                        : 'text-[#d9d9d9]'
                     }`}
                   />
                 ))}
               </div>
-              <span className="text-white font-bold text-sm">{product.rating}</span>
-              <span className="text-[#aaaaaa] text-sm">({product.reviews} reviews)</span>
+              <span className="text-[#111111] font-bold text-sm">{product.rating}</span>
+              <span className="text-[#7d8184] text-sm">({product.reviews} reviews)</span>
             </div>
 
             {/* Price */}
             <div className="mb-5">
               {product.originalPrice && (
-                <span className="text-[#aaaaaa] line-through text-sm block">
+                <span className="text-[#7d8184] line-through text-sm block">
                   ₱{product.originalPrice.toFixed(2)}
                 </span>
               )}
               <div className="flex items-center gap-3">
                 <span
-                  style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '32px', color: '#ff6b35' }}
+                  style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '32px', color: '#db4444' }}
                 >
                   ₱{product.price.toFixed(2)}
                 </span>
                 {discount > 0 && (
                   <span
-                    className="text-white text-sm px-2 py-1"
+                    className="text-[#111111] text-sm px-2 py-1"
                     style={{ background: '#dc2626', fontWeight: 700 }}
                   >
                     -{discount}% OFF
@@ -273,45 +273,45 @@ export function ProductDetail() {
             </div>
 
             {/* Description */}
-            <p className="text-[#aaaaaa] mb-5 leading-relaxed text-sm">
+            <p className="text-[#7d8184] mb-5 leading-relaxed text-sm">
               {product.description}
             </p>
 
             {/* AI Recommendation */}
             <div
               className="mb-5 p-4 flex items-start gap-3"
-              style={{ background: 'rgba(0,191,223,0.06)', border: '1px solid rgba(0,191,223,0.2)' }}
+              style={{ background: 'rgba(219,68,68,0.06)', border: '1px solid rgba(219,68,68,0.2)' }}
             >
-              <Sparkles className="w-4 h-4 text-[#00BFDF] flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-[#aaaaaa]">
-                <strong className="text-[#00BFDF]">AI Recommendation:</strong> This product is highly rated in its category and is a top pick among engineering students in the Philippines.
+              <Sparkles className="w-4 h-4 text-[#db4444] flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-[#7d8184]">
+                <strong className="text-[#db4444]">AI Recommendation:</strong> This product is highly rated in its category and is a top pick among engineering students in the Philippines.
               </p>
             </div>
 
             {/* Quantity */}
             <div className="flex items-center gap-4 mb-5">
-              <span className="text-[#aaaaaa] text-sm font-bold uppercase tracking-wider">Qty:</span>
+              <span className="text-[#7d8184] text-sm font-bold uppercase tracking-wider">Qty:</span>
               <div
                 className="flex items-center overflow-hidden"
-                style={{ border: '1px solid rgba(255,255,255,0.15)' }}
+                style={{ border: '1px solid rgba(0,0,0,0.15)' }}
               >
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 text-white text-lg transition-colors hover:bg-[#00BFDF] hover:text-black"
-                  style={{ background: '#1e1e1e', border: 'none', cursor: 'pointer' }}
+                  className="w-10 h-10 text-[#111111] text-lg transition-colors hover:bg-[#db4444] hover:text-white"
+                  style={{ background: '#f5f5f5', border: 'none', cursor: 'pointer' }}
                 >
                   −
                 </button>
                 <span
-                  className="w-12 text-center text-white font-bold"
-                  style={{ fontFamily: 'Orbitron, sans-serif' }}
+                  className="w-12 text-center text-[#111111] font-bold"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
                 >
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity(Math.min(product.stock ?? quantity + 1, quantity + 1))}
-                  className="w-10 h-10 text-white text-lg transition-colors hover:bg-[#00BFDF] hover:text-black"
-                  style={{ background: '#1e1e1e', border: 'none', cursor: 'pointer' }}
+                  className="w-10 h-10 text-[#111111] text-lg transition-colors hover:bg-[#db4444] hover:text-white"
+                  style={{ background: '#f5f5f5', border: 'none', cursor: 'pointer' }}
                 >
                   +
                 </button>
@@ -325,10 +325,10 @@ export function ProductDetail() {
                 disabled={!available}
                 className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-bold transition-all disabled:opacity-50"
                 style={{
-                  fontFamily: 'Orbitron, sans-serif',
-                  letterSpacing: '0.08em',
-                  background: added ? '#10b981' : '#00BFDF',
-                  color: '#000',
+                  fontFamily: 'Inter, sans-serif',
+                  letterSpacing: '0',
+                  background: added ? '#10b981' : '#db4444',
+                  color: '#fff',
                   border: 'none',
                   cursor: available ? 'pointer' : 'not-allowed',
                 }}
@@ -344,19 +344,19 @@ export function ProductDetail() {
                 onClick={() => setWishlisted(!wishlisted)}
                 className="w-12 h-12 flex items-center justify-center transition-all"
                 style={{
-                  background: wishlisted ? 'rgba(220,38,38,0.2)' : '#1e1e1e',
-                  border: wishlisted ? '1px solid #dc2626' : '1px solid rgba(255,255,255,0.15)',
+                  background: wishlisted ? 'rgba(220,38,38,0.2)' : '#f5f5f5',
+                  border: wishlisted ? '1px solid #dc2626' : '1px solid rgba(0,0,0,0.15)',
                   cursor: 'pointer',
                 }}
               >
-                <Heart className={`w-5 h-5 ${wishlisted ? 'text-[#dc2626] fill-[#dc2626]' : 'text-white'}`} />
+                <Heart className={`w-5 h-5 ${wishlisted ? 'text-[#dc2626] fill-[#dc2626]' : 'text-[#111111]'}`} />
               </button>
 
               <button
                 className="w-12 h-12 flex items-center justify-center transition-all"
                 style={{
-                  background: '#1e1e1e',
-                  border: '1px solid rgba(255,255,255,0.15)',
+                  background: '#f5f5f5',
+                  border: '1px solid rgba(0,0,0,0.15)',
                   cursor: 'pointer',
                 }}
                 onClick={() => {
@@ -364,7 +364,7 @@ export function ProductDetail() {
                   toast.success('Link copied!');
                 }}
               >
-                <Share2 className="w-5 h-5 text-white" />
+                <Share2 className="w-5 h-5 text-[#111111]" />
               </button>
             </div>
 
@@ -379,12 +379,12 @@ export function ProductDetail() {
                 <div
                   key={b.label}
                   className="flex items-center gap-3 p-3"
-                  style={{ background: '#1e1e1e', border: '1px solid rgba(255,255,255,0.08)' }}
+                  style={{ background: '#f5f5f5', border: '1px solid rgba(0,0,0,0.08)' }}
                 >
                   <span className="text-xl">{b.icon}</span>
                   <div>
-                    <p className="text-white text-xs font-bold">{b.label}</p>
-                    <p className="text-[#aaaaaa] text-xs">{b.sub}</p>
+                    <p className="text-[#111111] text-xs font-bold">{b.label}</p>
+                    <p className="text-[#7d8184] text-xs">{b.sub}</p>
                   </div>
                 </div>
               ))}
@@ -395,19 +395,19 @@ export function ProductDetail() {
         {/* ── Tabs ── */}
         <div
           className="mb-14"
-          style={{ background: '#1e1e1e', border: '1px solid rgba(255,255,255,0.08)' }}
+          style={{ background: '#f5f5f5', border: '1px solid rgba(0,0,0,0.08)' }}
         >
           <Tabs defaultValue="specs">
             <TabsList
               className="w-full justify-start rounded-none gap-0 p-0"
-              style={{ background: '#1a1a1a', borderBottom: '1px solid rgba(255,255,255,0.08)' }}
+              style={{ background: '#ffffff', borderBottom: '1px solid rgba(0,0,0,0.08)' }}
             >
               {['specs', 'reviews', 'shipping'].map((tab) => (
                 <TabsTrigger
                   key={tab}
                   value={tab}
-                  className="rounded-none px-6 py-4 text-[#aaaaaa] data-[state=active]:text-[#00BFDF] data-[state=active]:border-b-2 data-[state=active]:border-[#00BFDF] data-[state=active]:bg-transparent capitalize"
-                  style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700 }}
+                  className="rounded-none px-6 py-4 text-[#7d8184] data-[state=active]:text-[#db4444] data-[state=active]:border-b-2 data-[state=active]:border-[#db4444] data-[state=active]:bg-transparent capitalize"
+                  style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}
                 >
                   {tab === 'specs' ? 'Specifications' : tab === 'reviews' ? 'Reviews' : 'Shipping & Returns'}
                 </TabsTrigger>
@@ -422,15 +422,15 @@ export function ProductDetail() {
                     <div
                       key={key}
                       className="flex justify-between py-3 px-2"
-                      style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+                      style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}
                     >
-                      <span className="text-[#aaaaaa] text-sm font-bold uppercase tracking-wider">{key}</span>
-                      <span className="text-white text-sm font-semibold">{value as string}</span>
+                      <span className="text-[#7d8184] text-sm font-bold uppercase tracking-wider">{key}</span>
+                      <span className="text-[#111111] text-sm font-semibold">{value as string}</span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-[#aaaaaa] text-sm">No specifications available for this product.</p>
+                <p className="text-[#7d8184] text-sm">No specifications available for this product.</p>
               )}
             </TabsContent>
 
@@ -439,27 +439,27 @@ export function ProductDetail() {
               <div className="flex items-center gap-6 mb-6">
                 <div className="text-center">
                   <div
-                    className="text-[#ff6b35]"
-                    style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '48px' }}
+                    className="text-[#db4444]"
+                    style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '48px' }}
                   >
                     {product.rating}
                   </div>
                   <div className="flex justify-center gap-0.5 mb-1">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'text-[#00BFDF] fill-[#00BFDF]' : 'text-[#333]'}`} />
+                      <Star key={i} className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'text-[#db4444] fill-[#db4444]' : 'text-[#d9d9d9]'}`} />
                     ))}
                   </div>
-                  <p className="text-[#aaaaaa] text-xs">{product.reviews} reviews</p>
+                  <p className="text-[#7d8184] text-xs">{product.reviews} reviews</p>
                 </div>
                 <div className="flex-1">
                   {[5,4,3,2,1].map((star) => (
                     <div key={star} className="flex items-center gap-3 mb-2">
-                      <span className="text-[#aaaaaa] text-xs w-4">{star}★</span>
+                      <span className="text-[#7d8184] text-xs w-4">{star}★</span>
                       <div className="flex-1 h-2" style={{ background: '#111' }}>
                         <div
                           className="h-full"
                           style={{
-                            background: '#00BFDF',
+                            background: '#db4444',
                             width: star === 5 ? '70%' : star === 4 ? '20%' : star === 3 ? '7%' : '3%',
                           }}
                         />
@@ -475,41 +475,41 @@ export function ProductDetail() {
                 { name: 'Maria S.', date: 'March 2026', text: 'Legit and authentic. Exactly what I needed for my thesis project.', verified: true },
                 { name: 'Carlo R.', date: 'March 2026', text: 'Good quality. Will buy again from Xontrix.', verified: false },
               ].map((r) => (
-                <div key={r.name} className="mb-4 p-4" style={{ background: '#242424', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div key={r.name} className="mb-4 p-4" style={{ background: '#fafafa', border: '1px solid rgba(0,0,0,0.06)' }}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <span className="text-white text-sm font-bold">{r.name}</span>
+                      <span className="text-[#111111] text-sm font-bold">{r.name}</span>
                       {r.verified && (
                         <span className="text-xs px-2 py-0.5" style={{ background: 'rgba(0,200,83,0.15)', color: '#00c853', border: '1px solid rgba(0,200,83,0.3)' }}>
                           ✓ Verified Purchase
                         </span>
                       )}
                     </div>
-                    <span className="text-[#aaaaaa] text-xs">{r.date}</span>
+                    <span className="text-[#7d8184] text-xs">{r.date}</span>
                   </div>
                   <div className="flex gap-0.5 mb-2">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 text-[#00BFDF] fill-[#00BFDF]" />
+                      <Star key={i} className="w-3 h-3 text-[#db4444] fill-[#db4444]" />
                     ))}
                   </div>
-                  <p className="text-[#aaaaaa] text-sm">{r.text}</p>
+                  <p className="text-[#7d8184] text-sm">{r.text}</p>
                 </div>
               ))}
             </TabsContent>
 
             {/* Shipping */}
             <TabsContent value="shipping" className="p-6 mt-0">
-              <div className="space-y-4 text-sm text-[#aaaaaa]">
+              <div className="space-y-4 text-sm text-[#7d8184]">
                 {[
                   { icon: '🚚', title: 'Free Standard Shipping', desc: 'On orders ₱999 and above. Delivery within 2–5 business days across the Philippines.' },
                   { icon: '⚡', title: 'Express Shipping — ₱99', desc: 'Same-day dispatch for Metro Manila. 1–2 business days.' },
                   { icon: '🔄', title: '7-Day Return Policy', desc: 'Not satisfied? Return within 7 days for a full refund or replacement.' },
                   { icon: '🛡️', title: '2-Year Warranty', desc: 'All products come with a 2-year manufacturer warranty on manufacturing defects.' },
                 ].map((item) => (
-                  <div key={item.title} className="flex gap-4 p-4" style={{ background: '#242424', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={item.title} className="flex gap-4 p-4" style={{ background: '#fafafa', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <span className="text-2xl">{item.icon}</span>
                     <div>
-                      <p className="text-white font-bold mb-1">{item.title}</p>
+                      <p className="text-[#111111] font-bold mb-1">{item.title}</p>
                       <p>{item.desc}</p>
                     </div>
                   </div>
@@ -523,10 +523,10 @@ export function ProductDetail() {
         {relatedProducts.length > 0 && (
           <div>
             <h2
-              className="text-white mb-6"
-              style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '20px' }}
+              className="text-[#111111] mb-6"
+              style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '20px' }}
             >
-              RELATED <span style={{ color: '#00BFDF' }}>PRODUCTS</span>
+              RELATED <span style={{ color: '#db4444' }}>PRODUCTS</span>
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {relatedProducts.map((rel) => {
@@ -536,9 +536,9 @@ export function ProductDetail() {
                     key={rel.id}
                     to={`/products/${rel.id}`}
                     className="group block"
-                    style={{ background: '#1e1e1e', border: '1px solid rgba(255,255,255,0.08)', transition: 'border-color .2s' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#00BFDF')}
-                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)')}
+                    style={{ background: '#f5f5f5', border: '1px solid rgba(0,0,0,0.08)', transition: 'border-color .2s' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#db4444')}
+                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)')}
                   >
                     <div className="aspect-square overflow-hidden flex items-center justify-center" style={{ background: '#111' }}>
                       <img
@@ -548,18 +548,18 @@ export function ProductDetail() {
                       />
                     </div>
                     <div className="p-3">
-                      <Badge className="mb-1 text-xs bg-transparent text-[#aaaaaa] border border-[rgba(255,255,255,0.15)]">
+                      <Badge className="mb-1 text-xs bg-transparent text-[#7d8184] border border-[rgba(0,0,0,0.15)]">
                         {rel.category}
                       </Badge>
                       <h3
-                        className="text-white text-sm mb-2 line-clamp-2 group-hover:text-[#00BFDF] transition-colors"
-                        style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}
+                        className="text-[#111111] text-sm mb-2 line-clamp-2 group-hover:text-[#db4444] transition-colors"
+                        style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}
                       >
                         {rel.name}
                       </h3>
                       <span
-                        className="text-[#ff6b35]"
-                        style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '16px' }}
+                        className="text-[#db4444]"
+                        style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '16px' }}
                       >
                         ₱{rel.price.toFixed(2)}
                       </span>

@@ -28,15 +28,15 @@ function AnnouncementBar() {
   const all = [...TICKER_ITEMS, ...TICKER_ITEMS];
   return (
     <div
-      className="bg-gradient-to-r from-[#0a2540] via-[#0d3460] to-[#0a2540] text-white py-2 overflow-hidden border-b border-[rgba(0,191,223,0.2)]"
-      style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}
+      className="bg-black text-white py-2 overflow-hidden"
+      style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500 }}
     >
       <div className="animate-marquee">
         {all.map((item, i) => (
           <span key={i} className="flex items-center gap-2 mx-8 text-sm whitespace-nowrap">
             {item.icon}
             {item.text}
-            <span className="text-[#00BFDF] mx-4">•</span>
+            <span className="text-white/40 mx-4">|</span>
           </span>
         ))}
       </div>
@@ -62,11 +62,11 @@ function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
     : [];
 
   return (
-    <div className="absolute top-full left-0 right-0 mt-1 bg-[#1e1e1e] border border-[rgba(0,191,223,0.3)] shadow-xl shadow-[rgba(0,0,0,0.5)] z-[100] overflow-hidden">
+    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-black/10 shadow-xl shadow-black/10 z-[100] overflow-hidden rounded-sm">
       {!query && (
         <>
           <div className="px-4 pt-3 pb-1">
-            <p className="text-xs text-[#aaaaaa] uppercase tracking-widest" style={{ fontFamily: 'Orbitron, sans-serif' }}>
+            <p className="text-xs text-[#7d8184] uppercase" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
               Recent Searches
             </p>
           </div>
@@ -74,10 +74,10 @@ function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
             <button
               key={s}
               onClick={() => onSelect(s)}
-              className="w-full text-left px-4 py-2.5 text-sm text-[#cccccc] hover:bg-[rgba(0,191,223,0.08)] hover:text-[#00BFDF] flex items-center gap-2 transition-colors"
-              style={{ fontFamily: 'Rajdhani, sans-serif' }}
+              className="w-full text-left px-4 py-2.5 text-sm text-[#4f4f4f] hover:bg-[#f5f5f5] hover:text-[#db4444] flex items-center gap-2 transition-colors"
+              style={{ fontFamily: 'Inter, sans-serif' }}
             >
-              <Clock className="w-3.5 h-3.5 text-[#555]" />
+              <Clock className="w-3.5 h-3.5 text-[#7d8184]" />
               {s}
             </button>
           ))}
@@ -86,7 +86,7 @@ function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
       {suggested.length > 0 && (
         <>
           <div className="px-4 pt-3 pb-1">
-            <p className="text-xs text-[#aaaaaa] uppercase tracking-widest" style={{ fontFamily: 'Orbitron, sans-serif' }}>
+            <p className="text-xs text-[#7d8184] uppercase" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
               Suggested Products
             </p>
           </div>
@@ -94,14 +94,14 @@ function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
             <Link
               key={p.id}
               to={`/products/${p.id}`}
-              className="flex items-center gap-3 px-4 py-2.5 hover:bg-[rgba(0,191,223,0.08)] transition-colors"
+              className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#f5f5f5] transition-colors"
             >
-              <img src={p.image} alt={p.name} className="w-9 h-9 object-cover bg-[#111111] shrink-0" />
+              <img src={p.image} alt={p.name} className="w-9 h-9 object-contain bg-[#f5f5f5] shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-white truncate" style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}>
+                <p className="text-sm text-[#111111] truncate" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
                   {p.name}
                 </p>
-                <p className="text-xs text-[#ff6b35]" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}>
+                <p className="text-xs text-[#db4444]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
                   ₱{p.price.toFixed(2)}
                 </p>
               </div>
@@ -110,7 +110,7 @@ function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
         </>
       )}
       {query && suggested.length === 0 && (
-        <div className="px-4 py-5 text-sm text-[#aaaaaa] text-center" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+        <div className="px-4 py-5 text-sm text-[#7d8184] text-center" style={{ fontFamily: 'Inter, sans-serif' }}>
           Walang nakitang produkto para sa "{query}"
         </div>
       )}
@@ -189,7 +189,7 @@ export function Layout() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#111111] pcb-pattern">
+    <div className="min-h-screen bg-white">
       {/* Announcement Ticker */}
       <AnnouncementBar />
 
@@ -197,8 +197,8 @@ export function Layout() {
       <header
         className={`sticky top-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-[rgba(30,30,30,0.92)] backdrop-blur-md border-b border-[rgba(0,191,223,0.15)] shadow-lg shadow-[rgba(0,0,0,0.4)]'
-            : 'bg-[#1e1e1e] border-b border-[rgba(255,255,255,0.08)]'
+            ? 'bg-white/95 backdrop-blur-md border-b border-black/10 shadow-sm shadow-black/5'
+            : 'bg-white border-b border-black/10'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -207,8 +207,8 @@ export function Layout() {
             <Link to="/" className="flex items-center gap-3 shrink-0">
               <img src={logoImg} alt="Xontrix Logo" className="w-10 h-10" />
               <span
-                className="text-xl text-white hidden sm:block"
-                style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}
+                className="text-xl text-[#111111] hidden sm:block"
+                style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800 }}
               >
                 XONTRIX
               </span>
@@ -223,13 +223,13 @@ export function Layout() {
                     key={item.name}
                     to={item.path}
                     className={`relative py-1 transition-colors text-sm ${
-                      active ? 'text-[#00BFDF]' : 'text-[#aaaaaa] hover:text-white'
+                      active ? 'text-[#db4444]' : 'text-[#111111] hover:text-[#db4444]'
                     }`}
-                    style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600, letterSpacing: '0.05em' }}
+                    style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500 }}
                   >
                     {item.name}
                     {active && (
-                      <span className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-[#00BFDF] shadow-[0_0_8px_rgba(0,191,223,0.6)]" />
+                      <span className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-[#db4444]" />
                     )}
                   </Link>
                 );
@@ -239,15 +239,15 @@ export function Layout() {
             {/* Search Bar */}
             <div ref={searchRef} className="hidden lg:flex flex-1 max-w-sm relative">
               <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aaaaaa] pointer-events-none" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7d8184] pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Hanapin: Arduino, ESP32, sensors..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setSearchFocused(true)}
-                  className="w-full h-10 pl-9 pr-3 bg-[#111111] border border-[rgba(255,255,255,0.1)] text-white text-sm placeholder:text-[#555] focus:border-[#00BFDF] focus:outline-none focus:ring-1 focus:ring-[rgba(0,191,223,0.3)] transition-all"
-                  style={{ fontFamily: 'Rajdhani, sans-serif' }}
+                  className="w-full h-10 pl-9 pr-3 bg-[#f5f5f5] border border-transparent text-[#111111] text-sm placeholder:text-[#7d8184] focus:border-[#db4444] focus:outline-none focus:ring-1 focus:ring-[#db4444]/20 transition-all rounded-sm"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
                 />
               </div>
               {searchFocused && (
@@ -258,23 +258,23 @@ export function Layout() {
             {/* Actions */}
             <div className="flex items-center gap-1">
               <Link to="/cart">
-                <button className="relative w-10 h-10 flex items-center justify-center text-[#aaaaaa] hover:text-[#00BFDF] transition-colors">
+                <button className="relative w-10 h-10 flex items-center justify-center text-[#111111] hover:text-[#db4444] transition-colors">
                   <ShoppingCart className="w-5 h-5" />
                   {cartCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 w-5 h-5 flex items-center justify-center text-xs bg-[#00BFDF] text-black rounded-none font-bold">
+                    <span className="absolute -top-0.5 -right-0.5 w-5 h-5 flex items-center justify-center text-xs bg-[#db4444] text-white rounded-full font-bold">
                       {cartCount}
                     </span>
                   )}
                 </button>
               </Link>
               <Link to={isAdmin ? '/admin' : '/login'}>
-                <button className="w-10 h-10 hidden md:flex items-center justify-center text-[#aaaaaa] hover:text-[#00BFDF] transition-colors">
+                <button className="w-10 h-10 hidden md:flex items-center justify-center text-[#111111] hover:text-[#db4444] transition-colors">
                   <User className="w-5 h-5" />
                 </button>
               </Link>
               {/* Mobile burger */}
               <button
-                className="md:hidden w-10 h-10 flex items-center justify-center text-[#aaaaaa] hover:text-[#00BFDF] transition-colors"
+                className="md:hidden w-10 h-10 flex items-center justify-center text-[#111111] hover:text-[#db4444] transition-colors"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -285,16 +285,16 @@ export function Layout() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-[rgba(255,255,255,0.08)] bg-[#1a1a1a]">
+          <div className="md:hidden border-t border-[rgba(0,0,0,0.06)] bg-white">
             <div className="px-4 py-4 space-y-1">
               {/* Mobile Search */}
               <div className="relative mb-3">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aaaaaa]" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7d8184]" />
                 <input
                   type="text"
                   placeholder="Hanapin ng produkto..."
-                  className="w-full h-11 pl-9 pr-3 bg-[#111111] border border-[rgba(255,255,255,0.1)] text-white text-sm placeholder:text-[#555] focus:border-[#00BFDF] focus:outline-none"
-                  style={{ fontFamily: 'Rajdhani, sans-serif' }}
+                  className="w-full h-11 pl-9 pr-3 bg-[#f5f5f5] border border-black/10 text-[#111111] text-sm placeholder:text-[#7d8184] focus:border-[#db4444] focus:outline-none"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
                 />
               </div>
               {navigation.map((item) => (
@@ -303,10 +303,10 @@ export function Layout() {
                   to={item.path}
                   className={`flex items-center px-4 py-3 min-h-[44px] transition-colors text-sm ${
                     location.pathname === item.path
-                      ? 'text-[#00BFDF] bg-[rgba(0,191,223,0.08)] border-l-2 border-[#00BFDF]'
-                      : 'text-[#aaaaaa] hover:bg-[rgba(255,255,255,0.04)] hover:text-white border-l-2 border-transparent'
+                      ? 'text-[#db4444] bg-[#fff5f5] border-l-2 border-[#db4444]'
+                      : 'text-[#111111] hover:bg-[#f5f5f5] hover:text-[#db4444] border-l-2 border-transparent'
                   }`}
-                  style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600, letterSpacing: '0.04em' }}
+                  style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500 }}
                 >
                   {item.name}
                 </Link>
@@ -316,21 +316,21 @@ export function Layout() {
         )}
 
         {/* ── Category Chip Row with fade edges ── */}
-        <div className="border-t border-[rgba(255,255,255,0.06)]">
+        <div className="border-t border-black/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="relative">
+          <div className="relative">
               {/* Left fade */}
-              <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-r from-[#1e1e1e] to-transparent" />
+              <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-r from-white to-transparent" />
               {/* Right fade */}
-              <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-l from-[#1e1e1e] to-transparent" />
+              <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-l from-white to-transparent" />
 
               <div className="flex gap-2 overflow-x-auto py-2.5 scrollbar-hide px-2">
                 {categories.map((cat) => (
                   <Link
                     key={cat.label}
                     to={cat.path}
-                    className="px-4 py-1.5 min-h-[36px] flex items-center bg-[#111111] border border-[rgba(255,255,255,0.08)] hover:border-[#00BFDF] hover:bg-[rgba(0,191,223,0.08)] text-[#aaaaaa] hover:text-[#00BFDF] whitespace-nowrap transition-all text-sm shrink-0"
-                    style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 500 }}
+                    className="px-4 py-1.5 min-h-[36px] flex items-center bg-white border border-black/10 hover:border-[#db4444] hover:bg-[#fff5f5] text-[#4f4f4f] hover:text-[#db4444] whitespace-nowrap transition-all text-sm shrink-0 rounded-sm"
+                    style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500 }}
                   >
                     {cat.label}
                   </Link>
@@ -342,27 +342,27 @@ export function Layout() {
       </header>
 
       {/* ── MAIN CONTENT ── */}
-      <main className="pb-20 md:pb-0">
+      <main className="pb-20 md:pb-0 bg-white">
         <Outlet />
       </main>
 
       {/* ── FOOTER ── */}
-      <footer className="bg-[#1e1e1e] border-t border-[rgba(255,255,255,0.08)] text-white mt-16 pb-20 md:pb-0">
+      <footer className="bg-white border-t border-[rgba(0,0,0,0.06)] text-[#111111] mt-16 pb-20 md:pb-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <img src={logoImg} alt="Xontrix Logo" className="w-10 h-10" />
-                <span className="text-xl" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}>
+                <span className="text-xl" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800 }}>
                   XONTRIX
                 </span>
               </div>
-              <p className="text-[#aaaaaa] text-sm mb-6" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+              <p className="text-[#7d8184] text-sm mb-6" style={{ fontFamily: 'Inter, sans-serif' }}>
                 Ang inyong trusted source ng quality na electronic components sa Pilipinas.
               </p>
-              <div className="bg-[#111111] border border-[rgba(255,255,255,0.08)] p-4 inline-block">
+              <div className="bg-[#f5f5f5] border border-black/10 p-4 inline-block">
                 <img src={logoQrImg} alt="Scan to Connect" className="w-28 h-auto mb-2" />
-                <p className="text-[#00BFDF] text-xs text-center" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.06em' }}>
+                <p className="text-[#db4444] text-xs text-center" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
                   SCAN TO CONNECT
                 </p>
               </div>
@@ -373,13 +373,13 @@ export function Layout() {
               { title: 'Company', links: [{ label: 'About Us', path: '/about' }, { label: 'Contact', path: '/contact' }, { label: 'Careers', path: '#' }] },
             ].map((col) => (
               <div key={col.title}>
-                <h3 className="mb-4" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 600 }}>
+                <h3 className="mb-4" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
                   {col.title}
                 </h3>
-                <ul className="space-y-2 text-sm text-[#aaaaaa]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                <ul className="space-y-2 text-sm text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <Link to={l.path} className="hover:text-[#00BFDF] transition-colors">
+                      <Link to={l.path} className="hover:text-[#db4444] transition-colors">
                         {l.label}
                       </Link>
                     </li>
@@ -388,8 +388,8 @@ export function Layout() {
               </div>
             ))}
           </div>
-          <div className="mt-8 pt-8 border-t border-[rgba(255,255,255,0.08)] text-center text-sm text-[#aaaaaa]">
-            <p style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+          <div className="mt-8 pt-8 border-t border-black/10 text-center text-sm text-[#7d8184]">
+            <p style={{ fontFamily: 'Inter, sans-serif' }}>
               &copy; 2026 XONTRIX ELECTRONICS. All rights reserved.
             </p>
           </div>
@@ -397,7 +397,7 @@ export function Layout() {
       </footer>
 
       {/* ── MOBILE BOTTOM NAV TAB BAR ── */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[rgba(18,18,18,0.97)] backdrop-blur-md border-t border-[rgba(255,255,255,0.1)]">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-black/10">
         <div className="flex">
           {mobileNav.map((item) => {
             const isActive = location.pathname === item.path;
@@ -406,19 +406,19 @@ export function Layout() {
                 key={item.name}
                 to={item.path}
                 className={`flex-1 flex flex-col items-center justify-center py-3 gap-1 min-h-[56px] transition-all relative ${
-                  isActive ? 'text-[#00BFDF]' : 'text-[#666] hover:text-[#aaa]'
+                  isActive ? 'text-[#db4444]' : 'text-[#7d8184] hover:text-[#111111]'
                 }`}
               >
                 {/* Active indicator */}
                 {isActive && (
-                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[#00BFDF] shadow-[0_0_8px_rgba(0,191,223,0.8)]" />
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[#db4444]" />
                 )}
                 {/* Cart icon needs a badge wrapper */}
                 {item.name === 'Cart' ? (
                   <span className="relative">
                     {item.icon}
                     {cartCount > 0 && (
-                      <span className="absolute -top-1.5 -right-1.5 w-4 h-4 flex items-center justify-center text-[10px] bg-[#00BFDF] text-black font-bold">
+                      <span className="absolute -top-1.5 -right-1.5 w-4 h-4 flex items-center justify-center text-[10px] bg-[#db4444] text-white font-bold rounded-full">
                         {cartCount}
                       </span>
                     )}
@@ -426,7 +426,7 @@ export function Layout() {
                 ) : (
                   item.icon
                 )}
-                <span className="text-[10px]" style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}>
+                <span className="text-[10px]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
                   {item.name}
                 </span>
               </Link>
@@ -439,7 +439,7 @@ export function Layout() {
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-20 md:bottom-8 right-5 z-40 w-11 h-11 flex items-center justify-center bg-[#00BFDF] text-black hover:bg-[#00d4f5] transition-all shadow-lg shadow-[rgba(0,191,223,0.35)] back-to-top-enter"
+          className="fixed bottom-20 md:bottom-8 right-5 z-40 w-11 h-11 flex items-center justify-center bg-[#db4444] text-white hover:bg-[#c73939] transition-all shadow-lg shadow-[#db4444]/25 back-to-top-enter rounded-full"
           aria-label="Back to top"
         >
           <ChevronUp className="w-5 h-5" strokeWidth={2.5} />

@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
-import { Link } from 'react-router';
-import { Filter, SlidersHorizontal } from 'lucide-react';
+import { useEffect, useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router';
+import { Filter, Grid3X3, SlidersHorizontal } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
@@ -18,12 +18,20 @@ import { useStore } from '../context/StoreContext';
 
 export function Products() {
   const { products } = useStore();
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [searchParams] = useSearchParams();
+  const initialCategory = searchParams.get('category');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    initialCategory ? [initialCategory] : []
+  );
   const [priceRange, setPriceRange] = useState<number[]>([0, 3000]);
   const [sortBy, setSortBy] = useState('featured');
   const [showFilters, setShowFilters] = useState(true);
 
   const categories = Array.from(new Set(products.map((p) => p.category)));
+
+  useEffect(() => {
+    setSelectedCategories(initialCategory ? [initialCategory] : []);
+  }, [initialCategory]);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -63,33 +71,49 @@ export function Products() {
     }
 
     return filtered;
-  }, [selectedCategories, priceRange, sortBy]);
+  }, [products, selectedCategories, priceRange, sortBy]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl mb-2 text-white" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}>
-          ALL PRODUCTS
-        </h1>
-        <p className="text-[#aaaaaa]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-          Showing {filteredAndSortedProducts.length} of {products.length} products
-        </p>
-      </div>
+    <div className="bg-white">
+      <section className="border-b border-black/10 bg-[#f6f7f8]">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="mb-2 text-sm font-bold uppercase text-[#db4444]">Xontrix catalog</p>
+              <h1 className="text-4xl font-black text-[#111111]">All products</h1>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#666666]">
+                Browse tested electronics for prototypes, class projects, robotics builds, repairs, and IoT work.
+              </p>
+            </div>
+            <div className="grid grid-cols-3 divide-x divide-black/10 rounded-sm border border-black/10 bg-white">
+              {[
+                [products.length, 'Items'],
+                [categories.length, 'Categories'],
+                [filteredAndSortedProducts.length, 'Showing'],
+              ].map(([value, label]) => (
+                <div key={label} className="px-5 py-4 text-center">
+                  <p className="text-xl font-black text-[#111111]">{value}</p>
+                  <p className="text-xs uppercase text-[#777777]">{label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div className="flex gap-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:flex-row lg:gap-8 lg:px-8">
         {/* Filters Sidebar */}
         <aside
           className={`${
             showFilters ? 'block' : 'hidden'
-          } lg:block w-full lg:w-64 flex-shrink-0 mb-4 lg:mb-0`}
+          } lg:block w-full flex-shrink-0 lg:w-72`}
         >
-          <Card className="sticky top-24 bg-[#1e1e1e] border border-[rgba(255,255,255,0.08)]">
+          <Card className="sticky top-28 overflow-hidden rounded-sm border border-black/10 bg-white shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg flex items-center gap-2 text-white" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 600 }}>
-                  <Filter className="w-5 h-5 text-[#00BFDF]" />
-                  FILTERS
+                <h2 className="flex items-center gap-2 text-lg font-black text-[#111111]">
+                  <Filter className="w-5 h-5 text-[#db4444]" />
+                  Filters
                 </h2>
                 {(selectedCategories.length > 0 ||
                   priceRange[0] !== 0 ||
@@ -101,7 +125,7 @@ export function Products() {
                       setSelectedCategories([]);
                       setPriceRange([0, 3000]);
                     }}
-                    className="text-[#00BFDF] hover:text-white hover:bg-transparent"
+                    className="text-[#db4444] hover:text-[#111111] hover:bg-transparent"
                   >
                     Clear
                   </Button>
@@ -110,8 +134,8 @@ export function Products() {
 
               {/* Categories */}
               <div className="mb-6">
-                <h3 className="mb-3 text-white" style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}>Categories</h3>
-                <div className="space-y-2">
+                <h3 className="mb-3 font-bold text-[#111111]">Categories</h3>
+                <div className="space-y-2.5">
                   {categories.map((category) => (
                     <div
                       key={category}
@@ -124,14 +148,14 @@ export function Products() {
                       />
                       <label
                         htmlFor={category}
-                        className="text-sm cursor-pointer flex-1 text-[#aaaaaa] hover:text-white"
-                        style={{ fontFamily: 'Rajdhani, sans-serif' }}
+                        className="text-sm cursor-pointer flex-1 text-[#4f4f4f] hover:text-[#111111]"
+                        style={{ fontFamily: 'Inter, sans-serif' }}
                       >
                         {category}
                       </label>
                       <span
-                        className="text-xs px-2 py-0.5 bg-[rgba(0,191,223,0.1)] border border-[rgba(0,191,223,0.3)] text-[#00BFDF]"
-                        style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}
+                        className="text-xs px-2 py-0.5 bg-[#f5f5f5] border border-black/10 text-[#7d8184] rounded-sm"
+                        style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}
                       >
                         {products.filter((p) => p.category === category).length}
                       </span>
@@ -142,7 +166,7 @@ export function Products() {
 
               {/* Price Range */}
               <div>
-                <h3 className="mb-3 text-white" style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 600 }}>Price Range</h3>
+                <h3 className="mb-3 font-bold text-[#111111]">Price range</h3>
                 <div className="space-y-4">
                   <Slider
                     min={0}
@@ -152,10 +176,10 @@ export function Products() {
                     onValueChange={setPriceRange}
                   />
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-[#aaaaaa]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                    <span className="text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
                       ₱{priceRange[0].toFixed(0)}
                     </span>
-                    <span className="text-[#aaaaaa]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                    <span className="text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
                       ₱{priceRange[1].toFixed(0)}
                     </span>
                   </div>
@@ -168,28 +192,29 @@ export function Products() {
         {/* Products Grid */}
         <div className="flex-1">
           {/* Toolbar */}
-          <div className="flex items-center justify-between mb-6 gap-4">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-sm border border-black/10 bg-[#f6f7f8] p-3">
             <Button
               variant="outline"
               size="sm"
-              className="lg:hidden min-h-[44px] bg-transparent text-[#00BFDF] border border-[#00BFDF] hover:bg-[#00BFDF] hover:text-black"
+              className="lg:hidden min-h-[44px] bg-transparent text-[#db4444] border border-[#db4444] hover:bg-[#db4444] hover:text-white rounded-sm"
               onClick={() => setShowFilters(!showFilters)}
             >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
               {showFilters ? 'Hide' : 'Show'} Filters
             </Button>
-            <div className="flex items-center gap-2 ml-auto">
-              <span className="text-sm text-[#aaaaaa]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>Sort by:</span>
+            <div className="flex items-center gap-2">
+              <Grid3X3 className="hidden h-4 w-4 text-[#777777] sm:block" />
+              <span className="text-sm text-[#666666]">Sort by</span>
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-[180px] bg-[#1e1e1e] border border-[rgba(255,255,255,0.1)] text-white">
+                <SelectTrigger className="w-[180px] bg-white border border-black/10 text-[#111111] rounded-sm">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1e1e1e] border border-[rgba(255,255,255,0.1)]">
-                  <SelectItem value="featured" className="text-white hover:bg-[#111111] focus:bg-[#111111] focus:text-[#00BFDF]">Featured</SelectItem>
-                  <SelectItem value="price-low" className="text-white hover:bg-[#111111] focus:bg-[#111111] focus:text-[#00BFDF]">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high" className="text-white hover:bg-[#111111] focus:bg-[#111111] focus:text-[#00BFDF]">Price: High to Low</SelectItem>
-                  <SelectItem value="rating" className="text-white hover:bg-[#111111] focus:bg-[#111111] focus:text-[#00BFDF]">Highest Rated</SelectItem>
-                  <SelectItem value="name" className="text-white hover:bg-[#111111] focus:bg-[#111111] focus:text-[#00BFDF]">Name: A to Z</SelectItem>
+                <SelectContent className="bg-white border border-black/10">
+                  <SelectItem value="featured" className="text-[#111111] hover:bg-[#f5f5f5] focus:bg-[#f5f5f5] focus:text-[#db4444]">Featured</SelectItem>
+                  <SelectItem value="price-low" className="text-[#111111] hover:bg-[#f5f5f5] focus:bg-[#f5f5f5] focus:text-[#db4444]">Price: Low to High</SelectItem>
+                  <SelectItem value="price-high" className="text-[#111111] hover:bg-[#f5f5f5] focus:bg-[#f5f5f5] focus:text-[#db4444]">Price: High to Low</SelectItem>
+                  <SelectItem value="rating" className="text-[#111111] hover:bg-[#f5f5f5] focus:bg-[#f5f5f5] focus:text-[#db4444]">Highest Rated</SelectItem>
+                  <SelectItem value="name" className="text-[#111111] hover:bg-[#f5f5f5] focus:bg-[#f5f5f5] focus:text-[#db4444]">Name: A to Z</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -197,7 +222,7 @@ export function Products() {
 
           {/* Products Grid */}
           {filteredAndSortedProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
               {filteredAndSortedProducts.map((product, i) => (
                 <ProductCard
                   key={product.id}
@@ -208,9 +233,9 @@ export function Products() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16">
-              <p className="text-[#aaaaaa] text-lg mb-4" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-                Walang nakitang produkto. Try adjusting your filters.
+            <div className="rounded-sm border border-black/10 bg-[#f6f7f8] py-16 text-center">
+              <p className="text-[#7d8184] text-lg mb-4" style={{ fontFamily: 'Inter, sans-serif' }}>
+                No products matched those filters.
               </p>
               <button
                 className="cyber-button px-6 py-2 min-h-[44px]"
