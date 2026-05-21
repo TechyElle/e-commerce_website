@@ -7,29 +7,31 @@ Add product page
 ✅ Update quantity (implicit, adding same item increases quantity)
 
 ❌ Payment Integration
+GCash
 Maya
 Cash on Delivery
 (Optional) Card payments
 
-❌ Database
+✅ Database (Mock / Local Storage)
 Store:
-Users
-Products
-Orders
-Sales
+✅ Users
+✅ Products
+✅ Orders
+✅ Sales
 
-❌ Inventory System
-Auto-deduct stock after checkout
-Show "Out of Stock" status
+✅ Inventory System
+✅ Auto-deduct stock after checkout (StoreContext.createOrder)
+✅ Show "Out of Stock" status
 
-❌ Admin Dashboard ( IMPORTANT)
-Admin-only access (your account only)
-Sales analytics (total revenue, daily/monthly sales)
-Order management (view, update status: pending → shipped → delivered)
-Product management (add/edit/delete products)
-Inventory monitoring (stock tracking)
-User management (view registered users)
-Access control (only admin can open /admin page)
+✅ Admin Dashboard ( IMPORTANT)
+✅ Admin-only access (protected /admin + /dashboard)
+✅ Sales analytics (total revenue, daily/monthly sales)
+✅ Order management (view, update status: pending → shipped → delivered)
+✅ Product management (add/edit/delete products)
+✅ Inventory monitoring (stock tracking + Out of Stock)
+✅ User management (view registered users)
+✅ Access control (only admin can open /admin page)
+
 
 ✅ Responsive Design
 Mobile friendly
@@ -40,13 +42,33 @@ Desktop view
 Form validation
 Form validation (JS)
 
+✅ Navigation / Core Pages
+✅ Home
+✅ Sign up
+✅ Log in
+✅ Account dropdown
+✅ Category dropdown
+✅ Wishlist
+✅ Cart
+✅ Checkout
+✅ About
+✅ Contact
+✅ 404 Error
+✅ Product details page
+
+
 ---
 
 To Do:
-Login / Register UI
-Admin Dashboard (protected)
-Inventory logic
+Payment Integration (GCash / Maya / COD wiring)
+Real Database (Firestore/SQL) integration
+Inventory auto-deduct (if migrating away from StoreContext/local)
+AI Sales Predictions (replace mock with real model)
+PHP + MySQL backend (if migrating away from Firebase)
+Product Description
+Categories
 Consolidate vanilla files into a unified index.html
+
 
 ---
 
