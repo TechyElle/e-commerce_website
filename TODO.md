@@ -32,7 +32,6 @@ Store:
 ✅ User management (view registered users)
 ✅ Access control (only admin can open /admin page)
 
-
 ✅ Responsive Design
 Mobile friendly
 Tablet view
@@ -56,18 +55,32 @@ Form validation (JS)
 ✅ 404 Error
 ✅ Product details page
 
-
 ---
 
-To Do:
-Payment Integration (GCash / Maya / COD wiring)
-Real Database (Firestore/SQL) integration
-Inventory auto-deduct (if migrating away from StoreContext/local)
-AI Sales Predictions (replace mock with real model)
-PHP + MySQL backend (if migrating away from Firebase)
-Product Description
-Categories
-Consolidate vanilla files into a unified index.html
+To Do (Delegated + Timeline — Deadline: June 15):
+
+Jayson — Payments + Checkout Wiring (GCash/Maya/COD)
+- Update Checkout flow based on payment method
+- Add payment status handling UI/state (pending → confirmed) + persist selection
+- Deliverable: working payment UX end-to-end (COD immediate; GCash/Maya simulated flow if no gateway yet)
+- Deadline: May 25 (draft) / June 1 (integrated)
+
+Gold — PHP + MySQL Real Database Migration (replace localStorage/mock)
+- Implement PHP+MySQL endpoints: users, products, orders, sales
+- Refactor StoreContext persistence to use API instead of localStorage
+- Deliverable: admin CRUD + order creation/status backed by DB
+- Deadline: May 25 (DB schema + API contracts) / June 8 (integration complete)
+
+Nharill — AI Predictions + Product Description/Categories Cleanup
+- Replace Dashboard hardcoded analytics/AI insights with computed values from real order + inventory data
+- Add/standardize product description/category fields across data + detail views
+- Deliverable: AI insights are data-driven (no fixed mock arrays)
+- Deadline: May 25 (analytics stubs) / June 8 (dashboard uses real DB data)
+
+Cross-cutting / Final polish
+- Inventory auto-deduct + out-of-stock behavior verification with DB-backed data
+- Consolidate vanilla files into unified index.html (if still applicable)
+- Deadline for stabilization + QA: June 8 / Final demo build: June 15
 
 
 ---
@@ -82,3 +95,10 @@ Consolidate vanilla files into a unified index.html
 - [x] Step 7: Add Android platform (`cordova platform add android`) and run requirements (`cordova requirements android`)
 - [x] Step 8: Build Android APK (`cordova build android`)
 - [ ] Step 9: Run on Android device/emulator (`cordova run android`) - waiting for a connected device or started emulator
+
+---
+
+# Local dev run notes
+- Vite dev server is running at: http://localhost:5174/
+- (Port auto-incremented because 5173 was already in use)
+
