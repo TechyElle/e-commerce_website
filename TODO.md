@@ -66,10 +66,10 @@ Jayson — Payments + Checkout Wiring (GCash/Maya/COD)
 - Deadline: May 25 (draft) / June 1 (integrated)
 
 Gold — PHP + MySQL Real Database Migration (replace localStorage/mock)
-- Implement PHP+MySQL endpoints: users, products, orders, sales
-- Refactor StoreContext persistence to use API instead of localStorage
-- Deliverable: admin CRUD + order creation/status backed by DB
-- Deadline: May 25 (DB schema + API contracts) / June 8 (integration complete)
+✅ Implement PHP+MySQL endpoints: users, products, orders, sales
+✅ Refactor StoreContext persistence to use API instead of localStorage
+✅ Deliverable: admin CRUD + order creation/status backed by DB
+✅ Deadline: May 25 (DB schema + API contracts) DONE / June 8 (integration complete) IN PROGRESS
 
 Nharill — AI Predictions + Product Description/Categories Cleanup
 - Replace Dashboard hardcoded analytics/AI insights with computed values from real order + inventory data
