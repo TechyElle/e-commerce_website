@@ -12,7 +12,7 @@ Maya
 Cash on Delivery
 (Optional) Card payments
 
-✅ Database (Mock / Local Storage)
+✅ Database (PHP + MySQL — DB-backed, localStorage removed)
 Store:
 ✅ Users
 ✅ Products
