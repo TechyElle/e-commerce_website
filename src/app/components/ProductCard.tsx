@@ -119,6 +119,9 @@ function QuickViewModal({ product, onClose }: QuickViewModalProps) {
   const [added, setAdded] = useState(false);
   const imageSrc = resolveImage(product);
   const available = product.inStock && (product.stock ?? 1) > 0;
+  const discount = product.originalPrice
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    : 0;
 
   const handleAdd = () => {
     if (!available) return;
@@ -126,10 +129,6 @@ function QuickViewModal({ product, onClose }: QuickViewModalProps) {
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
-
-  const discount = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-    : 0;
 
   return (
     <div
@@ -301,6 +300,9 @@ export function ProductCard({
 
   const imageSrc = resolveImage(product);
   const available = product.inStock && (product.stock ?? 1) > 0;
+  const discount = product.originalPrice
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    : 0;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -318,14 +320,24 @@ export function ProductCard({
       )}
 
       <div
-        className={`group relative overflow-hidden rounded-sm border border-black/10 bg-white transition hover:border-[#db4444] hover:shadow-lg hover:shadow-black/5 ${className}`}
+        className={`product-card-pro group relative overflow-hidden rounded-lg border border-black/10 bg-white transition hover:-translate-y-0.5 hover:border-[#1d7dff] hover:shadow-xl hover:shadow-black/10 ${className}`}
         style={{ transitionDelay: `${animDelay}ms` } as React.CSSProperties}
       >
-        {/* NEW badge - only show if in stock */}
-        {variant === 'new' && available && (
-          <Badge className="absolute top-3 left-3 z-10 bg-[#00a76f] text-white border-none text-xs rounded-sm">
-            NEW
-          </Badge>
+        {/* Product status badge */}
+        {available && (
+          <>
+            {discount > 0 ? (
+              <Badge className="absolute top-3 left-3 z-10 border-none bg-[#db4444] text-xs text-white rounded-sm">
+                -{discount}% SULIT
+              </Badge>
+            ) : (
+              variant === 'new' && (
+                <Badge className="absolute top-3 left-3 z-10 bg-[#00a76f] text-white border-none text-xs rounded-sm">
+                  NEW
+                </Badge>
+              )
+            )}
+          </>
         )}
 
         {/* OUT OF STOCK badge */}
@@ -338,11 +350,12 @@ export function ProductCard({
 
         {/* Wishlist button */}
         <button
+          aria-label={wishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
           onClick={(e) => {
             e.preventDefault();
             setWishlisted(!wishlisted);
           }}
-          className={`absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center transition-all border rounded-full ${
+          className={`absolute top-3 right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full border transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1d7dff] ${
             wishlisted
               ? 'bg-[#fff5f5] border-[#db4444]'
               : 'bg-white border-black/10 hover:border-[#db4444] hover:bg-[#fff5f5]'
@@ -357,22 +370,23 @@ export function ProductCard({
 
         {/* Image + hover overlay */}
         <Link to={`/products/${product.id}`} className="block">
-          <div className="relative aspect-square overflow-hidden bg-[#f6f7f8]">
+          <div className="product-image-well relative aspect-square overflow-hidden bg-[#eef3f7]">
             <img
               src={imageSrc}
               alt={product.name}
-              className="w-full h-full object-contain p-3 transition-transform duration-500 group-hover:scale-105"
+              className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
             />
 
             {/* Quick view overlay */}
-            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center bg-[#07111f]/35 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
               <button
+                aria-label={`Quick view ${product.name}`}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   setQuickView(true);
                 }}
-                className="flex min-h-[44px] translate-y-2 items-center gap-2 rounded-sm border border-white bg-white px-4 py-2 text-sm text-[#111111] transition-all duration-300 hover:border-[#db4444] hover:bg-[#db4444] hover:text-white group-hover:translate-y-0"
+                className="flex min-h-[44px] translate-y-2 items-center gap-2 rounded-md border border-white bg-white px-4 py-2 text-sm text-[#111111] shadow-lg shadow-black/15 transition-all duration-300 hover:border-[#db4444] hover:bg-[#db4444] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white group-hover:translate-y-0"
                 style={{
                   fontFamily: 'Inter, sans-serif',
                   fontWeight: 600,
@@ -393,6 +407,11 @@ export function ProductCard({
               {product.category}
             </Badge>
           )}
+          {discount > 0 && (
+            <Badge className="mb-2 border border-[#ffd0d0] bg-[#fff5f5] text-xs text-[#db4444] rounded-sm">
+              Sulit Deal
+            </Badge>
+          )}
 
           <Link to={`/products/${product.id}`}>
             <h3
@@ -404,8 +423,8 @@ export function ProductCard({
           </Link>
 
           {/* Rating */}
-          <div className="flex items-center gap-1 mb-3">
-            <span className="text-[#db4444] text-sm">★</span>
+          <div className="mb-3 flex items-center gap-1">
+            <Star className="h-3.5 w-3.5 fill-[#ffad33] text-[#ffad33]" />
             <span
               className="text-sm text-[#111111]"
               style={{ fontFamily: 'Inter, sans-serif' }}
@@ -442,12 +461,13 @@ export function ProductCard({
             <button
               onClick={handleAddToCart}
               disabled={!available}
-              className={`flex min-h-[40px] shrink-0 items-center gap-1.5 border px-2 py-2 text-xs transition-all sm:px-3 ${
+              aria-label={`Add ${product.name} to cart`}
+              className={`flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-md border px-2 py-2 text-xs transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1d7dff] sm:px-3 ${
                 !available
                   ? 'opacity-50 cursor-not-allowed border-[#bdbdbd] text-[#7d8184]'
-                  : added
+                : added
                   ? 'bg-[#10b981] border-[#10b981] text-white'
-                  : 'bg-[#db4444] border-[#db4444] text-white hover:bg-[#c73939]'
+                  : 'bg-[#db4444] border-[#db4444] text-white shadow-sm shadow-[#db4444]/20 hover:bg-[#c73939]'
               }`}
               style={{
                 fontFamily: 'Inter, sans-serif',
