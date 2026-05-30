@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router';
-import { AlertCircle, Filter, Grid3X3, SlidersHorizontal, Tag, Zap } from 'lucide-react';
+import { Filter, Grid3X3, SlidersHorizontal, Tag, Zap } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
@@ -17,7 +17,7 @@ import { ProductCard } from '../components/ProductCard';
 import { useStore } from '../context/StoreContext';
 
 export function Products() {
-  const { products, loading, error } = useStore();
+  const { products, loading } = useStore();
   const [searchParams] = useSearchParams();
   const initialCategory = searchParams.get('category');
   const dealFilter = searchParams.get('deal');
@@ -222,13 +222,6 @@ export function Products() {
 
         {/* Products Grid */}
         <div className="flex-1">
-          {error && (
-            <div className="mb-4 flex items-start gap-3 rounded-md border border-[#ffd0d0] bg-[#fff5f5] p-4 text-sm text-[#7a2d2d]">
-              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#db4444]" />
-              <p>{error}</p>
-            </div>
-          )}
-
           {/* Toolbar */}
           <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-sm border border-black/10 bg-[#f6f7f8] p-3">
             <Button
