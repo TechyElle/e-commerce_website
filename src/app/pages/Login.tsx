@@ -1,14 +1,25 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
-import logoImg from '../../imports/Logo & QR/LOGO.png';
+import {
+  ArrowRight,
+  CheckCircle2,
+  Eye,
+  EyeOff,
+  Loader2,
+  Lock,
+  Mail,
+  ShieldCheck,
+  User,
+} from 'lucide-react';
+import logoImg from '../../imports/Logo & QR/Screenshot_2026-05-31_124307-removebg-preview.png';
 import { useAuth } from '../context/AuthContext';
 import { usersApi } from '../lib/api';
 import { toast } from 'sonner';
 
 export function Login() {
   const navigate = useNavigate();
-  const { signInDemo } = useAuth();
+  const { signIn } = useAuth();
+
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -23,22 +34,23 @@ export function Login() {
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
-    if (!isLogin && !formData.name.trim())
-      newErrors.name = 'Pangalan ay kailangan.';
-    if (!formData.email.trim())
-      newErrors.email = 'Email ay kailangan.';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+    if (!isLogin && !formData.name.trim()) newErrors.name = 'Pangalan ay kailangan.';
+    if (!formData.email.trim()) newErrors.email = 'Email ay kailangan.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Maglagay ng valid na email address.';
-    if (!formData.password.trim())
-      newErrors.password = 'Password ay kailangan.';
-    else if (formData.password.length < 6)
+    }
+    if (!formData.password.trim()) newErrors.password = 'Password ay kailangan.';
+    else if (formData.password.length < 6) {
       newErrors.password = 'Ang password ay dapat hindi bababa sa 6 characters.';
-    if (!isLogin && formData.password !== formData.confirmPassword)
+    }
+    if (!isLogin && formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Hindi magkatugma ang password.';
+    }
     return newErrors;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -49,18 +61,15 @@ export function Login() {
 
     try {
       if (isLogin) {
-        // Login (MySQL)
         const res = await usersApi.login({
           email: formData.email.trim().toLowerCase(),
           password: formData.password,
         });
 
-        // backend returns: { id, name, email, role, created_at }
-        signInDemo(res.email, res.name ?? 'Xontrix User', res.role);
+        signIn({ email: res.email, name: res.name ?? 'Xontrix User', role: res.role });
         toast.success('Maligayang pagbabalik!');
         navigate(res.role === 'admin' ? '/admin' : '/');
       } else {
-        // Register (MySQL)
         await usersApi.register({
           name: formData.name.trim(),
           email: formData.email.trim().toLowerCase(),
@@ -72,271 +81,351 @@ export function Login() {
       }
     } catch (error: any) {
       console.error(error);
-      // normalize backend error
       const messageFromBackend = error?.message || error?.error;
-      let message = messageFromBackend || 'May mali sa pag-login. Pakisubukang muli.';
-
+      const message = messageFromBackend || 'May mali sa pag-login. Pakisubukang muli.';
       toast.error(message);
     } finally {
       setLoading(false);
     }
   };
 
+  const switchMode = (nextIsLogin: boolean) => {
+    setIsLogin(nextIsLogin);
+    setErrors({});
+    setSubmitted(false);
+  };
+
+  const passwordMeta = useMemo(() => {
+    const pwd = formData.password;
+    const lengthScore = Math.min(4, Math.floor(pwd.length / 4));
+    const variety =
+      (/[a-z]/.test(pwd) ? 1 : 0) + (/[A-Z]/.test(pwd) ? 1 : 0) + (/[0-9]/.test(pwd) ? 1 : 0) + (/[^A-Za-z0-9]/.test(pwd) ? 1 : 0);
+    const total = Math.min(8, lengthScore + variety);
+
+    if (!pwd) return { label: '', score: 0, hintColor: 'text-white/60' } as const;
+
+    if (total <= 2) return { label: 'Weak', score: total, hintColor: 'text-[#ff7a7a]' } as const;
+    if (total <= 5) return { label: 'Fair', score: total, hintColor: 'text-[#ffd166]' } as const;
+    if (total <= 7) return { label: 'Strong', score: total, hintColor: 'text-[#00bfdf]' } as const;
+    return { label: 'Very strong', score: total, hintColor: 'text-[#10b981]' } as const;
+  }, [formData.password]);
+
   return (
-    <div className="min-h-screen bg-[#111111] flex items-center justify-center px-4 py-16">
-      <div className="w-full max-w-md">
+      <div className="relative min-h-screen bg-[#0a0f1b] px-4 py-8 text-white sm:px-6 lg:px-10">
 
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex flex-col items-center gap-3">
-            <img src={logoImg} alt="Xontrix Logo" className="w-16 h-16" />
-            <span
-              className="text-2xl text-white"
-              style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}
-            >
-              XONTRIX
-            </span>
-          </Link>
-        </div>
-
-        {/* Card */}
-        <div
-          className="bg-[#1e1e1e] border border-[rgba(255,255,255,0.1)] p-8"
-          style={{ boxShadow: '0 0 40px rgba(0,191,223,0.08)' }}
-        >
-          {/* Toggle Login / Register */}
-          <div className="flex mb-8 border border-[rgba(255,255,255,0.1)]">
-            <button
-              onClick={() => { setIsLogin(true); setErrors({}); setSubmitted(false); }}
-              className={`flex-1 py-3 text-sm transition-all ${
-                isLogin
-                  ? 'bg-[#00BFDF] text-black font-bold'
-                  : 'bg-transparent text-[#aaaaaa] hover:text-white'
-              }`}
-              style={{ fontFamily: 'Orbitron, sans-serif' }}
-            >
-              LOGIN
-            </button>
-            <button
-              onClick={() => { setIsLogin(false); setErrors({}); setSubmitted(false); }}
-              className={`flex-1 py-3 text-sm transition-all ${
-                !isLogin
-                  ? 'bg-[#00BFDF] text-black font-bold'
-                  : 'bg-transparent text-[#aaaaaa] hover:text-white'
-              }`}
-              style={{ fontFamily: 'Orbitron, sans-serif' }}
-            >
-              REGISTER
-            </button>
+      <div className="relative mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        {/* Left: Benefits panel (hidden on mobile) */}
+        <aside className="hidden lg:flex lg:min-h-[640px] lg:flex-col lg:justify-center lg:rounded-lg lg:p-8">
+          <div className="flex items-center gap-3 mb-8">
+            <img src={logoImg} alt="Xontrix Logo" className="h-12 w-12 object-contain" />
+            <span className="text-2xl font-black tracking-normal text-white">XONTRIX</span>
           </div>
 
-          {submitted ? (
-            /* Success Message */
-            <div className="text-center py-8">
-              <div
-                className="w-16 h-16 mx-auto mb-4 flex items-center justify-center"
-                style={{
-                  background: 'rgba(16,185,129,0.1)',
-                  border: '2px solid #10b981',
-                }}
-              >
-                <span className="text-3xl">✓</span>
+          <div className="relative rounded-lg bg-gradient-to-br from-[#c85353] to-[#a63d3d] p-8 text-white overflow-hidden">
+            <div className="absolute inset-0 bg-black/10" />
+            <div className="relative">
+              <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-full border border-white/30">
+                <ShieldCheck className="h-5 w-5" />
               </div>
-              <h3
-                className="text-xl text-white mb-2"
-                style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}
-              >
-                {isLogin ? 'WELCOME BACK!' : 'ACCOUNT CREATED!'}
-              </h3>
-              <p
-                className="text-[#aaaaaa] mb-6"
-                style={{ fontFamily: 'Rajdhani, sans-serif' }}
-              >
-                {isLogin
-                  ? 'Maligayang pagbabalik sa Xontrix!'
-                  : 'Maligayang pagdating sa Xontrix!'}
+              <h2 className="text-4xl font-black leading-tight mb-4">
+                Manage orders and shop faster with your Xontrix account.
+              </h2>
+              <p className="text-base font-semibold leading-6 text-white/90 mb-8">
+                Sign in to continue checkout, save your details, and reach admin tools when your account has access.
               </p>
-              <Link to="/">
-                <button className="cyber-button px-8 py-3">
-                  GO TO HOME
-                  <ArrowRight className="ml-2 w-4 h-4 inline" />
-                </button>
+
+              <div className="flex gap-4">
+                <div className="flex flex-col items-center justify-center rounded-lg border border-white/20 bg-black/20 px-4 py-4 flex-1">
+                  <span className="text-lg font-bold">Fast</span>
+                  <span className="text-xs font-semibold text-white/70 uppercase">Checkout</span>
+                </div>
+                <div className="flex flex-col items-center justify-center rounded-lg border border-white/20 bg-black/20 px-4 py-4 flex-1">
+                  <span className="text-lg font-bold">Local</span>
+                  <span className="text-xs font-semibold text-white/70 uppercase">Support</span>
+                </div>
+                <div className="flex flex-col items-center justify-center rounded-lg border border-white/20 bg-black/20 px-4 py-4 flex-1">
+                  <span className="text-lg font-bold">Secure</span>
+                  <span className="text-xs font-semibold text-white/70 uppercase">Access</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* Right: Login form panel */}
+        <main className="w-full max-w-xl justify-self-center lg:justify-self-end">
+          <div className="rounded-lg border border-white/20 bg-[#0f1623] p-6 shadow-sm shadow-black/5 sm:p-8 lg:p-10">
+            <div className="lg:hidden">
+              <Link to="/" className="mb-6 inline-flex items-center gap-3">
+                <img src={logoImg} alt="Xontrix Logo" className="h-12 w-12 object-contain" />
+                <span className="text-2xl font-black tracking-normal text-white">XONTRIX</span>
               </Link>
+
+              <h1 className="text-3xl font-black leading-tight tracking-normal text-white">
+                XONTRIX <span className="text-[#00bfdf]">ELECTRONICS</span>
+              </h1>
+              <p className="mt-2 max-w-md text-sm font-semibold leading-6 text-white/70">
+                Quality components. Fast delivery.
+              </p>
             </div>
-          ) : (
-            /* Form */
-            <div className="space-y-5">
 
-              {/* Name field - Register only */}
-              {!isLogin && (
-                <div>
-                  <label
-                    className="block text-sm mb-2 text-[#aaaaaa]"
-                    style={{ fontFamily: 'Rajdhani, sans-serif', letterSpacing: '0.05em' }}
-                  >
-                    FULL NAME
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aaaaaa]" />
-                    <input
-                      type="text"
-                      placeholder="Your full name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full h-11 pl-10 pr-4 bg-[#111111] border border-[rgba(255,255,255,0.1)] text-white placeholder:text-[#555] focus:border-[#00BFDF] focus:outline-none focus:ring-1 focus:ring-[rgba(0,191,223,0.3)] transition-all"
-                      style={{ fontFamily: 'Rajdhani, sans-serif' }}
-                    />
-                  </div>
-                  {errors.name && (
-                    <p className="text-[#dc2626] text-xs mt-1" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-                      {errors.name}
-                    </p>
-                  )}
+            {submitted ? (
+              <div className="py-10 text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-md border-2 border-[#10b981] bg-[#10b981]/10">
+                  <CheckCircle2 className="h-8 w-8 text-[#10b981]" />
                 </div>
-              )}
-
-              {/* Email */}
-              <div>
-                <label
-                  className="block text-sm mb-2 text-[#aaaaaa]"
-                  style={{ fontFamily: 'Rajdhani, sans-serif', letterSpacing: '0.05em' }}
-                >
-                  EMAIL ADDRESS
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aaaaaa]" />
-                  <input
-                    type="email"
-                    placeholder="your@email.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full h-11 pl-10 pr-4 bg-[#111111] border border-[rgba(255,255,255,0.1)] text-white placeholder:text-[#555] focus:border-[#00BFDF] focus:outline-none focus:ring-1 focus:ring-[rgba(0,191,223,0.3)] transition-all"
-                    style={{ fontFamily: 'Rajdhani, sans-serif' }}
-                  />
-                </div>
-                {errors.email && (
-                  <p className="text-[#dc2626] text-xs mt-1" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-                    {errors.email}
-                  </p>
-                )}
-              </div>
-
-              {/* Password */}
-              <div>
-                <label
-                  className="block text-sm mb-2 text-[#aaaaaa]"
-                  style={{ fontFamily: 'Rajdhani, sans-serif', letterSpacing: '0.05em' }}
-                >
-                  PASSWORD
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aaaaaa]" />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="w-full h-11 pl-10 pr-10 bg-[#111111] border border-[rgba(255,255,255,0.1)] text-white placeholder:text-[#555] focus:border-[#00BFDF] focus:outline-none focus:ring-1 focus:ring-[rgba(0,191,223,0.3)] transition-all"
-                    style={{ fontFamily: 'Rajdhani, sans-serif' }}
-                  />
-                  <button
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#aaaaaa] hover:text-white transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                <h3 className="mb-2 text-xl font-black text-white">ACCOUNT CREATED!</h3>
+                <p className="mb-6 text-white/70">Maligayang pagdating sa Xontrix!</p>
+                <Link to="/">
+                  <button className="min-h-[46px] px-8 py-3 rounded-lg bg-[#00bfdf] font-bold text-black hover:bg-[#00a5c1] transition-colors">
+                    GO TO HOME
+                    <ArrowRight className="ml-2 inline h-4 w-4" />
                   </button>
-                </div>
-                {errors.password && (
-                  <p className="text-[#dc2626] text-xs mt-1" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-                    {errors.password}
-                  </p>
-                )}
+                </Link>
               </div>
+            ) : (
+              <div>
+                <div className="mb-7">
+                  <p className="text-sm font-bold uppercase text-[#00bfdf]">
+                    {isLogin ? 'Welcome back' : 'Create account'}
+                  </p>
+                  <h2 className="mt-2 text-3xl font-black tracking-normal text-white sm:text-4xl">
+                    {isLogin ? 'Login to Xontrix' : 'Join Xontrix'}
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-white/70">
+                    {isLogin
+                      ? 'Use your account credentials to continue shopping or access admin tools.'
+                      : 'Create your account once and continue to checkout faster next time.'}
+                  </p>
+                </div>
 
-              {/* Confirm Password - Register only */}
-              {!isLogin && (
-                <div>
-                  <label
-                    className="block text-sm mb-2 text-[#aaaaaa]"
-                    style={{ fontFamily: 'Rajdhani, sans-serif', letterSpacing: '0.05em' }}
-                  >
-                    CONFIRM PASSWORD
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aaaaaa]" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="••••••••"
-                      value={formData.confirmPassword}
-                      onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                      className="w-full h-11 pl-10 pr-4 bg-[#111111] border border-[rgba(255,255,255,0.1)] text-white placeholder:text-[#555] focus:border-[#00BFDF] focus:outline-none focus:ring-1 focus:ring-[rgba(0,191,223,0.3)] transition-all"
-                      style={{ fontFamily: 'Rajdhani, sans-serif' }}
-                    />
+                {/* Mode switching buttons */}
+                {isLogin && (
+                  <div className="mb-6 flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => switchMode(true)}
+                      className="flex-1 rounded-lg bg-[#00bfdf] py-3 font-bold text-black hover:bg-[#00a5c1] transition-colors"
+                    >
+                      LOGIN
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => switchMode(false)}
+                      className="flex-1 rounded-lg border border-white/20 bg-transparent py-3 font-bold text-white hover:bg-white/10 transition-colors"
+                    >
+                      REGISTER
+                    </button>
                   </div>
-                  {errors.confirmPassword && (
-                    <p className="text-[#dc2626] text-xs mt-1" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-                      {errors.confirmPassword}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {/* Forgot Password - Login only */}
-              {isLogin && (
-                <div className="text-right">
-                  <button
-                    className="text-sm text-[#00BFDF] hover:text-white transition-colors"
-                    style={{ fontFamily: 'Rajdhani, sans-serif' }}
-                  >
-                    Forgot Password?
-                  </button>
-                </div>
-              )}
-
-              {/* Submit Button */}
-              <button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="w-full cyber-button py-3 mt-2"
-                style={{ fontFamily: 'Orbitron, sans-serif' }}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 w-4 h-4 inline animate-spin" />
-                    PLEASE WAIT
-                  </>
-                ) : (
-                  <>
-                    {isLogin ? 'LOGIN' : 'CREATE ACCOUNT'}
-                    <ArrowRight className="ml-2 w-4 h-4 inline" />
-                  </>
                 )}
-              </button>
 
+                {/* Mode switching: replace tabs/buttons with single primary action (Login) + register link */}
+                <form className="space-y-5" noValidate onSubmit={handleSubmit}>
+                  {!isLogin && (
+                    <div>
+                      <div className="mb-2 block text-sm font-semibold text-white">FULL NAME</div>
+                      <div className="relative">
+                        <User className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
+                        <input
+                          id="name"
+                          type="text"
+                          autoComplete="name"
+                          placeholder="Your full name"
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+
+                          aria-describedby={errors.name ? 'name-error' : undefined}
+                          className="h-[52px] w-full rounded-lg border border-white/10 bg-white/5 pl-10 pr-4 text-white placeholder:text-white/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+                        />
+                      </div>
+                      {errors.name && (
+                        <p id="name-error" role="alert" className="mt-2 text-sm text-[#ff7a7a]">
+                          {errors.name}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Floating label: Email */}
+                  <div>
+                    <div className="mb-2 block text-sm font-semibold text-white">EMAIL ADDRESS</div>
+                    <div className="relative">
+                      <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
+                      <input
+                        id="email"
+                        type="email"
+                        autoComplete="email"
+                        inputMode="email"
+                        placeholder="your@email.com"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+
+                        aria-describedby={errors.email ? 'email-error' : undefined}
+                        className="h-[52px] w-full rounded-lg border border-white/10 bg-white/5 pl-10 pr-4 text-white placeholder:text-white/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+                      />
+                    </div>
+                    {errors.email && (
+                      <p id="email-error" role="alert" className="mt-2 text-sm text-[#ff7a7a]">
+                        {errors.email}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Floating label: Password */}
+                  <div>
+                    <div className="mb-2 block text-sm font-semibold text-white">PASSWORD</div>
+                    <div className="relative">
+                      <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
+                      <input
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        autoComplete={isLogin ? 'current-password' : 'new-password'}
+                        placeholder="Password"
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+
+                        aria-describedby={errors.password ? 'password-error' : undefined}
+                        className="h-[52px] w-full rounded-lg border border-white/10 bg-white/5 pl-10 pr-12 text-white placeholder:text-white/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-white/50 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00BFDF]"
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                    </div>
+
+                    {/* Password strength hint on focus */}
+                    <div className={`mt-2 text-xs font-semibold ${passwordMeta.hintColor} opacity-0 focus-within:opacity-100`}>
+                      <span className="mr-2">Strength:</span>
+                      <span>{passwordMeta.label || '—'}</span>
+                    </div>
+
+                    {errors.password && (
+                      <p id="password-error" role="alert" className="mt-2 text-sm text-[#ff7a7a]">
+                        {errors.password}
+                      </p>
+                    )}
+                  </div>
+
+                  {!isLogin && (
+                    <div>
+                      <div className="mb-2 block text-sm font-semibold text-white">CONFIRM PASSWORD</div>
+                      <div className="relative">
+                        <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
+                        <input
+                          id="confirmPassword"
+                          type={showPassword ? 'text' : 'password'}
+                          autoComplete="new-password"
+                          placeholder="Confirm password"
+                          value={formData.confirmPassword}
+                          onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+
+                          aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined}
+                          className="h-[52px] w-full rounded-lg border border-white/10 bg-white/5 pl-10 pr-4 text-white placeholder:text-white/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+                        />
+                      </div>
+                      {errors.confirmPassword && (
+                        <p id="confirm-password-error" role="alert" className="mt-2 text-sm text-[#ff7a7a]">
+                          {errors.confirmPassword}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {isLogin && (
+                    <div className="text-right">
+                      <button
+                        type="button"
+                        className="min-h-[44px] text-sm font-semibold text-[#00BFDF] transition-colors hover:text-[#00d4f5]"
+                      >
+                        Forgot Password?
+                      </button>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="min-h-[52px] w-full rounded-lg bg-[#ff6b5b] py-3 font-bold text-white hover:bg-[#ff5347] transition-colors disabled:cursor-not-allowed disabled:opacity-60 flex items-center justify-center"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        PLEASE WAIT
+                      </>
+                    ) : (
+                      <>
+                        {isLogin ? 'LOGIN' : 'CREATE ACCOUNT'}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </>
+                    )}
+                  </button>
+
+                  {/* Register link below the primary login button */}
+                  <div className="pt-1 text-center">
+                    {isLogin ? (
+                      <span className="text-sm font-semibold text-white/70">
+                        Wala pang account?{' '}
+                        <button
+                          type="button"
+                          onClick={() => switchMode(false)}
+                          className="font-bold text-[#00bfdf] transition-colors hover:text-[#00d4f5]"
+                        >
+                          Register
+                        </button>
+                      </span>
+                    ) : (
+                      <span className="text-sm font-semibold text-white/70">
+                        May account na?{' '}
+                        <button
+                          type="button"
+                          onClick={() => switchMode(true)}
+                          className="font-bold text-[#00bfdf] transition-colors hover:text-[#00d4f5]"
+                        >
+                          Login
+                        </button>
+                      </span>
+                    )}
+                  </div>
+
+                  {isLogin && (
+                    <div className="mt-6 space-y-2 border-t border-white/10 pt-6 text-center">
+                      <p className="text-xs font-medium text-[#00bfdf]">Demo instructions removed. Use your MySQL account credentials.</p>
+                      <p className="text-xs font-medium text-white/50">
+                        Wala pang account?{' '}
+                        <button
+                          type="button"
+                          onClick={() => switchMode(false)}
+                          className="font-bold text-[#00bfdf] hover:text-[#00d4f5]"
+                        >
+                          Mag-Register
+                        </button>
+                      </p>
+                    </div>
+                  )}
+                </form>
+              </div>
+            )}
+          </div>
+        </main>
+
+        {/* Mobile: full-bleed light hero panel (form only on small screens) */}
+        <section className="relative col-span-2 -mx-4 mt-8 block overflow-hidden rounded-lg border border-white/10 bg-gradient-to-br from-[#c85353] to-[#a63d3d] px-4 py-10 lg:hidden">
+          <div className="relative flex flex-col items-center justify-center">
+            <div className="relative mb-4">
+              <span className="absolute -inset-6 rounded-full bg-white/10 blur-2xl" />
+              <img src={logoImg} alt="Xontrix Logo" className="relative h-20 w-20 object-contain" />
             </div>
-          )}
-        </div>
-
-        {/* Bottom link */}
-        <p
-          className="text-center text-[#aaaaaa] text-sm mt-6"
-          style={{ fontFamily: 'Rajdhani, sans-serif' }}
-        >
-          {isLogin && (
-            <span className="block mb-3 text-[#00BFDF]">
-              Demo instructions removed. Use your MySQL account credentials.
-            </span>
-          )}
-          {isLogin ? "Wala pang account? " : "May account na? "}
-          <button
-            onClick={() => { setIsLogin(!isLogin); setErrors({}); setSubmitted(false); }}
-            className="text-[#00BFDF] hover:text-white transition-colors font-bold"
-          >
-            {isLogin ? 'Mag-Register' : 'Mag-Login'}
-          </button>
-        </p>
-
+            <h3 className="text-2xl font-black text-white mb-2">Manage orders and shop faster</h3>
+            <p className="text-sm font-semibold text-white/90 text-center">with your Xontrix account</p>
+          </div>
+        </section>
       </div>
     </div>
   );
 }
+
