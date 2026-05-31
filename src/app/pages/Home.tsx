@@ -41,12 +41,12 @@ const featureTiles = [
 ];
 
 const categories = [
-  { name: 'Microcontrollers', icon: Cpu, detail: 'Arduino, ESP, dev boards' },
-  { name: 'Sensors', icon: Gauge, detail: 'Measure, detect, automate' },
-  { name: 'Displays', icon: MonitorSmartphone, detail: 'LCD, OLED, segments' },
-  { name: 'Power', icon: Zap, detail: 'Regulators and drivers' },
-  { name: 'Connectors', icon: Layers3, detail: 'Breadboards and wiring' },
-  { name: 'Tools', icon: SlidersHorizontal, detail: 'Bench and build kits' },
+  { name: 'Microcontrollers', icon: Cpu, detail: 'Arduino, ESP32, Raspberry Pi, STM32' },
+  { name: 'Sensors', icon: Gauge, detail: 'Temperature, distance, motion, pressure' },
+  { name: 'Displays', icon: MonitorSmartphone, detail: 'OLED, LCD, character displays' },
+  { name: 'Motor Control', icon: Zap, detail: 'Motor drivers, relay modules, servos' },
+  { name: 'Connectors', icon: Layers3, detail: 'Jumper wires, USB breakouts, headers' },
+  { name: 'Tools', icon: SlidersHorizontal, detail: 'Breadboards, shields, prototyping kits' },
 ];
 
 function Countdown() {
