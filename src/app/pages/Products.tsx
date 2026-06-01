@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
-import { useSearchParams } from 'react-router';
-import { Filter, Grid3X3, SlidersHorizontal } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router';
+import { Filter, Grid3X3, SlidersHorizontal, Tag, Zap } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
@@ -17,9 +17,11 @@ import { ProductCard } from '../components/ProductCard';
 import { useStore } from '../context/StoreContext';
 
 export function Products() {
-  const { products } = useStore();
+  const { products, loading } = useStore();
   const [searchParams] = useSearchParams();
   const initialCategory = searchParams.get('category');
+  const dealFilter = searchParams.get('deal');
+  const showSulitDeals = dealFilter === 'sulit';
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     initialCategory ? [initialCategory] : []
   );
@@ -28,6 +30,7 @@ export function Products() {
   const [showFilters, setShowFilters] = useState(true);
 
   const categories = Array.from(new Set(products.map((p) => p.category)));
+  const saleCount = products.filter((product) => product.isSale).length;
 
   useEffect(() => {
     setSelectedCategories(initialCategory ? [initialCategory] : []);
@@ -48,7 +51,8 @@ export function Products() {
         selectedCategories.includes(product.category);
       const priceMatch =
         product.price >= priceRange[0] && product.price <= priceRange[1];
-      return categoryMatch && priceMatch;
+      const dealMatch = !showSulitDeals || product.isSale;
+      return categoryMatch && priceMatch && dealMatch;
     });
 
     // Sort products
@@ -71,7 +75,7 @@ export function Products() {
     }
 
     return filtered;
-  }, [products, selectedCategories, priceRange, sortBy]);
+  }, [products, selectedCategories, priceRange, sortBy, showSulitDeals]);
 
   return (
     <div className="bg-white">
@@ -79,16 +83,23 @@ export function Products() {
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="mb-2 text-sm font-bold uppercase text-[#db4444]">Xontrix catalog</p>
-              <h1 className="text-4xl font-black text-[#111111]">All products</h1>
+              <p className="mb-2 flex items-center gap-2 text-sm font-bold uppercase text-[#db4444]">
+                {showSulitDeals ? <Zap className="h-4 w-4" /> : <Tag className="h-4 w-4" />}
+                {showSulitDeals ? 'Sulit deal shelf' : 'Xontrix catalog'}
+              </p>
+              <h1 className="text-4xl font-black text-[#111111]">
+                {showSulitDeals ? 'Sulit deals' : 'All products'}
+              </h1>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-[#666666]">
-                Browse tested electronics for prototypes, class projects, robotics builds, repairs, and IoT work.
+                {showSulitDeals
+                  ? 'Discounted essentials and starter parts for classes, repairs, robotics builds, and weekend prototypes.'
+                  : 'Browse tested electronics for prototypes, class projects, robotics builds, repairs, and IoT work.'}
               </p>
             </div>
             <div className="grid grid-cols-3 divide-x divide-black/10 rounded-sm border border-black/10 bg-white">
               {[
                 [products.length, 'Items'],
-                [categories.length, 'Categories'],
+                [showSulitDeals ? saleCount : categories.length, showSulitDeals ? 'Deals' : 'Categories'],
                 [filteredAndSortedProducts.length, 'Showing'],
               ].map(([value, label]) => (
                 <div key={label} className="px-5 py-4 text-center">
@@ -100,6 +111,26 @@ export function Products() {
           </div>
         </div>
       </section>
+
+      {showSulitDeals && (
+        <section className="border-b border-black/10 bg-[#07111f] text-white">
+          <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-5 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+            <div>
+              <p className="text-sm font-bold uppercase text-[#ffb3b3]">Active promo</p>
+              <h2 className="mt-1 text-2xl font-black text-white">Save on high-use bench supplies</h2>
+              <p className="mt-1 max-w-2xl text-sm leading-6 text-white/70">
+                These items are pulled from the same catalog as Shop, filtered to sale products only.
+              </p>
+            </div>
+            <Link
+              to="/products"
+              className="inline-flex min-h-[44px] items-center justify-center rounded-md bg-white px-5 text-sm font-bold text-[#111111] transition hover:bg-[#f1f1f1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              View full shop
+            </Link>
+          </div>
+        </section>
+      )}
 
       <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:flex-row lg:gap-8 lg:px-8">
         {/* Filters Sidebar */}
@@ -221,13 +252,19 @@ export function Products() {
           </div>
 
           {/* Products Grid */}
-          {filteredAndSortedProducts.length > 0 ? (
+          {loading ? (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div key={index} className="h-[340px] animate-pulse rounded-lg border border-black/10 bg-[#f6f7f8]" />
+              ))}
+            </div>
+          ) : filteredAndSortedProducts.length > 0 ? (
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
               {filteredAndSortedProducts.map((product, i) => (
                 <ProductCard
                   key={product.id}
                   product={product}
-                  variant={product.isNew ? 'new' : 'default'}
+                  variant={product.isNew && !product.isSale ? 'new' : 'default'}
                   animDelay={i * 40}
                 />
               ))}
@@ -238,13 +275,13 @@ export function Products() {
                 No products matched those filters.
               </p>
               <button
-                className="cyber-button px-6 py-2 min-h-[44px]"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-md bg-[#db4444] px-6 py-2 text-sm font-bold text-white transition hover:bg-[#c73939]"
                 onClick={() => {
                   setSelectedCategories([]);
                   setPriceRange([0, 3000]);
                 }}
               >
-                CLEAR FILTERS
+                Clear filters
               </button>
             </div>
           )}

@@ -135,7 +135,7 @@ export function Layout() {
   const navigation = [
     { name: 'Home', path: '/' },
     { name: 'Shop', path: '/products' },
-    { name: 'Sulit Deal', path: '/products' },
+    { name: 'Sulit Deal', path: '/products?deal=sulit' },
     { name: 'About', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
@@ -177,7 +177,7 @@ export function Layout() {
   /* Close mobile menu on route change */
   useEffect(() => {
     setMobileMenuOpen(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -217,7 +217,10 @@ export function Layout() {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6">
               {navigation.map((item) => {
-                const active = location.pathname === item.path;
+                const [itemPath, itemSearch = ''] = item.path.split('?');
+                const active =
+                  location.pathname === itemPath &&
+                  location.search === (itemSearch ? `?${itemSearch}` : '');
                 return (
                   <Link
                     key={item.name}
@@ -302,7 +305,13 @@ export function Layout() {
                   key={item.name}
                   to={item.path}
                   className={`flex items-center px-4 py-3 min-h-[44px] transition-colors text-sm ${
-                    location.pathname === item.path
+                    (() => {
+                      const [itemPath, itemSearch = ''] = item.path.split('?');
+                      return (
+                        location.pathname === itemPath &&
+                        location.search === (itemSearch ? `?${itemSearch}` : '')
+                      );
+                    })()
                       ? 'text-[#db4444] bg-[#fff5f5] border-l-2 border-[#db4444]'
                       : 'text-[#111111] hover:bg-[#f5f5f5] hover:text-[#db4444] border-l-2 border-transparent'
                   }`}

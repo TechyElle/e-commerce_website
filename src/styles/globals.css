@@ -213,3 +213,62 @@ html {
 .back-to-top-enter:hover {
   animation: pulseGlow 1.2s ease-in-out infinite;
 }
+
+.xontrix-hero-surface {
+  position: relative;
+  background:
+    linear-gradient(135deg, rgba(219, 68, 68, 0.92), rgba(123, 33, 33, 0.18) 36%, transparent 58%),
+    linear-gradient(120deg, #08111f 0%, #111111 52%, #09233c 100%);
+  box-shadow: 0 24px 60px rgba(7, 17, 31, 0.24);
+}
+
+.xontrix-hero-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 78%);
+}
+
+.xontrix-hero-surface > * {
+  position: relative;
+  z-index: 1;
+}
+
+.tech-card {
+  background:
+    linear-gradient(145deg, rgba(29, 125, 255, 0.08), transparent 42%),
+    #ffffff;
+}
+
+.product-card-pro {
+  box-shadow: 0 1px 2px rgba(7, 17, 31, 0.04);
+}
+
+.product-image-well {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0)),
+    radial-gradient(circle at 70% 20%, rgba(29, 125, 255, 0.14), transparent 34%),
+    #eef3f7;
+}
+
+.deal-band {
+  background:
+    linear-gradient(90deg, rgba(219, 68, 68, 0.95), rgba(219, 68, 68, 0.28) 34%, transparent 66%),
+    #07111f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card-pro,
+  .product-card-pro *,
+  .xontrix-hero-surface *,
+  .back-to-top-enter,
+  .back-to-top-enter:hover {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

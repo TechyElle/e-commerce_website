@@ -1,13 +1,15 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { auth, db, isFirebaseConfigured } from '../lib/firebase';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+
+type Role = 'admin' | 'user';
+
+type AppUser = DemoUser & { role?: Role };
 
 interface AuthContextType {
-  user: User | DemoUser | null;
+  user: AppUser | null;
   isAdmin: boolean;
   loading: boolean;
-  signInDemo: (email: string, name?: string) => void;
+  signInDemo: (email: string, name?: string, role?: 'admin' | 'user') => void;
+
   signOutDemo: () => void;
 }
 
@@ -17,7 +19,7 @@ interface DemoUser {
   displayName: string | null;
 }
 
-const demoAdminEmail = 'admin@xontrix.local';
+
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -30,54 +32,36 @@ const AuthContext = createContext<AuthContextType>({
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | DemoUser | null>(null);
+  const [user, setUser] = useState<AppUser | null>(null);
+
+
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!isFirebaseConfigured) {
-      const saved = window.localStorage.getItem('xontrix-demo-user');
-      if (saved) {
-        const demoUser = JSON.parse(saved) as DemoUser;
-        setUser(demoUser);
-        setIsAdmin(demoUser.email === demoAdminEmail);
-      }
-      setLoading(false);
-      return;
+    const saved = window.localStorage.getItem('xontrix-user');
+    if (saved) {
+      const savedUser = JSON.parse(saved) as DemoUser & { role?: Role };
+      setUser(savedUser);
+      setIsAdmin(savedUser.role === 'admin');
     }
-
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setUser(user);
-      if (user) {
-        // Check if user is admin in Firestore
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        if (userDoc.exists()) {
-          setIsAdmin(userDoc.data().role === 'admin');
-        } else {
-          setIsAdmin(false);
-        }
-      } else {
-        setIsAdmin(false);
-      }
-      setLoading(false);
-    });
-
-    return unsubscribe;
+    setLoading(false);
   }, []);
 
-  const signInDemo = (email: string, name = 'Xontrix User') => {
+  const signInDemo = (email: string, name = 'Xontrix User', role: 'admin' | 'user' = 'user') => {
     const demoUser = {
-      uid: email === demoAdminEmail ? 'admin-demo' : `demo-${Date.now()}`,
+      uid: `user-${Date.now()}`,
       email,
-      displayName: email === demoAdminEmail ? 'Xontrix Admin' : name,
+      displayName: role === 'admin' ? 'Xontrix Admin' : name,
+      role,
     };
-    window.localStorage.setItem('xontrix-demo-user', JSON.stringify(demoUser));
+    window.localStorage.setItem('xontrix-user', JSON.stringify(demoUser));
     setUser(demoUser);
-    setIsAdmin(email === demoAdminEmail);
+    setIsAdmin(role === 'admin');
   };
 
   const signOutDemo = () => {
-    window.localStorage.removeItem('xontrix-demo-user');
+    window.localStorage.removeItem('xontrix-user');
     setUser(null);
     setIsAdmin(false);
   };

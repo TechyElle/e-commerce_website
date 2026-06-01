@@ -2,15 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 import logoImg from '../../imports/Logo & QR/LOGO.png';
-import { auth, db } from '../lib/firebase';
-import { isFirebaseConfigured } from '../lib/firebase';
 import { useAuth } from '../context/AuthContext';
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword,
-  updateProfile
-} from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { usersApi } from '../lib/api';
 import { toast } from 'sonner';
 
 export function Login() {
@@ -55,39 +48,23 @@ export function Login() {
     setLoading(true);
 
     try {
-      if (!isFirebaseConfigured) {
-        signInDemo(formData.email.trim().toLowerCase(), formData.name || 'Xontrix User');
-        toast.success(
-          formData.email.trim().toLowerCase() === 'admin@xontrix.local'
-            ? 'Admin demo access granted.'
-            : isLogin
-            ? 'Demo login successful.'
-            : 'Demo account created.'
-        );
-        navigate(formData.email.trim().toLowerCase() === 'admin@xontrix.local' ? '/admin' : '/');
-        return;
-      }
-
       if (isLogin) {
-        // Login
-        await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        // Login (MySQL)
+        const res = await usersApi.login({
+          email: formData.email.trim().toLowerCase(),
+          password: formData.password,
+        });
+
+        // backend returns: { id, name, email, role, created_at }
+        signInDemo(res.email, res.name ?? 'Xontrix User', res.role);
         toast.success('Maligayang pagbabalik!');
-        navigate('/');
+        navigate(res.role === 'admin' ? '/admin' : '/');
       } else {
-        // Register
-        const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-        const user = userCredential.user;
-
-        // Update profile with name
-        await updateProfile(user, { displayName: formData.name });
-
-        // Save user to Firestore
-        await setDoc(doc(db, 'users', user.uid), {
-          uid: user.uid,
-          name: formData.name,
-          email: formData.email,
-          role: 'user', // default role
-          createdAt: new Date().toISOString()
+        // Register (MySQL)
+        await usersApi.register({
+          name: formData.name.trim(),
+          email: formData.email.trim().toLowerCase(),
+          password: formData.password,
         });
 
         toast.success('Account created successfully!');
@@ -95,14 +72,10 @@ export function Login() {
       }
     } catch (error: any) {
       console.error(error);
-      let message = 'May mali sa pag-login. Pakisubukang muli.';
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        message = 'Maling email o password.';
-      } else if (error.code === 'auth/email-already-in-use') {
-        message = 'Ang email na ito ay gamit na.';
-      } else if (error.code === 'auth/invalid-credential') {
-        message = 'Maling email o password.';
-      }
+      // normalize backend error
+      const messageFromBackend = error?.message || error?.error;
+      let message = messageFromBackend || 'May mali sa pag-login. Pakisubukang muli.';
+
       toast.error(message);
     } finally {
       setLoading(false);
@@ -349,9 +322,9 @@ export function Login() {
           className="text-center text-[#aaaaaa] text-sm mt-6"
           style={{ fontFamily: 'Rajdhani, sans-serif' }}
         >
-          {!isFirebaseConfigured && isLogin && (
+          {isLogin && (
             <span className="block mb-3 text-[#00BFDF]">
-              Demo admin: admin@xontrix.local / any 6+ character password
+              Demo instructions removed. Use your MySQL account credentials.
             </span>
           )}
           {isLogin ? "Wala pang account? " : "May account na? "}

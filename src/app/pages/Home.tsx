@@ -4,11 +4,16 @@ import {
   ArrowRight,
   BadgeCheck,
   ChevronRight,
+  Cpu,
   Clock,
   Flame,
+  Gauge,
+  Layers3,
+  MonitorSmartphone,
   PackageCheck,
   Search,
   ShieldCheck,
+  SlidersHorizontal,
   Sparkles,
   Truck,
   Zap,
@@ -36,12 +41,12 @@ const featureTiles = [
 ];
 
 const categories = [
-  'Microcontrollers',
-  'Sensors',
-  'Displays',
-  'Power',
-  'Connectors',
-  'Tools',
+  { name: 'Microcontrollers', icon: Cpu, detail: 'Arduino, ESP32, Raspberry Pi, STM32' },
+  { name: 'Sensors', icon: Gauge, detail: 'Temperature, distance, motion, pressure' },
+  { name: 'Displays', icon: MonitorSmartphone, detail: 'OLED, LCD, character displays' },
+  { name: 'Motor Control', icon: Zap, detail: 'Motor drivers, relay modules, servos' },
+  { name: 'Connectors', icon: Layers3, detail: 'Jumper wires, USB breakouts, headers' },
+  { name: 'Tools', icon: SlidersHorizontal, detail: 'Breadboards, shields, prototyping kits' },
 ];
 
 function Countdown() {
@@ -64,7 +69,7 @@ function Countdown() {
     <div className="flex items-center gap-2">
       {[timeLeft.hours, timeLeft.minutes, timeLeft.seconds].map((value, index) => (
         <span key={index} className="flex items-center gap-2">
-          <span className="min-w-[42px] rounded-sm bg-white px-2 py-1 text-center text-lg font-extrabold text-[#db4444]">
+          <span className="min-w-[42px] rounded-md bg-white px-2 py-1 text-center text-lg font-extrabold text-[#db4444] shadow-sm">
             {String(value).padStart(2, '0')}
           </span>
           {index < 2 && <span className="font-bold text-white/50">:</span>}
@@ -82,30 +87,32 @@ export function Home() {
 
   const categoryCounts = useMemo(
     () =>
-      categories.map((category) => ({
-        category,
-        count: products.filter((product) => product.category === category).length,
+      categories.map(({ name, icon, detail }) => ({
+        category: name,
+        icon,
+        detail,
+        count: products.filter((product) => product.category === name).length,
       })),
     []
   );
 
   return (
-    <div className="bg-white">
-      <section className="border-b border-black/10 bg-[#f6f7f8]">
+    <div className="bg-white text-[#111111]">
+      <section className="border-b border-black/10 bg-[#eef3f7]">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-12">
-          <div className="flex min-h-[520px] flex-col justify-between overflow-hidden rounded-sm bg-[#111111] p-6 text-white sm:p-8 lg:p-10">
+          <div className="xontrix-hero-surface flex min-h-[520px] flex-col justify-between overflow-hidden rounded-lg p-6 text-white sm:p-8 lg:p-10">
             <div>
               <div className="mb-8 flex flex-wrap items-center gap-3">
-                <Badge className="rounded-sm border border-white/20 bg-white/10 text-white hover:bg-white/10">
+                <Badge className="rounded-md border border-white/20 bg-white/10 text-white hover:bg-white/10">
                   XONTRIX ELECTRONICS
                 </Badge>
-                <span className="text-sm text-white/60">Reliable components for real builds</span>
+                <span className="text-sm text-white/70">Reliable components for real builds</span>
               </div>
 
-              <h1 className="max-w-2xl text-4xl font-black leading-[0.98] tracking-normal text-white sm:text-5xl lg:text-6xl">
+              <h1 className="max-w-2xl text-4xl font-black leading-[1.02] tracking-normal text-white sm:text-5xl lg:text-6xl">
                 Build faster with electronics that are ready to ship.
               </h1>
-              <p className="mt-5 max-w-xl text-base leading-7 text-white/70 sm:text-lg">
+              <p className="mt-5 max-w-xl text-base leading-7 text-white/75 sm:text-lg">
                 Shop microcontrollers, sensors, displays, power modules, and kits curated for students,
                 makers, repair work, and rapid prototyping.
               </p>
@@ -113,14 +120,14 @@ export function Home() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                   to="/products"
-                  className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm bg-[#db4444] px-6 text-sm font-bold text-white transition hover:bg-[#c73939]"
+                  className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-md bg-[#db4444] px-6 text-sm font-bold text-white shadow-lg shadow-[#db4444]/20 transition hover:bg-[#c73939] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
                   Shop products
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   to="/products?category=Microcontrollers"
-                  className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm border border-white/20 px-6 text-sm font-bold text-white transition hover:border-white/50 hover:bg-white/10"
+                  className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-md border border-white/20 px-6 text-sm font-bold text-white transition hover:border-white/50 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
                   Browse boards
                   <ChevronRight className="h-4 w-4" />
@@ -134,19 +141,19 @@ export function Home() {
                 ['4.8', 'Avg rating'],
                 ['PHP 999', 'Free ship'],
               ].map(([value, label]) => (
-                <div key={label}>
+                <div key={label} className="rounded-md bg-white/[0.06] p-3 ring-1 ring-white/10">
                   <p className="text-2xl font-black text-white">{value}</p>
-                  <p className="text-xs uppercase text-white/50">{label}</p>
+                  <p className="text-xs uppercase text-white/55">{label}</p>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="grid gap-4">
-            <div className="relative min-h-[320px] overflow-hidden rounded-sm border border-black/10 bg-white p-6 shadow-sm">
-              <div className="absolute inset-x-0 top-0 h-1 bg-[#db4444]" />
+            <div className="tech-card relative min-h-[320px] overflow-hidden rounded-lg border border-black/10 bg-white p-6 shadow-sm">
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#db4444] via-[#1d7dff] to-[#00a76f]" />
               <div className="relative z-10 max-w-[14rem] sm:max-w-[15rem]">
-                <Badge className="mb-3 rounded-sm bg-[#fff1f1] text-[#db4444] hover:bg-[#fff1f1]">
+                <Badge className="mb-3 rounded-md bg-[#fff1f1] text-[#db4444] hover:bg-[#fff1f1]">
                   Best seller
                 </Badge>
                 <h2 className="text-3xl font-black leading-tight text-[#111111]">
@@ -172,9 +179,9 @@ export function Home() {
                 <Link
                   key={item.label}
                   to="/products"
-                  className="group flex min-h-[142px] items-center justify-between overflow-hidden rounded-sm border border-black/10 bg-white p-4 transition hover:border-[#db4444] hover:shadow-lg hover:shadow-black/5"
+                  className="group flex min-h-[142px] items-center justify-between overflow-hidden rounded-lg border border-black/10 bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#1d7dff] hover:shadow-lg hover:shadow-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1d7dff]"
                 >
-                  <span className="text-sm font-bold text-[#111111] group-hover:text-[#db4444]">
+                  <span className="text-sm font-bold text-[#111111] group-hover:text-[#1d7dff]">
                     {item.label}
                   </span>
                   <img src={item.image} alt="" className="h-20 w-20 object-contain transition group-hover:scale-105" />
@@ -189,7 +196,9 @@ export function Home() {
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-px bg-black/10 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
           {featureTiles.map(({ icon: Icon, label, detail }) => (
             <div key={label} className="bg-white py-6 sm:px-6">
-              <Icon className="mb-4 h-6 w-6 text-[#db4444]" />
+              <span className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff1f1]">
+                <Icon className="h-5 w-5 text-[#db4444]" />
+              </span>
               <h3 className="text-base font-bold text-[#111111]">{label}</h3>
               <p className="mt-1 text-sm leading-6 text-[#666666]">{detail}</p>
             </div>
@@ -208,23 +217,27 @@ export function Home() {
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
-          {categoryCounts.map(({ category, count }) => (
+          {categoryCounts.map(({ category, icon: Icon, detail, count }) => (
             <Link
               key={category}
               to={`/products?category=${category}`}
-              className="rounded-sm border border-black/10 bg-[#f6f7f8] p-4 transition hover:border-[#db4444] hover:bg-white"
+              className="group rounded-lg border border-black/10 bg-[#f6f7f8] p-4 transition hover:-translate-y-0.5 hover:border-[#1d7dff] hover:bg-white hover:shadow-lg hover:shadow-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1d7dff]"
             >
+              <span className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-white text-[#1d7dff] ring-1 ring-black/10 transition group-hover:bg-[#1d7dff] group-hover:text-white">
+                <Icon className="h-5 w-5" />
+              </span>
               <p className="text-sm font-extrabold text-[#111111]">{category}</p>
-              <p className="mt-2 text-xs uppercase text-[#777777]">{count} items</p>
+              <p className="mt-1 text-xs text-[#666666]">{detail}</p>
+              <p className="mt-3 text-xs uppercase text-[#777777]">{count} items</p>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="bg-[#111111] py-10 text-white">
+      <section className="deal-band py-10 text-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div className="flex items-start gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-sm bg-[#db4444]">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-[#db4444]">
               <Flame className="h-6 w-6" />
             </span>
             <div>
@@ -239,7 +252,7 @@ export function Home() {
             <Countdown />
             <Link
               to="/products"
-              className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-sm bg-white px-5 text-sm font-bold text-[#111111] transition hover:bg-[#f1f1f1]"
+              className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-md bg-white px-5 text-sm font-bold text-[#111111] transition hover:bg-[#f1f1f1]"
             >
               Grab deals
               <Zap className="h-4 w-4 text-[#db4444]" />
