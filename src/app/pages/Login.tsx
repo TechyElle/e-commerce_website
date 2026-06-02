@@ -66,7 +66,7 @@ export function Login() {
           password: formData.password,
         });
 
-        signIn({ email: res.email, name: res.name ?? 'Xontrix User', role: res.role });
+        signIn({ id: res.id, email: res.email, name: res.name ?? 'Xontrix User', role: res.role });
         toast.success('Maligayang pagbabalik!');
         navigate(res.role === 'admin' ? '/admin' : '/');
       } else {

@@ -132,6 +132,7 @@ interface StoreContextType {
   // Refresh helpers
   refreshProducts: () => Promise<void>;
   refreshOrders: () => Promise<void>;
+  refreshUsers: () => Promise<void>;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -269,11 +270,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     updateOrderStatus,
     refreshProducts,
     refreshOrders,
+    refreshUsers,
   }), [
     products, orders, users, loading, error,
     addProduct, updateProduct, deleteProduct,
     createOrder, updateOrderStatus,
-    refreshProducts, refreshOrders,
+    refreshProducts, refreshOrders, refreshUsers,
   ]);
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

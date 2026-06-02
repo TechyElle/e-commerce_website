@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router';
 import {
   BarChart3,
@@ -39,8 +39,10 @@ export function Admin() {
     updateProduct,
     deleteProduct,
     updateOrderStatus,
+    refreshOrders,
+    refreshUsers,
   } = useStore();
-  const { user, signOutDemo } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
   const [draft, setDraft] = useState(emptyProduct);
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -49,6 +51,12 @@ export function Admin() {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    refreshOrders().catch(() => undefined);
+    refreshUsers().catch(() => undefined);
+  }, [isAdmin, refreshOrders, refreshUsers]);
 
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -65,6 +73,7 @@ export function Admin() {
 
       const res = await fetch(`${BASE_URL}/upload.php`, {
         method: 'POST',
+        credentials: 'include',
         body: formData,
       });
 
@@ -161,7 +170,7 @@ export function Admin() {
               View Store
             </Link>
             <button
-              onClick={signOutDemo}
+              onClick={signOut}
               className="px-4 py-2 border border-[#dc2626] text-[#dc2626] hover:bg-[#dc2626] hover:text-white transition-all text-sm"
             >
               Sign Out
