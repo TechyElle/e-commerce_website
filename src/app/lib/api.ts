@@ -122,6 +122,9 @@ export const ordersApi = {
 // ── Users ────────────────────────────────────────────────────────────────────
 
 export const usersApi = {
+  me: () =>
+    request<{ user: ApiUser | null }>('/users.php?action=me'),
+
   list: () =>
     request<ApiUser[]>('/users.php'),
 
@@ -133,6 +136,9 @@ export const usersApi = {
 
   login: (data: { email: string; password: string }) =>
     request<ApiUser>('/users.php?action=login', { method: 'POST', body: JSON.stringify(data) }),
+
+  logout: () =>
+    request<{ ok: boolean }>('/users.php?action=logout', { method: 'POST', body: JSON.stringify({}) }),
 
   updateRole: (id: string, role: 'admin' | 'user') =>
     request<ApiUser>(`/users.php?id=${id}`, { method: 'PUT', body: JSON.stringify({ role }) }),

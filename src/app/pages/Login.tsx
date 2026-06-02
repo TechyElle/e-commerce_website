@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 
 export function Login() {
   const navigate = useNavigate();
-  const { signInDemo } = useAuth();
+  const { signIn } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,8 +55,7 @@ export function Login() {
           password: formData.password,
         });
 
-        // backend returns: { id, name, email, role, created_at }
-        signInDemo(res.email, res.name ?? 'Xontrix User', res.role);
+        signIn({ id: res.id, email: res.email, name: res.name ?? 'Xontrix User', role: res.role });
         toast.success('Maligayang pagbabalik!');
         navigate(res.role === 'admin' ? '/admin' : '/');
       } else {
