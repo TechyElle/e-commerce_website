@@ -13,3 +13,5 @@ const ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',
 ];
 
+// Set this to false after local setup so install.php cannot be re-run.
+const ENABLE_INSTALLER = true;

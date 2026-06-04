@@ -16,7 +16,7 @@ Use this file for update tracking and QA before demo/deployment.
 - [x] GCash checkout option
 - [x] Maya checkout option
 - [x] Cash on Delivery checkout option
-- [ ] Optional card payments
+- [x] Optional card payments
 - [ ] Real payment gateway/API processing
 
 ## Database: PHP and MySQL with XAMPP
@@ -59,8 +59,9 @@ Use this file for update tracking and QA before demo/deployment.
 - [x] Session-based login system
 - [x] Protected admin routes in frontend
 - [x] Role-based backend access control
-- [ ] Google authentication
-- [ ] Production hardening: protect/delete `install.php`
+- [x] Google authentication code path
+- [ ] Add real Firebase Google auth environment values
+- [x] Production hardening: protect/delete `install.php`
 - [ ] Production hardening: HTTPS, secure environment credentials, CSRF strategy
 
 ## APK / Device Install

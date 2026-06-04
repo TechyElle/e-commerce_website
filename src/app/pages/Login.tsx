@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import {
   ArrowRight,
   CheckCircle2,
@@ -14,6 +15,7 @@ import {
 import logoImg from '../../imports/Logo & QR/LOGO.png';
 import { useAuth } from '../context/AuthContext';
 import { usersApi } from '../lib/api';
+import { auth, isFirebaseConfigured } from '../lib/firebase';
 import { toast } from 'sonner';
 
 export function Login() {
@@ -23,6 +25,7 @@ export function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -86,6 +89,37 @@ export function Login() {
       toast.error(message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    if (!auth || !isFirebaseConfigured) {
+      toast.error('Google sign-in is not configured yet.');
+      return;
+    }
+
+    setGoogleLoading(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const email = result.user.email;
+
+      if (!email) {
+        throw new Error('Google account has no email address.');
+      }
+
+      signIn({
+        id: result.user.uid,
+        email,
+        name: result.user.displayName ?? 'Xontrix User',
+        role: 'user',
+      });
+      toast.success('Signed in with Google.');
+      navigate('/');
+    } catch (error: any) {
+      toast.error(error?.message || 'Google sign-in failed.');
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -349,7 +383,7 @@ export function Login() {
 
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || googleLoading}
                     className="min-h-[52px] w-full rounded-lg bg-[#ff6b5b] py-3 font-bold text-white hover:bg-[#ff5347] transition-colors disabled:cursor-not-allowed disabled:opacity-60 flex items-center justify-center"
                   >
                     {loading ? (
@@ -364,6 +398,25 @@ export function Login() {
                       </>
                     )}
                   </button>
+
+                  {isLogin && (
+                    <button
+                      type="button"
+                      onClick={handleGoogleSignIn}
+                      disabled={loading || googleLoading || !isFirebaseConfigured}
+                      title={!isFirebaseConfigured ? 'Firebase Google sign-in is not configured.' : undefined}
+                      className="min-h-[52px] w-full rounded-lg border border-white/20 bg-white py-3 font-bold text-[#111111] transition-colors hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60 flex items-center justify-center gap-3"
+                    >
+                      {googleLoading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-black/10 text-sm font-black text-[#db4444]">
+                          G
+                        </span>
+                      )}
+                      CONTINUE WITH GOOGLE
+                    </button>
+                  )}
 
                   {/* Register link below the primary login button */}
                   <div className="pt-1 text-center">

@@ -5,6 +5,15 @@ require_once __DIR__ . '/config.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
+if (!ENABLE_INSTALLER) {
+    http_response_code(403);
+    echo json_encode([
+        'ok' => false,
+        'error' => 'Installer is disabled.',
+    ], JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
 try {
     $pdo = new PDO(sprintf('mysql:host=%s;charset=utf8mb4', DB_HOST), DB_USER, DB_PASS, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

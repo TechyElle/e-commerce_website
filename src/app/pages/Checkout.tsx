@@ -47,7 +47,13 @@ export function Checkout() {
 
   // UI state
   const [paymentTab, setPaymentTab] = useState<string>('payment_center');
-  const [paymentOption, setPaymentOption] = useState<'7eleven' | 'gcash' | 'maya' | 'cod'>('gcash');
+  const [paymentOption, setPaymentOption] = useState<'7eleven' | 'gcash' | 'maya' | 'cod' | 'card'>('gcash');
+  const [cardDetails, setCardDetails] = useState({
+    number: '',
+    name: '',
+    expiry: '',
+    cvc: '',
+  });
   const [recipientName] = useState(user?.displayName || 'Juan Dela Cruz');
   const [recipientPhone] = useState('09XXXXXXXXX');
   const [addressLine] = useState('Brgy. Example, City, Country');
@@ -70,8 +76,23 @@ export function Checkout() {
     if (paymentOption === '7eleven') return 'payment_center_7eleven';
     if (paymentOption === 'maya') return 'maya';
     if (paymentOption === 'cod') return 'cod';
+    if (paymentOption === 'card') return 'card';
     return 'gcash';
   }, [paymentOption]);
+
+  const cardReady = useMemo(() => {
+    if (paymentOption !== 'card') return true;
+    const digits = cardDetails.number.replace(/\D/g, '');
+    const cvcDigits = cardDetails.cvc.replace(/\D/g, '');
+    return (
+      digits.length >= 13 &&
+      digits.length <= 19 &&
+      cardDetails.name.trim().length >= 2 &&
+      /^(0[1-9]|1[0-2])\/\d{2}$/.test(cardDetails.expiry.trim()) &&
+      cvcDigits.length >= 3 &&
+      cvcDigits.length <= 4
+    );
+  }, [cardDetails, paymentOption]);
 
   const groupedItems = useMemo(() => {
     const map = new Map<string, typeof cart>();
@@ -92,7 +113,7 @@ export function Checkout() {
     });
   }, [effectiveCart, products]);
 
-  const canPlace = effectiveCart.length > 0 && stockIssues.length === 0 && !placing && !placedOrder;
+  const canPlace = effectiveCart.length > 0 && stockIssues.length === 0 && cardReady && !placing && !placedOrder;
 
   const onPlaceOrder = async () => {
     if (!canPlace) return;
@@ -315,6 +336,7 @@ export function Checkout() {
               <div className="mt-4 border-b border-black/10 flex flex-wrap gap-2">
                 {[
                   { id: 'payment_center', label: 'E-Wallet (GCash / Maya)' },
+                  { id: 'card', label: 'Card' },
                   { id: 'cod', label: 'Cash on Delivery' },
                 ].map((t) => {
                   const active = paymentTab === t.id;
@@ -324,6 +346,7 @@ export function Checkout() {
                       onClick={() => {
                         setPaymentTab(t.id);
                         if (t.id === 'cod') setPaymentOption('cod');
+                        else if (t.id === 'card') setPaymentOption('card');
                         else setPaymentOption('gcash');
                       }}
                       className="px-3 py-2 text-sm font-bold"
@@ -368,6 +391,65 @@ export function Checkout() {
                       </div>
                     </div>
                   </label>
+                </div>
+              )}
+
+              {paymentTab === 'card' && (
+                <div className="mt-4 rounded-md border border-black/10 bg-[#f5f5f5] p-4">
+                  <label className="block">
+                    <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Card Number</span>
+                    <input
+                      inputMode="numeric"
+                      autoComplete="cc-number"
+                      value={cardDetails.number}
+                      onChange={(event) => setCardDetails({ ...cardDetails, number: event.target.value })}
+                      placeholder="1234 5678 9012 3456"
+                      className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    />
+                  </label>
+                  <label className="mt-3 block">
+                    <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Name on Card</span>
+                    <input
+                      autoComplete="cc-name"
+                      value={cardDetails.name}
+                      onChange={(event) => setCardDetails({ ...cardDetails, name: event.target.value })}
+                      placeholder="Juan Dela Cruz"
+                      className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    />
+                  </label>
+                  <div className="mt-3 grid grid-cols-2 gap-3">
+                    <label className="block">
+                      <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Expiry</span>
+                      <input
+                        inputMode="numeric"
+                        autoComplete="cc-exp"
+                        value={cardDetails.expiry}
+                        onChange={(event) => setCardDetails({ ...cardDetails, expiry: event.target.value })}
+                        placeholder="MM/YY"
+                        className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>CVC</span>
+                      <input
+                        inputMode="numeric"
+                        autoComplete="cc-csc"
+                        value={cardDetails.cvc}
+                        onChange={(event) => setCardDetails({ ...cardDetails, cvc: event.target.value })}
+                        placeholder="123"
+                        className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                      />
+                    </label>
+                  </div>
+                  {!cardReady && (
+                    <p className="mt-3 text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                      Complete the card details before placing the order.
+                    </p>
+                  )}
                 </div>
               )}
 
