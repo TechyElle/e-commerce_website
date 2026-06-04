@@ -23,6 +23,7 @@ export function Cart() {
   const shipping = cartTotal >= 999 ? 0 : 50;
 
   const getSellerKey = (item: CartItem) => item.category || 'Xontrix Shop';
+  const isAvailable = (item: CartItem) => item.inStock && (typeof item.stock !== 'number' || item.stock > 0);
 
   const shopGroups = useMemo(() => {
     const map = new Map<string, CartItem[]>();
@@ -45,7 +46,7 @@ export function Cart() {
     return preferred;
   }, [shopGroups]);
 
-  const selectedItems = useMemo(() => cart.filter((i) => selectedIds.has(i.id)), [cart, selectedIds]);
+  const selectedItems = useMemo(() => cart.filter((i) => selectedIds.has(i.id) && isAvailable(i)), [cart, selectedIds]);
 
   const selectedCount = useMemo(() => selectedItems.reduce((acc, i) => acc + i.quantity, 0), [selectedItems]);
 
@@ -98,7 +99,7 @@ export function Cart() {
       const next = new Set(prev);
       const allSelected = itemsInShop.every((i) => next.has(i.id));
       if (allSelected) itemsInShop.forEach((i) => next.delete(i.id));
-      else itemsInShop.forEach((i) => next.add(i.id));
+      else itemsInShop.filter(isAvailable).forEach((i) => next.add(i.id));
       return next;
     });
   };
@@ -247,6 +248,7 @@ export function Cart() {
 
                 <div className="divide-y divide-black/5">
                   {items.map((item) => {
+                    const unavailable = !isAvailable(item);
                     const onSale = Boolean(item.isSale && item.originalPrice && item.originalPrice > item.price);
                     const variation =
                       Object.keys(item.specs ?? {})
@@ -260,6 +262,7 @@ export function Cart() {
                         <input
                           type="checkbox"
                           checked={selectedIds.has(item.id)}
+                          disabled={unavailable}
                           onChange={() => toggleItem(item.id)}
                           className="mt-2 w-5 h-5"
                           style={{ accentColor: ACCENT_COLOR }}
@@ -279,7 +282,7 @@ export function Cart() {
                           </Link>
 
                           <div className="text-sm text-[#7d8184] mt-1" style={{ fontFamily: 'Inter, sans-serif' }}>
-                            {variation}
+                            {unavailable ? 'Out of Stock' : variation}
                           </div>
 
                           <div className="mt-2 flex items-baseline gap-2">
@@ -314,6 +317,7 @@ export function Cart() {
                               type="number"
                               value={item.quantity}
                               min={1}
+                              max={item.stock}
                               onChange={(e) => updateQuantity(item.id, Math.max(1, Number(e.target.value) || 1))}
                               className="w-14 h-9 text-center border border-black/10 rounded-sm bg-white"
                               style={{ fontFamily: 'Inter, sans-serif' }}
@@ -362,7 +366,7 @@ export function Cart() {
                 }}
                 onChange={() => {
                   if (selectedIds.size === cart.length) setSelectedIds(new Set());
-                  else setSelectedIds(new Set(cart.map((c) => c.id)));
+                  else setSelectedIds(new Set(cart.filter(isAvailable).map((c) => c.id)));
                 }}
                 className="w-5 h-5"
                 style={{ accentColor: ACCENT_COLOR }}

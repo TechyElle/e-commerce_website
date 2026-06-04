@@ -22,11 +22,12 @@ function formatPhp0(n: number) {
 
 export function Checkout() {
   const { cart, clearCart } = useCart();
-  const { createOrder } = useStore();
+  const { createOrder, products } = useStore();
   const { user } = useAuth();
 
   const [placing, setPlacing] = useState(false);
   const [placedOrder, setPlacedOrder] = useState<StoreOrder | null>(null);
+  const [placeError, setPlaceError] = useState<string | null>(null);
 
   // Restore selected items from Cart selection
   const [checkoutCart, setCheckoutCart] = useState<typeof cart>([]);
@@ -82,10 +83,20 @@ export function Checkout() {
     return Array.from(map.entries()).map(([seller, items]) => ({ seller, items }));
   }, [effectiveCart]);
 
-  const canPlace = effectiveCart.length > 0 && !placing && !placedOrder;
+  const stockIssues = useMemo(() => {
+    return effectiveCart.filter((item) => {
+      const liveProduct = products.find((product) => product.id === item.id);
+      const stock = liveProduct?.stock ?? item.stock;
+      const inStock = liveProduct?.inStock ?? item.inStock;
+      return !inStock || (typeof stock === 'number' && stock < item.quantity);
+    });
+  }, [effectiveCart, products]);
+
+  const canPlace = effectiveCart.length > 0 && stockIssues.length === 0 && !placing && !placedOrder;
 
   const onPlaceOrder = async () => {
     if (!canPlace) return;
+    setPlaceError(null);
     setPlacing(true);
     try {
       const placed = await createOrder({
@@ -97,6 +108,8 @@ export function Checkout() {
       setPlacedOrder(placed);
       clearCart();
       window.localStorage.removeItem('xontrix-checkout-items');
+    } catch (error) {
+      setPlaceError(error instanceof Error ? error.message : 'Unable to place order. Please try again.');
     } finally {
       setPlacing(false);
     }
@@ -403,6 +416,18 @@ export function Checkout() {
               >
                 {placing ? 'Placing Order...' : 'Place Order'}
               </button>
+
+              {stockIssues.length > 0 && (
+                <div className="mt-3 text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  Some selected items are out of stock or exceed available inventory. Please update your cart.
+                </div>
+              )}
+
+              {placeError && (
+                <div className="mt-3 text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  {placeError}
+                </div>
+              )}
 
               <div className="mt-3 text-xs text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
                 By placing your order, you agree to the checkout terms.

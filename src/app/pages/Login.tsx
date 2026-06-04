@@ -11,7 +11,7 @@ import {
   ShieldCheck,
   User,
 } from 'lucide-react';
-import logoImg from '../../imports/Logo & QR/Screenshot_2026-05-31_124307-removebg-preview.png';
+import logoImg from '../../imports/Logo & QR/LOGO.png';
 import { useAuth } from '../context/AuthContext';
 import { usersApi } from '../lib/api';
 import { toast } from 'sonner';
