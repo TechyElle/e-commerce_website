@@ -11,6 +11,7 @@ import {
 import { useCart } from '../context/CartContext';
 import { useStore, type StoreOrder } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
+import { resolveProductImage } from '../lib/productImages';
 
 function formatPhp(n: number) {
   return `₱${n.toFixed(2)}`;
@@ -291,7 +292,7 @@ export function Checkout() {
                       <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
                         <div className="md:col-span-6 flex items-start gap-3">
                           <div className="w-14 h-14 border border-black/10 rounded-sm overflow-hidden bg-white shrink-0">
-                            <img src={item.image} alt={item.name} className="w-full h-full object-contain p-1" />
+                            <img src={resolveProductImage(item)} alt={item.name} className="w-full h-full object-contain p-1" />
                           </div>
                           <div className="min-w-0">
                             <div className="font-semibold" style={{ fontFamily: 'Inter, sans-serif' }}>{item.name}</div>

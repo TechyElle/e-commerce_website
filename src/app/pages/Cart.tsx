@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
+import { resolveProductImage } from '../lib/productImages';
 
 type CartItem = ReturnType<typeof useCart>['cart'][number];
 
@@ -270,7 +271,7 @@ export function Cart() {
 
                         <Link to={`/products/${item.id}`} className="flex-shrink-0">
                           <div className="w-16 h-16 bg-white border border-black/10 rounded-sm overflow-hidden">
-                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                            <img src={resolveProductImage(item)} alt={item.name} className="w-full h-full object-contain p-1" />
                           </div>
                         </Link>
 
