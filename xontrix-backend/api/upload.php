@@ -51,9 +51,11 @@ try {
         respond_error('Could not save uploaded image', 500);
     }
 
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     $basePath = rtrim(dirname(dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/\\');
     respond_json([
-        'url' => $basePath . '/uploads/' . $filename,
+        'url' => $scheme . '://' . $host . $basePath . '/uploads/' . $filename,
     ], 201);
 } catch (Throwable $error) {
     respond_error($error->getMessage(), 500);

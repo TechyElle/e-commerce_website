@@ -64,12 +64,11 @@ export function Checkout() {
     [effectiveCart]
   );
   const shippingSubtotal = useMemo(
-    () => (merchandiseSubtotal >= 999 || merchandiseSubtotal === 0 ? 0 : 50),
+    () => (merchandiseSubtotal >= 1000 || merchandiseSubtotal === 0 ? 0 : 80),
     [merchandiseSubtotal]
   );
-  const adminFee = 10;
   const totalPayment = useMemo(
-    () => merchandiseSubtotal + shippingSubtotal + adminFee,
+    () => merchandiseSubtotal + shippingSubtotal,
     [merchandiseSubtotal, shippingSubtotal]
   );
 
@@ -480,10 +479,6 @@ export function Checkout() {
                 <div className="flex justify-between">
                   <span className="text-[#7d8184]">Shipping</span>
                   <span className="font-bold">{shippingSubtotal === 0 ? <span className="text-[#10b981]">FREE</span> : formatPhp(shippingSubtotal)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[#7d8184]">Admin fee</span>
-                  <span className="font-bold">{formatPhp0(adminFee)}</span>
                 </div>
                 <div className="border-t border-black/10 pt-3 flex justify-between">
                   <span className="text-[#7d8184]">Total Payment</span>

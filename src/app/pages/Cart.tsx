@@ -98,9 +98,10 @@ export function Cart() {
   const toggleShop = (shopId: string, itemsInShop: CartItem[]) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      const allSelected = itemsInShop.every((i) => next.has(i.id));
-      if (allSelected) itemsInShop.forEach((i) => next.delete(i.id));
-      else itemsInShop.filter(isAvailable).forEach((i) => next.add(i.id));
+      const availableItems = itemsInShop.filter(isAvailable);
+      const allSelected = availableItems.length > 0 && availableItems.every((i) => next.has(i.id));
+      if (allSelected) availableItems.forEach((i) => next.delete(i.id));
+      else availableItems.forEach((i) => next.add(i.id));
       return next;
     });
   };
@@ -173,6 +174,9 @@ export function Cart() {
   }
 
   const totalItemCount = cart.reduce((acc, i) => acc + i.quantity, 0);
+  const availableIds = cart.filter(isAvailable).map((c) => c.id);
+  const selectedAvailableIds = availableIds.filter((id) => selectedIds.has(id));
+  const allAvailableSelected = availableIds.length > 0 && selectedAvailableIds.length === availableIds.length;
 
   return (
     <div className="min-h-screen" style={{ background: BG_COLOR }}>
@@ -193,7 +197,8 @@ export function Cart() {
         <div className="space-y-4">
           {shopGroups.map(({ shopId, items }) => {
             const preferred = preferredShops.has(shopId);
-            const shopAllSelected = items.every((i) => selectedIds.has(i.id));
+            const availableItems = items.filter(isAvailable);
+            const shopAllSelected = availableItems.length > 0 && availableItems.every((i) => selectedIds.has(i.id));
             const shopSelectedCount = items
               .filter((i) => selectedIds.has(i.id))
               .reduce((acc, i) => acc + i.quantity, 0);
@@ -360,14 +365,14 @@ export function Cart() {
             <label className="flex items-center gap-3">
               <input
                 type="checkbox"
-                checked={selectedCount > 0 && selectedIds.size === cart.length}
+                checked={allAvailableSelected}
                 ref={(el) => {
                   if (!el) return;
-                  el.indeterminate = selectedCount > 0 && selectedCount < totalItemCount;
+                  el.indeterminate = selectedAvailableIds.length > 0 && !allAvailableSelected;
                 }}
                 onChange={() => {
-                  if (selectedIds.size === cart.length) setSelectedIds(new Set());
-                  else setSelectedIds(new Set(cart.filter(isAvailable).map((c) => c.id)));
+                  if (allAvailableSelected) setSelectedIds(new Set());
+                  else setSelectedIds(new Set(availableIds));
                 }}
                 className="w-5 h-5"
                 style={{ accentColor: ACCENT_COLOR }}

@@ -15,7 +15,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { useStore, type OrderStatus, type StoreProduct } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
-import { BASE_URL } from '../lib/api';
+import { BASE_URL, salesApi, type SalesSummary } from '../lib/api';
 
 const money = (value: number) => `PHP ${value.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
 
@@ -45,6 +45,9 @@ export function Admin() {
   const { user, isAdmin, signOut } = useAuth();
   const [draft, setDraft] = useState(emptyProduct);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [salesSummary, setSalesSummary] = useState<SalesSummary | null>(null);
+  const [productError, setProductError] = useState<string | null>(null);
+  const [savingProduct, setSavingProduct] = useState(false);
 
   // ── Image upload state ───────────────────────────────────────
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -56,6 +59,7 @@ export function Admin() {
     if (!isAdmin) return;
     refreshOrders().catch(() => undefined);
     refreshUsers().catch(() => undefined);
+    salesApi.summary().then(setSalesSummary).catch(() => undefined);
   }, [isAdmin, refreshOrders, refreshUsers]);
 
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,8 +111,13 @@ export function Admin() {
       .filter((order) => order.createdAt.slice(0, 7) === month)
       .reduce((sum, order) => sum + order.total, 0);
     const lowStock = products.filter((product) => product.stock <= 5).length;
-    return { totalRevenue, dailyRevenue, monthlyRevenue, lowStock };
-  }, [orders, products]);
+    return {
+      totalRevenue: salesSummary?.total_revenue ?? totalRevenue,
+      dailyRevenue: salesSummary?.today_revenue ?? dailyRevenue,
+      monthlyRevenue: salesSummary?.month_revenue ?? monthlyRevenue,
+      lowStock: salesSummary?.low_stock.length ?? lowStock,
+    };
+  }, [orders, products, salesSummary]);
 
   const beginEdit = (product: StoreProduct) => {
     setEditingId(product.id);
@@ -130,17 +139,48 @@ export function Admin() {
     setDraft(emptyProduct);
     setPreviewUrl(null);
     setUploadError(null);
+    setProductError(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  const saveProduct = () => {
-    if (!draft.name.trim() || !draft.category.trim()) return;
-    if (editingId) {
-      updateProduct(editingId, draft);
-    } else {
-      addProduct(draft);
+  const saveProduct = async () => {
+    const name = draft.name.trim();
+    const category = draft.category.trim();
+    const description = draft.description.trim();
+    const image = draft.image.trim();
+
+    if (!name || !category || !description || !image) {
+      setProductError('Name, category, description, and image are required.');
+      return;
     }
-    resetDraft();
+
+    if (!Number.isFinite(draft.price) || draft.price <= 0) {
+      setProductError('Price must be greater than zero.');
+      return;
+    }
+
+    if (!Number.isInteger(draft.stock) || draft.stock < 0) {
+      setProductError('Stock must be a whole number of zero or higher.');
+      return;
+    }
+
+    setProductError(null);
+    setSavingProduct(true);
+
+    try {
+      const payload = { ...draft, name, category, description, image };
+      if (editingId) {
+        await updateProduct(editingId, payload);
+      } else {
+        await addProduct(payload);
+      }
+      await salesApi.summary().then(setSalesSummary).catch(() => undefined);
+      resetDraft();
+    } catch (error) {
+      setProductError(error instanceof Error ? error.message : 'Unable to save product.');
+    } finally {
+      setSavingProduct(false);
+    }
   };
 
   const statCards = [
@@ -292,9 +332,12 @@ export function Admin() {
                   <AdminNumber label="Price" value={draft.price} onChange={(value) => setDraft({ ...draft, price: value })} />
                   <AdminNumber label="Stock" value={draft.stock} onChange={(value) => setDraft({ ...draft, stock: value })} />
                 </div>
-                <button onClick={saveProduct} disabled={uploading} className="w-full cyber-button py-3 disabled:opacity-50">
+                {productError && (
+                  <p className="text-[#dc2626] text-sm">{productError}</p>
+                )}
+                <button onClick={saveProduct} disabled={uploading || savingProduct} className="w-full cyber-button py-3 disabled:opacity-50">
                   <Save className="w-4 h-4 mr-2 inline" />
-                  {editingId ? 'Save Product' : 'Add Product'}
+                  {savingProduct ? 'Saving...' : editingId ? 'Save Product' : 'Add Product'}
                 </button>
                 {editingId && (
                   <button onClick={resetDraft} className="w-full py-3 border border-[rgba(255,255,255,0.15)] text-[#aaaaaa]">

@@ -44,8 +44,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const saved = window.localStorage.getItem('xontrix-user');
     if (saved) {
       const savedUser = JSON.parse(saved) as DemoUser & { role?: Role };
-      setUser(savedUser);
-      setIsAdmin(savedUser.role === 'admin');
+      setUser({ ...savedUser, role: savedUser.role === 'admin' ? 'user' : savedUser.role });
+      setIsAdmin(false);
     }
 
     usersApi.me()
@@ -64,9 +64,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } else if (!saved) {
           setUser(null);
           setIsAdmin(false);
+        } else {
+          setIsAdmin(false);
         }
       })
-      .catch(() => undefined)
+      .catch(() => {
+        if (!cancelled) setIsAdmin(false);
+      })
       .finally(() => {
         if (!cancelled) setLoading(false);
       });

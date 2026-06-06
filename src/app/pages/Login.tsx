@@ -108,11 +108,17 @@ export function Login() {
         throw new Error('Google account has no email address.');
       }
 
-      signIn({
-        id: result.user.uid,
-        email,
+      const res = await usersApi.googleLogin({
+        email: email.trim().toLowerCase(),
         name: result.user.displayName ?? 'Xontrix User',
-        role: 'user',
+        providerUid: result.user.uid,
+      });
+
+      signIn({
+        id: res.id,
+        email: res.email,
+        name: res.name,
+        role: res.role,
       });
       toast.success('Signed in with Google.');
       navigate('/');

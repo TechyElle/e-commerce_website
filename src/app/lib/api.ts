@@ -137,6 +137,9 @@ export const usersApi = {
   login: (data: { email: string; password: string }) =>
     request<ApiUser>('/users.php?action=login', { method: 'POST', body: JSON.stringify(data) }),
 
+  googleLogin: (data: { name: string; email: string; providerUid: string }) =>
+    request<ApiUser>('/users.php?action=google', { method: 'POST', body: JSON.stringify(data) }),
+
   logout: () =>
     request<{ ok: boolean }>('/users.php?action=logout', { method: 'POST', body: JSON.stringify({}) }),
 

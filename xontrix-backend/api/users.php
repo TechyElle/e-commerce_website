@@ -100,6 +100,43 @@ try {
         respond_json(public_user($user));
     }
 
+    if ($method === 'POST' && $action === 'google') {
+        $data = input_json();
+        require_fields($data, ['name', 'email', 'providerUid']);
+
+        $email = strtolower(trim((string) $data['email']));
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            respond_error('Invalid email address', 422);
+        }
+
+        $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email');
+        $stmt->execute([':email' => $email]);
+        $user = $stmt->fetch();
+
+        if (!$user) {
+            $id = bin2hex(random_bytes(16));
+            $create = $pdo->prepare(
+                'INSERT INTO users (id, name, email, password_hash, role)
+                 VALUES (:id, :name, :email, :password_hash, :role)'
+            );
+            $create->execute([
+                ':id' => $id,
+                ':name' => trim((string) $data['name']) ?: 'Xontrix User',
+                ':email' => $email,
+                ':password_hash' => password_hash('google:' . (string) $data['providerUid'], PASSWORD_DEFAULT),
+                ':role' => 'user',
+            ]);
+
+            $stmt->execute([':email' => $email]);
+            $user = $stmt->fetch();
+        }
+
+        session_regenerate_id(true);
+        $_SESSION['user'] = public_user($user);
+
+        respond_json(public_user($user));
+    }
+
     if ($method === 'POST' && $action === 'logout') {
         $_SESSION = [];
         if (ini_get('session.use_cookies')) {
