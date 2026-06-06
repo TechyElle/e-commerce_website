@@ -17,6 +17,7 @@ import { useCart } from '../context/CartContext';
 import { toast } from 'sonner';
 import type { Product } from '../context/CartContext';
 import { useStore } from '../context/StoreContext';
+import { resolveProductImage } from '../lib/productImages';
 
 /* ──────────────────────────────────────────────
    Image Map — same as ProductCard.tsx
@@ -68,11 +69,7 @@ const productImageMap: Record<string, string> = {
  * Falls back to product.image if no match found.
  */
 function resolveImage(product: Product): string {
-  const key = product.name.toLowerCase().trim();
-  for (const [mapKey, path] of Object.entries(productImageMap)) {
-    if (key.includes(mapKey)) return path;
-  }
-  return product.image;
+  return resolveProductImage(product);
 }
 
 export function ProductDetail() {

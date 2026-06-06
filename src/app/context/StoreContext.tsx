@@ -5,6 +5,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { productsApi, ordersApi, usersApi, type ApiProduct, type ApiOrder, type ApiUser } from '../lib/api';
 import type { CartItem } from './CartContext';
+import { products as fallbackProducts } from '../data/products';
 
 // ── Re-export types so existing imports keep working ─────────────────────────
 
@@ -12,6 +13,9 @@ export type StoreProduct = ApiProduct & {
   // Keep frontend aliases for compatibility with existing components
   inStock: boolean;    // alias for in_stock
   isNew: boolean;      // alias for is_new
+  isSale?: boolean;
+  originalPrice?: number;
+  saleStock?: number;
 };
 
 export type OrderStatus = 'pending' | 'shipped' | 'delivered';
@@ -41,6 +45,37 @@ function normalizeProduct(p: ApiProduct): StoreProduct {
     inStock: p.in_stock,
     isNew: p.is_new,
   };
+}
+
+function normalizeFallbackProduct(p: (typeof fallbackProducts)[number]): StoreProduct {
+  const stock = p.stock ?? p.saleStock ?? 24;
+
+  return {
+    ...p,
+    stock,
+    in_stock: p.inStock,
+    is_new: p.isNew ?? false,
+    inStock: p.inStock,
+    isNew: p.isNew ?? false,
+    specs: p.specs ?? {},
+    created_at: '',
+    updated_at: '',
+  };
+}
+
+function withTimeout<T>(promise: Promise<T>, ms: number, message: string): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timeoutId = window.setTimeout(() => reject(new Error(message)), ms);
+    promise
+      .then((value) => {
+        window.clearTimeout(timeoutId);
+        resolve(value);
+      })
+      .catch((error) => {
+        window.clearTimeout(timeoutId);
+        reject(error);
+      });
+  });
 }
 
 function normalizeOrder(o: ApiOrder): StoreOrder {
@@ -114,26 +149,32 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   // ── Initial load ───────────────────────────────────────────
 
   const refreshProducts = useCallback(async () => {
-    const data = await productsApi.list();
-    setProducts(data.map(normalizeProduct));
+    try {
+      const data = await withTimeout(productsApi.list(), 1800, 'Product API timed out');
+      const normalized = data.map(normalizeProduct);
+      setProducts(normalized.length > 0 ? normalized : fallbackProducts.map(normalizeFallbackProduct));
+    } catch {
+      setProducts(fallbackProducts.map(normalizeFallbackProduct));
+      setError('Live store data is unavailable. Showing the built-in Xontrix catalog.');
+    }
   }, []);
 
   const refreshOrders = useCallback(async () => {
-    const data = await ordersApi.list();
+    const data = await withTimeout(ordersApi.list(), 1800, 'Orders API timed out');
     setOrders(data.map(normalizeOrder));
   }, []);
 
   const refreshUsers = useCallback(async () => {
-    const data = await usersApi.list();
+    const data = await withTimeout(usersApi.list(), 1800, 'Users API timed out');
     setUsers(data.map(normalizeUser));
   }, []);
 
   useEffect(() => {
     setLoading(true);
     setError(null);
-    Promise.all([refreshProducts(), refreshOrders(), refreshUsers()])
-      .catch((err: Error) => setError(err.message))
-      .finally(() => setLoading(false));
+    refreshProducts().finally(() => setLoading(false));
+    refreshOrders().catch(() => undefined);
+    refreshUsers().catch(() => undefined);
   }, []);
 
   // ── Product CRUD ───────────────────────────────────────────

@@ -152,26 +152,32 @@ export function Home() {
           <div className="grid gap-4">
             <div className="tech-card relative min-h-[320px] overflow-hidden rounded-lg border border-black/10 bg-white p-6 shadow-sm">
               <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#db4444] via-[#1d7dff] to-[#00a76f]" />
-              <div className="relative z-10 max-w-[14rem] sm:max-w-[15rem]">
-                <Badge className="mb-3 rounded-md bg-[#fff1f1] text-[#db4444] hover:bg-[#fff1f1]">
-                  Best seller
-                </Badge>
-                <h2 className="text-3xl font-black leading-tight text-[#111111]">
-                  {heroProduct.name}
-                </h2>
-                <p className="mt-3 text-sm leading-6 text-[#666666]">{heroProduct.description}</p>
-                <div className="mt-5 flex items-end gap-3">
-                  <span className="text-3xl font-black text-[#db4444]">
-                    PHP {heroProduct.price.toFixed(0)}
-                  </span>
-                  <span className="pb-1 text-sm text-[#777777]">{heroProduct.rating} rating</span>
+              <div className="relative z-10 grid h-full gap-5 sm:grid-cols-[minmax(0,1fr)_150px] sm:items-center lg:grid-cols-[minmax(0,1fr)_170px]">
+                <div className="min-w-0">
+                  <Badge className="mb-3 rounded-md bg-[#fff1f1] text-[#db4444] hover:bg-[#fff1f1]">
+                    Best seller
+                  </Badge>
+                  <h2 className="text-2xl font-black leading-tight text-[#111111] sm:text-3xl">
+                    {heroProduct.name}
+                  </h2>
+                  <p className="mt-3 line-clamp-5 text-sm leading-6 text-[#666666] sm:line-clamp-6">
+                    {heroProduct.description}
+                  </p>
+                  <div className="mt-5 flex flex-wrap items-end gap-3">
+                    <span className="text-2xl font-black text-[#db4444] sm:text-3xl">
+                      PHP {heroProduct.price.toFixed(0)}
+                    </span>
+                    <span className="pb-1 text-sm text-[#777777]">{heroProduct.rating} rating</span>
+                  </div>
+                </div>
+                <div className="flex h-32 items-center justify-center rounded-md bg-[#eef3f7] p-3 sm:h-44 lg:h-48">
+                  <img
+                    src={espHero}
+                    alt={heroProduct.name}
+                    className="h-full w-full object-contain"
+                  />
                 </div>
               </div>
-              <img
-                src={espHero}
-                alt={heroProduct.name}
-                className="relative mt-5 h-32 w-full object-contain sm:absolute sm:bottom-4 sm:right-4 sm:mt-0 sm:h-[58%] sm:max-h-64 sm:w-[46%] lg:w-[42%]"
-              />
             </div>
 
             <div className="grid grid-cols-2 gap-4">

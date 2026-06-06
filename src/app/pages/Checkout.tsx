@@ -11,6 +11,7 @@ import {
 import { useCart } from '../context/CartContext';
 import { useStore, type StoreOrder } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
+import { resolveProductImage } from '../lib/productImages';
 
 function formatPhp(n: number) {
   return `₱${n.toFixed(2)}`;
@@ -22,11 +23,12 @@ function formatPhp0(n: number) {
 
 export function Checkout() {
   const { cart, clearCart } = useCart();
-  const { createOrder } = useStore();
+  const { createOrder, products } = useStore();
   const { user } = useAuth();
 
   const [placing, setPlacing] = useState(false);
   const [placedOrder, setPlacedOrder] = useState<StoreOrder | null>(null);
+  const [placeError, setPlaceError] = useState<string | null>(null);
 
   // Restore selected items from Cart selection
   const [checkoutCart, setCheckoutCart] = useState<typeof cart>([]);
@@ -46,7 +48,13 @@ export function Checkout() {
 
   // UI state
   const [paymentTab, setPaymentTab] = useState<string>('payment_center');
-  const [paymentOption, setPaymentOption] = useState<'7eleven' | 'gcash' | 'maya' | 'cod'>('gcash');
+  const [paymentOption, setPaymentOption] = useState<'7eleven' | 'gcash' | 'maya' | 'cod' | 'card'>('gcash');
+  const [cardDetails, setCardDetails] = useState({
+    number: '',
+    name: '',
+    expiry: '',
+    cvc: '',
+  });
   const [recipientName] = useState(user?.displayName || 'Juan Dela Cruz');
   const [recipientPhone] = useState('09XXXXXXXXX');
   const [addressLine] = useState('Brgy. Example, City, Country');
@@ -69,8 +77,23 @@ export function Checkout() {
     if (paymentOption === '7eleven') return 'payment_center_7eleven';
     if (paymentOption === 'maya') return 'maya';
     if (paymentOption === 'cod') return 'cod';
+    if (paymentOption === 'card') return 'card';
     return 'gcash';
   }, [paymentOption]);
+
+  const cardReady = useMemo(() => {
+    if (paymentOption !== 'card') return true;
+    const digits = cardDetails.number.replace(/\D/g, '');
+    const cvcDigits = cardDetails.cvc.replace(/\D/g, '');
+    return (
+      digits.length >= 13 &&
+      digits.length <= 19 &&
+      cardDetails.name.trim().length >= 2 &&
+      /^(0[1-9]|1[0-2])\/\d{2}$/.test(cardDetails.expiry.trim()) &&
+      cvcDigits.length >= 3 &&
+      cvcDigits.length <= 4
+    );
+  }, [cardDetails, paymentOption]);
 
   const groupedItems = useMemo(() => {
     const map = new Map<string, typeof cart>();
@@ -82,10 +105,20 @@ export function Checkout() {
     return Array.from(map.entries()).map(([seller, items]) => ({ seller, items }));
   }, [effectiveCart]);
 
-  const canPlace = effectiveCart.length > 0 && !placing && !placedOrder;
+  const stockIssues = useMemo(() => {
+    return effectiveCart.filter((item) => {
+      const liveProduct = products.find((product) => product.id === item.id);
+      const stock = liveProduct?.stock ?? item.stock;
+      const inStock = liveProduct?.inStock ?? item.inStock;
+      return !inStock || (typeof stock === 'number' && stock < item.quantity);
+    });
+  }, [effectiveCart, products]);
+
+  const canPlace = effectiveCart.length > 0 && stockIssues.length === 0 && cardReady && !placing && !placedOrder;
 
   const onPlaceOrder = async () => {
     if (!canPlace) return;
+    setPlaceError(null);
     setPlacing(true);
     try {
       const placed = await createOrder({
@@ -97,6 +130,8 @@ export function Checkout() {
       setPlacedOrder(placed);
       clearCart();
       window.localStorage.removeItem('xontrix-checkout-items');
+    } catch (error) {
+      setPlaceError(error instanceof Error ? error.message : 'Unable to place order. Please try again.');
     } finally {
       setPlacing(false);
     }
@@ -257,7 +292,7 @@ export function Checkout() {
                       <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
                         <div className="md:col-span-6 flex items-start gap-3">
                           <div className="w-14 h-14 border border-black/10 rounded-sm overflow-hidden bg-white shrink-0">
-                            <img src={item.image} alt={item.name} className="w-full h-full object-contain p-1" />
+                            <img src={resolveProductImage(item)} alt={item.name} className="w-full h-full object-contain p-1" />
                           </div>
                           <div className="min-w-0">
                             <div className="font-semibold" style={{ fontFamily: 'Inter, sans-serif' }}>{item.name}</div>
@@ -302,6 +337,7 @@ export function Checkout() {
               <div className="mt-4 border-b border-black/10 flex flex-wrap gap-2">
                 {[
                   { id: 'payment_center', label: 'E-Wallet (GCash / Maya)' },
+                  { id: 'card', label: 'Card' },
                   { id: 'cod', label: 'Cash on Delivery' },
                 ].map((t) => {
                   const active = paymentTab === t.id;
@@ -311,6 +347,7 @@ export function Checkout() {
                       onClick={() => {
                         setPaymentTab(t.id);
                         if (t.id === 'cod') setPaymentOption('cod');
+                        else if (t.id === 'card') setPaymentOption('card');
                         else setPaymentOption('gcash');
                       }}
                       className="px-3 py-2 text-sm font-bold"
@@ -355,6 +392,65 @@ export function Checkout() {
                       </div>
                     </div>
                   </label>
+                </div>
+              )}
+
+              {paymentTab === 'card' && (
+                <div className="mt-4 rounded-md border border-black/10 bg-[#f5f5f5] p-4">
+                  <label className="block">
+                    <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Card Number</span>
+                    <input
+                      inputMode="numeric"
+                      autoComplete="cc-number"
+                      value={cardDetails.number}
+                      onChange={(event) => setCardDetails({ ...cardDetails, number: event.target.value })}
+                      placeholder="1234 5678 9012 3456"
+                      className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    />
+                  </label>
+                  <label className="mt-3 block">
+                    <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Name on Card</span>
+                    <input
+                      autoComplete="cc-name"
+                      value={cardDetails.name}
+                      onChange={(event) => setCardDetails({ ...cardDetails, name: event.target.value })}
+                      placeholder="Juan Dela Cruz"
+                      className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    />
+                  </label>
+                  <div className="mt-3 grid grid-cols-2 gap-3">
+                    <label className="block">
+                      <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Expiry</span>
+                      <input
+                        inputMode="numeric"
+                        autoComplete="cc-exp"
+                        value={cardDetails.expiry}
+                        onChange={(event) => setCardDetails({ ...cardDetails, expiry: event.target.value })}
+                        placeholder="MM/YY"
+                        className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>CVC</span>
+                      <input
+                        inputMode="numeric"
+                        autoComplete="cc-csc"
+                        value={cardDetails.cvc}
+                        onChange={(event) => setCardDetails({ ...cardDetails, cvc: event.target.value })}
+                        placeholder="123"
+                        className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                      />
+                    </label>
+                  </div>
+                  {!cardReady && (
+                    <p className="mt-3 text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                      Complete the card details before placing the order.
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -403,6 +499,18 @@ export function Checkout() {
               >
                 {placing ? 'Placing Order...' : 'Place Order'}
               </button>
+
+              {stockIssues.length > 0 && (
+                <div className="mt-3 text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  Some selected items are out of stock or exceed available inventory. Please update your cart.
+                </div>
+              )}
+
+              {placeError && (
+                <div className="mt-3 text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  {placeError}
+                </div>
+              )}
 
               <div className="mt-3 text-xs text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
                 By placing your order, you agree to the checkout terms.
