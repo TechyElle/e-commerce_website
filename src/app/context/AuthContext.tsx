@@ -44,8 +44,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const saved = window.localStorage.getItem('xontrix-user');
     if (saved) {
       const savedUser = JSON.parse(saved) as DemoUser & { role?: Role };
-      setUser({ ...savedUser, role: savedUser.role === 'admin' ? 'user' : savedUser.role });
-      setIsAdmin(false);
+      // Debug logging so we can see what role is persisted.
+      // eslint-disable-next-line no-console
+      console.debug('[auth] restore from localStorage', savedUser);
+
+      setUser({ ...savedUser, role: savedUser.role ?? 'user' });
+      setIsAdmin(savedUser.role === 'admin');
     }
 
     usersApi.me()

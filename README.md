@@ -1,88 +1,125 @@
-# E-Commerce Website
+# Xontrix Integrated Electronics E-Commerce & AI-Powered Business Management Platform
 
-This is a modern E-Commerce website for electronics components and kits, built with React, TypeScript, Vite, TailwindCSS, and shadcn/ui. Originally imported from [Figma design](https://www.figma.com/design/0gN8cl3tMhrqdRIk4GiDKp/E-commerce-website).
+Electronics e-commerce for components & kits, backed by a simple PHP/MySQL API, and designed to be extended with AI/insights. The UI was originally imported from a Figma e-commerce design and built as a React + TypeScript SPA.
 
-https://github.com/TechyElle/e-commerce_website
+## Highlights
 
-Features:
-- Responsive design with TailwindCSS 4
-- Client-side routing with React Router
-- Product catalog with details and cart functionality
-- UI components from shadcn/ui (Radix UI primitives)
-- Product images and mock data included
+- **Electronics product catalog** with product detail pages
+- **Cart + Checkout UI** (client-side experience)
+- **Admin/Dashboard pages** backed by authenticated API endpoints
+- **Backend-driven data** via a PHP/MySQL REST-like API (`xontrix-backend`)
+- **shadcn/ui** powered interface components
+- **Responsive layout** with Tailwind
 
-## Prerequisites
+## Architecture
 
-- Node.js >= 18
-- [pnpm](https://pnpm.io/installation) (recommended, as per lockfile)
+This repository is split into two parts:
 
-## Quick Start
+1. **Frontend (React + Vite)**
+   - Lives in: `src/`
+   - Runs on: `pnpm dev` (Vite dev server)
+   - API client: `src/app/lib/api.ts`
+
+2. **Backend (PHP + MySQL)**
+   - Lives in: `xontrix-backend/`
+   - Expected to be hosted under an Apache server (e.g., XAMPP)
+   - Install & schema: `xontrix-backend/api/install.php`, `xontrix-backend/api/schema.sql`
+
+## Quick Start (Frontend + Backend)
+
+### 1) Run the PHP/MySQL backend (XAMPP)
+
+Follow `xontrix-backend/README.md`:
+
+1. Copy `xontrix-backend` into:
+
+   ```txt
+   C:\xampp\htdocs\xontrix-backend
+   ```
+
+2. Start Apache + MySQL in XAMPP.
+
+3. Open once to install schema + seed data:
+
+   ```txt
+   http://localhost/xontrix-backend/api/install.php
+   ```
+
+4. Login (default seeded account):
+
+   ```txt
+   Email: admin@xontrix.local
+   Password: admin123
+   ```
+
+### 2) Configure frontend API base URL
+
+The frontend API client uses:
+
+- `src/app/lib/api.ts`
+- `BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost/xontrix-backend/api'`
+
+Add a `.env` file at the project root (example):
+
+```bash
+VITE_API_URL=http://localhost/xontrix-backend/api
+```
+
+> If you host the backend under a different folder/port, update `VITE_API_URL`.
+
+### 3) Start the frontend
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-The development server will start at http://localhost:5173.
+The dev server runs at: http://localhost:5173
 
-## Detailed Setup
+## Frontend Environment Notes
 
-1. **Clone the repository** (if not already):
-   ```bash
-   git clone https://github.com/TechyElle/e-commerce_website.git
-   cd e-commerce_website
-   ```
+### Firebase
+`src/app/lib/firebase.ts` contains placeholder Firebase config. If you don’t use Firebase auth/storage right now, the app treats it as unconfigured:
 
-2. **Install dependencies**:
-   ```bash
-   pnpm install
-   ```
-   If you prefer npm:
-   ```bash
-   npm install
-   ```
-   (Note: pnpm is recommended for exact dependency resolution.)
+- `isFirebaseConfigured` becomes `false` when `apiKey` starts with `YOUR_`.
 
-3. **Start development server**:
-   ```bash
-   pnpm dev
-   ```
-   - Opens http://localhost:5173
-   - Hot reload enabled
-   - TypeScript checking on
+## Routes / Pages
 
-## Project Structure
-
-```
-.
-├── index.html          # Entry point
-├── package.json        # Dependencies & scripts
-├── vite.config.ts      # Vite config (React + Tailwind + aliases)
-├── src/
-│   ├── main.tsx        # App entry
-│   ├── app/
-│   │   ├── App.tsx           # Root component
-│   │   ├── routes.tsx        # Routing config
-│   │   ├── pages/            # Page components (Home, Products, Cart, etc.)
-│   │   ├── components/       # UI components (Layout, ProductCard, shadcn/ui)
-│   │   ├── context/          # CartContext
-│   │   └── data/             # Mock products
-│   ├── imports/              # Assets (products images, logo)
-│   └── styles/               # Global CSS (Tailwind)
-├── pnpm-lock.yaml      # Lockfile
-└── ...
-```
-
-## Available Pages/Routes
+Typical routes available in the UI:
 
 - `/` - Home
 - `/products` - Product catalog
 - `/products/:id` - Product detail
-- `/cart` - Shopping cart
+- `/cart` - Cart
+- `/checkout` - Checkout
+- `/dashboard` - Dashboard (admin area)
+- `/admin` - Admin
+- `/login` - Login
 - `/about` - About
 - `/contact` - Contact
-- `/dashboard` - Dashboard
 - `*` - 404 Not Found
+
+## Project Structure
+
+```txt
+.
+├── index.html                 # Vite entry
+├── package.json               # Frontend scripts/deps
+├── vite.config.ts             # React + Tailwind config
+├── src/
+│   ├── main.tsx               # App bootstrap
+│   ├── app/
+│   │   ├── App.tsx            # Root component
+│   │   ├── routes.tsx        # Routing
+│   │   ├── pages/            # Screens (Home, Products, Cart, etc.)
+│   │   ├── components/      # Reusable UI
+│   │   ├── context/         # Auth/Cart/Store state
+│   │   └── lib/             # API client (src/app/lib/api.ts)
+│   ├── imports/              # Local assets (product images, logo)
+│   └── styles/               # Tailwind/global styles
+└── xontrix-backend/
+    └── api/                  # PHP endpoints + schema/install
+```
 
 ## Build for Production
 
@@ -90,39 +127,22 @@ The development server will start at http://localhost:5173.
 pnpm build
 ```
 
-- Outputs to `dist/` folder
-- Serve with any static server, e.g., `npx serve dist`
-- Or deploy to Vercel/Netlify (Vite supports zero-config).
+Output: `dist/`
 
-## Scripts
+Serve `dist/` with any static server (or deploy via Vercel/Netlify).
 
-From `package.json`:
+## Roadmap
 
-| Script | Description |
-|--------|-------------|
-| `pnpm dev` | Start dev server |
-| `pnpm build` | Build for production |
+See `TODO.md`. Current high-level items include:
 
-## Troubleshooting
+- Shopee-like cart experience updates
+- Checkout payment & place-order flow refinements
 
-- **pnpm not found**: Install with `npm install -g pnpm`
-- **Port in use**: `pnpm dev --port 3000`
-- **TypeScript errors**: Ensure `@types/*` installed (`pnpm install`)
-- **Styles missing**: Tailwind is configured via Vite plugin; clear cache if needed (`rm -rf node_modules/.vite`)
+## Credits & Licensing
 
-## Tech Stack
+- **Design inspiration**: Figma E-Commerce (see `src/app/Attributions.md` and `Attributions.md`)
+- **UI components**: shadcn/ui (Radix UI primitives)
+- **Assets**: local product images in `imports/`
 
-- **Framework**: React 18 + TypeScript
-- **Build Tool**: Vite 6
-- **Styling**: TailwindCSS 4 + shadcn/ui
-- **Routing**: React Router
-- **Icons**: Lucide React
-- **State**: React Context (Cart)
+`Attributions.md` contains additional attributions/licenses.
 
-## Credits
-
-- Design: [Figma E-Commerce](https://www.figma.com/design/0gN8cl3tMhrqdRIk4GiDKp/E-commerce-website)
-- Components: [shadcn/ui](https://ui.shadcn.com/)
-- Product images: Local assets
-
-Enjoy building your e-commerce site!

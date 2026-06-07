@@ -5,14 +5,45 @@
 export const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost/xontrix-backend/api';
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const url = `${BASE_URL}${path}`;
+
+  const res = await fetch(url, {
     credentials: 'include',
     headers: { 'Content-Type': 'application/json', ...options.headers },
     ...options,
   });
 
-  const data = await res.json();
-  if (!res.ok) throw new Error((data as { error?: string }).error ?? `HTTP ${res.status}`);
+  // Always attempt to parse JSON so we can surface backend error details.
+  let data: unknown = null;
+  try {
+    data = await res.json();
+  } catch {
+    // If backend returns non-JSON on error, still surface status + url.
+    data = null;
+  }
+
+  // Debug logging for easier "log in" troubleshooting.
+  // Keep it lightweight and avoid logging sensitive secrets.
+  if (!res.ok) {
+    const errorFromBackend = (data as { error?: string; message?: string; details?: unknown })?.error;
+    const messageFromBackend =
+      (data as { message?: string })?.message ?? (data as { error?: string })?.error;
+
+    // eslint-disable-next-line no-console
+    console.debug('[api.request] HTTP error', {
+      url,
+      status: res.status,
+      errorFromBackend,
+      messageFromBackend,
+      data,
+    });
+
+    throw new Error(messageFromBackend ?? errorFromBackend ?? `HTTP ${res.status}`);
+  }
+
+  // eslint-disable-next-line no-console
+  console.debug('[api.request] OK', { url });
+
   return data as T;
 }
 
