@@ -115,9 +115,9 @@ try {
         );
         $stockStmt = $pdo->prepare(
             'UPDATE products
-             SET in_stock = CASE WHEN stock - :quantity > 0 THEN 1 ELSE 0 END,
-                 stock = stock - :quantity
-             WHERE id = :product_id AND stock >= :quantity AND in_stock = 1'
+             SET in_stock = CASE WHEN stock - :qty1 > 0 THEN 1 ELSE 0 END,
+                 stock = stock - :qty2
+             WHERE id = :product_id AND stock >= :qty3 AND in_stock = 1'
         );
 
         foreach ($data['items'] as $item) {
@@ -135,7 +135,7 @@ try {
                 ':quantity' => $quantity,
                 ':image' => isset($item['image']) ? (string) $item['image'] : null,
             ]);
-            $stockStmt->execute([':quantity' => $quantity, ':product_id' => $productId]);
+            $stockStmt->execute([':qty1' => $quantity, ':qty2' => $quantity, ':qty3' => $quantity, ':product_id' => $productId]);
             if ($stockStmt->rowCount() === 0) {
                 $pdo->rollBack();
                 respond_error('Insufficient stock for one or more items', 409);
