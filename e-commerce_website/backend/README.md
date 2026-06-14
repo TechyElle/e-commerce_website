@@ -4,10 +4,10 @@ This folder contains the PHP API expected by the React frontend in `src/app/lib/
 
 ## Install with XAMPP
 
-1. Copy or move the `xontrix-backend` folder into:
+1. Copy or move the `backend` folder into:
 
    ```txt
-   C:\xampp\htdocs\xontrix-backend
+   C:\xampp\htdocs\backend
    ```
 
 2. Start Apache and MySQL in XAMPP.
@@ -15,13 +15,13 @@ This folder contains the PHP API expected by the React frontend in `src/app/lib/
 3. Open this URL once in your browser:
 
    ```txt
-   http://localhost/xontrix-backend/api/install.php
+   http://localhost/backend/api/install.php
    ```
 
 4. The frontend already points to:
 
    ```txt
-   http://localhost/xontrix-backend/api
+   http://localhost/backend/api
    ```
 
 ## Default Login
