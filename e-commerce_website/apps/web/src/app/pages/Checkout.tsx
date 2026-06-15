@@ -15,25 +15,32 @@ import { useStore, type StoreOrder } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
 import { resolveProductImage } from '../lib/productImages';
 
+
 const BRAND_RED = '#db4444';
+
 
 function formatPhp(n: number) {
   return `₱${n.toFixed(2)}`;
 }
 
+
 function formatPhp0(n: number) {
   return `₱${Math.round(n).toFixed(0)}`;
 }
+
 
 export function Checkout() {
   const { cart, clearCart } = useCart();
   const { createOrder, products } = useStore();
   const { user } = useAuth();
 
+
   const [placing, setPlacing] = useState(false);
   const [placedOrder, setPlacedOrder] = useState<StoreOrder | null>(null);
   const [placeError, setPlaceError] = useState<string | null>(null);
 
+
+  // Restore selected items from Cart selection
   const [checkoutCart, setCheckoutCart] = useState<typeof cart>([]);
   useEffect(() => {
     try {
@@ -47,9 +54,13 @@ export function Checkout() {
     }
   }, []);
 
+
   const effectiveCart = checkoutCart.length > 0 ? checkoutCart : cart;
 
+
+  // Payment state
   const [paymentOption, setPaymentOption] = useState<'gcash' | 'maya' | 'cod' | 'card'>('gcash');
+
 
   const [cardDetails, setCardDetails] = useState({
     number: '',
@@ -58,6 +69,8 @@ export function Checkout() {
     cvc: '',
   });
 
+
+  // Delivery address state
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [savedAddress, setSavedAddress] = useState({
     name: user?.displayName || 'Juan Dela Cruz',
@@ -69,24 +82,28 @@ export function Checkout() {
   });
   const [draftAddress, setDraftAddress] = useState({ ...savedAddress });
 
+
   const handleSaveAddress = () => {
     setSavedAddress({ ...draftAddress });
     setIsEditingAddress(false);
   };
+
 
   const handleCancelAddress = () => {
     setDraftAddress({ ...savedAddress });
     setIsEditingAddress(false);
   };
 
+
   const addressDisplay = `${savedAddress.street}, ${savedAddress.city}, ${savedAddress.province} ${savedAddress.zip}`;
+
 
   const merchandiseSubtotal = useMemo(
     () => effectiveCart.reduce((sum, i) => sum + i.price * i.quantity, 0),
     [effectiveCart]
   );
   const shippingSubtotal = useMemo(
-    () => (merchandiseSubtotal >= 1000 || merchandiseSubtotal === 0 ? 0 : 80),
+    () => (merchandiseSubtotal >= 1000 || merchandiseSubtotal === 0 ? 0 : 40),
     [merchandiseSubtotal]
   );
   const totalPayment = useMemo(
@@ -94,12 +111,14 @@ export function Checkout() {
     [merchandiseSubtotal, shippingSubtotal]
   );
 
+
   const paymentMethodLabel = useMemo(() => {
     if (paymentOption === 'maya') return 'maya';
     if (paymentOption === 'cod') return 'cod';
     if (paymentOption === 'card') return 'card';
     return 'gcash';
   }, [paymentOption]);
+
 
   const cardReady = useMemo(() => {
     if (paymentOption !== 'card') return true;
@@ -115,6 +134,7 @@ export function Checkout() {
     );
   }, [cardDetails, paymentOption]);
 
+
   const groupedItems = useMemo(() => {
     const map = new Map<string, typeof cart>();
     for (const item of effectiveCart) {
@@ -125,6 +145,7 @@ export function Checkout() {
     return Array.from(map.entries()).map(([seller, items]) => ({ seller, items }));
   }, [effectiveCart]);
 
+
   const stockIssues = useMemo(() => {
     return effectiveCart.filter((item) => {
       const liveProduct = products.find((product) => product.id === item.id);
@@ -134,7 +155,9 @@ export function Checkout() {
     });
   }, [effectiveCart, products]);
 
+
   const canPlace = effectiveCart.length > 0 && stockIssues.length === 0 && cardReady && !placing && !placedOrder;
+
 
   const onPlaceOrder = async () => {
     if (!canPlace) return;
@@ -157,11 +180,14 @@ export function Checkout() {
     }
   };
 
+
   const ACCENT_COLOR = 'var(--accent)';
   const BG_COLOR = 'var(--surface)';
 
+
   const inputClass = `h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none transition-colors focus:border-[#db4444]`;
   const labelClass = `mb-1 block text-xs font-bold uppercase text-[#7d8184]`;
+
 
   if (effectiveCart.length === 0 && !placedOrder) {
     return (
@@ -183,6 +209,7 @@ export function Checkout() {
       </div>
     );
   }
+
 
   if (placedOrder) {
     return (
@@ -212,6 +239,7 @@ export function Checkout() {
             </div>
           </div>
 
+
           <div className="bg-[#f5f5f5] border border-black/10 rounded-md p-6 mb-6">
             <div className="flex items-center gap-2 mb-4">
               <CreditCard className="w-5 h-5" style={{ color: ACCENT_COLOR }} />
@@ -239,6 +267,7 @@ export function Checkout() {
             </div>
           </div>
 
+
           <div className="flex flex-col sm:flex-row gap-4">
             <Link to="/products" className="flex-1">
               <button className="w-full py-3 border border-[rgba(0,0,0,0.12)] bg-white hover:bg-[rgba(219,68,68,0.06)] transition-all" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
@@ -256,6 +285,7 @@ export function Checkout() {
     );
   }
 
+
   const paymentTiles = [
     { key: 'gcash' as const, title: 'GCash', sub: 'Pay instantly', icon: 'G' },
     { key: 'maya' as const, title: 'Maya', sub: 'Pay instantly', icon: 'M' },
@@ -263,15 +293,18 @@ export function Checkout() {
     { key: 'card' as const, title: 'Credit / Debit Card', sub: 'Secure checkout', icon: '💳' },
   ];
 
+
   return (
     <div className="min-h-screen" style={{ background: BG_COLOR }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-          {/* Left column */}
+
+          {/* ───── Left column ───── */}
           <div className="lg:col-span-2 space-y-6">
 
-            {/* Delivery Address */}
+
+            {/* ── Delivery Address ── */}
             <div className="bg-white border border-black/10 rounded-md p-5">
               <div className="flex items-center gap-2 mb-4">
                 <MapPin className="w-5 h-5" style={{ color: BRAND_RED }} />
@@ -280,7 +313,9 @@ export function Checkout() {
                 </h2>
               </div>
 
+
               {!isEditingAddress ? (
+                /* ── Display mode ── */
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3 flex-wrap">
@@ -298,47 +333,94 @@ export function Checkout() {
                   </div>
                   <button
                     onClick={() => { setDraftAddress({ ...savedAddress }); setIsEditingAddress(true); }}
-                    className="inline-flex items-center gap-1 text-sm font-bold shrink-0 hover:underline"
+                    className="inline-flex items-center gap-1 text-sm font-bold shrink-0 hover:underline transition-all"
                     style={{ color: BRAND_RED, fontFamily: 'Inter, sans-serif' }}
                   >
                     <Pencil className="w-4 h-4" /> Edit
                   </button>
                 </div>
               ) : (
+                /* ── Edit mode ── */
                 <div className="space-y-3">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <label className="block">
                       <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Full Name</span>
-                      <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.name} onChange={(e) => setDraftAddress({ ...draftAddress, name: e.target.value })} placeholder="Juan Dela Cruz" />
+                      <input
+                        className={inputClass}
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                        value={draftAddress.name}
+                        onChange={(e) => setDraftAddress({ ...draftAddress, name: e.target.value })}
+                        placeholder="Juan Dela Cruz"
+                      />
                     </label>
                     <label className="block">
                       <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Phone Number</span>
-                      <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.phone} onChange={(e) => setDraftAddress({ ...draftAddress, phone: e.target.value })} placeholder="09XXXXXXXXX" inputMode="tel" />
+                      <input
+                        className={inputClass}
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                        value={draftAddress.phone}
+                        onChange={(e) => setDraftAddress({ ...draftAddress, phone: e.target.value })}
+                        placeholder="09XXXXXXXXX"
+                        inputMode="tel"
+                      />
                     </label>
                   </div>
                   <label className="block">
                     <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Street Address / Barangay</span>
-                    <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.street} onChange={(e) => setDraftAddress({ ...draftAddress, street: e.target.value })} placeholder="123 Rizal St., Brgy. San Antonio" />
+                    <input
+                      className={inputClass}
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                      value={draftAddress.street}
+                      onChange={(e) => setDraftAddress({ ...draftAddress, street: e.target.value })}
+                      placeholder="123 Rizal St., Brgy. San Antonio"
+                    />
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <label className="block">
                       <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>City / Municipality</span>
-                      <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.city} onChange={(e) => setDraftAddress({ ...draftAddress, city: e.target.value })} placeholder="Quezon City" />
+                      <input
+                        className={inputClass}
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                        value={draftAddress.city}
+                        onChange={(e) => setDraftAddress({ ...draftAddress, city: e.target.value })}
+                        placeholder="Quezon City"
+                      />
                     </label>
                     <label className="block">
                       <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Province</span>
-                      <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.province} onChange={(e) => setDraftAddress({ ...draftAddress, province: e.target.value })} placeholder="Metro Manila" />
+                      <input
+                        className={inputClass}
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                        value={draftAddress.province}
+                        onChange={(e) => setDraftAddress({ ...draftAddress, province: e.target.value })}
+                        placeholder="Metro Manila"
+                      />
                     </label>
                     <label className="block">
                       <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>ZIP Code</span>
-                      <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.zip} onChange={(e) => setDraftAddress({ ...draftAddress, zip: e.target.value.replace(/\D/g, '').slice(0, 4) })} placeholder="1100" inputMode="numeric" />
+                      <input
+                        className={inputClass}
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                        value={draftAddress.zip}
+                        onChange={(e) => setDraftAddress({ ...draftAddress, zip: e.target.value.replace(/\D/g, '').slice(0, 4) })}
+                        placeholder="1100"
+                        inputMode="numeric"
+                      />
                     </label>
                   </div>
                   <div className="flex gap-3 pt-1">
-                    <button onClick={handleSaveAddress} className="inline-flex items-center gap-2 px-5 py-2 text-white text-sm font-bold rounded-sm hover:opacity-90" style={{ background: BRAND_RED, fontFamily: 'Inter, sans-serif' }}>
+                    <button
+                      onClick={handleSaveAddress}
+                      className="inline-flex items-center gap-2 px-5 py-2 text-white text-sm font-bold rounded-sm transition-opacity hover:opacity-90"
+                      style={{ background: BRAND_RED, fontFamily: 'Inter, sans-serif' }}
+                    >
                       <Check className="w-4 h-4" /> Save Address
                     </button>
-                    <button onClick={handleCancelAddress} className="inline-flex items-center gap-2 px-5 py-2 text-sm font-bold rounded-sm border border-black/15 bg-white hover:bg-[#f5f5f5]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                    <button
+                      onClick={handleCancelAddress}
+                      className="inline-flex items-center gap-2 px-5 py-2 text-sm font-bold rounded-sm border border-black/15 bg-white hover:bg-[#f5f5f5] transition-colors"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    >
                       <X className="w-4 h-4" /> Cancel
                     </button>
                   </div>
@@ -346,7 +428,8 @@ export function Checkout() {
               )}
             </div>
 
-            {/* Products Ordered */}
+
+            {/* ── Products Ordered ── */}
             <div className="bg-white border border-black/10 rounded-md p-5">
               <h2 className="text-lg mb-3" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 900, color: BRAND_RED }}>
                 Products Ordered
@@ -358,15 +441,22 @@ export function Checkout() {
                 <div className="col-span-2 text-right">Item Subtotal</div>
               </div>
 
+
               <div className="space-y-5">
                 {groupedItems.map((group) => (
                   <div key={group.seller} className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{group.seller}</div>
-                      <a href="#" onClick={(e) => e.preventDefault()} className="inline-flex items-center gap-1 text-sm font-bold" style={{ color: BRAND_RED, fontFamily: 'Inter, sans-serif' }}>
+                      <a
+                        href="#"
+                        onClick={(e) => e.preventDefault()}
+                        className="inline-flex items-center gap-1 text-sm font-bold"
+                        style={{ color: BRAND_RED, fontFamily: 'Inter, sans-serif' }}
+                      >
                         <MessageSquare className="w-4 h-4" /> chat now
                       </a>
                     </div>
+
 
                     {group.items.map((item) => (
                       <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
@@ -393,10 +483,18 @@ export function Checkout() {
                       </div>
                     ))}
 
-                    <input className="w-full h-11 px-3 bg-white border border-black/10 rounded-sm outline-none focus:border-[#db4444] transition-colors" placeholder="Please leave a message..." style={{ fontFamily: 'Inter, sans-serif' }} />
+
+                    <input
+                      className="w-full h-11 px-3 bg-white border border-black/10 rounded-sm outline-none focus:border-[#db4444] transition-colors"
+                      placeholder="Please leave a message..."
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    />
+
 
                     <div className="bg-white border border-black/10 rounded-md px-3 py-3">
-                      <div className="text-sm font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>Estimated delivery: 3-5 days</div>
+                      <div className="text-sm font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>
+                        Estimated delivery: 3-5 days
+                      </div>
                       <div className="text-sm font-bold mt-1" style={{ color: BRAND_RED, fontFamily: 'Inter, sans-serif' }}>
                         {shippingSubtotal === 0 ? 'FREE Shipping' : `Shipping: ${formatPhp0(shippingSubtotal)}`}
                       </div>
@@ -405,13 +503,17 @@ export function Checkout() {
                 ))}
               </div>
             </div>
+
+
           </div>
 
-          {/* Right column */}
+
+          {/* ───── Right column — Order Summary ───── */}
           <div className="lg:col-span-1">
             <div className="bg-white border border-black/10 rounded-md p-5 sticky top-20 space-y-5">
 
-              {/* Order Summary */}
+
+              {/* Totals */}
               <div>
                 <h3 className="text-base font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>Order Summary</h3>
                 <div className="mt-4 space-y-3 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -432,7 +534,8 @@ export function Checkout() {
                 </div>
               </div>
 
-              {/* Place Order button */}
+
+              {/* ── Place Order button ── */}
               <button
                 onClick={onPlaceOrder}
                 disabled={!canPlace}
@@ -449,11 +552,16 @@ export function Checkout() {
                 {placing ? 'Placing Order…' : 'Place Order'}
               </button>
 
-              {/* Payment Method */}
+
+              {/* ── Payment Method ── (below Place Order) */}
               <div>
-                <h4 className="text-sm font-bold mb-3 uppercase tracking-wide" style={{ fontFamily: 'Inter, sans-serif', color: '#111' }}>
+                <h4
+                  className="text-sm font-bold mb-3 uppercase tracking-wide"
+                  style={{ fontFamily: 'Inter, sans-serif', color: '#111' }}
+                >
                   Payment Method
                 </h4>
+
 
                 <div className="space-y-2">
                   {paymentTiles.map((t) => {
@@ -471,20 +579,35 @@ export function Checkout() {
                         }}
                       >
                         <div className="flex items-center gap-3">
+                          {/* Radio dot */}
                           <span
-                            className="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0"
-                            style={{ borderColor: active ? BRAND_RED : '#ccc', background: active ? BRAND_RED : 'transparent' }}
+                            className="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-all"
+                            style={{
+                              borderColor: active ? BRAND_RED : '#ccc',
+                              background: active ? BRAND_RED : 'transparent',
+                            }}
                           >
                             {active && <span className="w-1.5 h-1.5 rounded-full bg-white block" />}
                           </span>
+
+
+                          {/* Icon badge */}
                           <span
                             className="w-8 h-8 rounded-md flex items-center justify-center font-black text-sm shrink-0"
-                            style={{ background: active ? 'rgba(219,68,68,0.12)' : 'rgba(0,0,0,0.04)', color: active ? BRAND_RED : '#555' }}
+                            style={{
+                              background: active ? 'rgba(219,68,68,0.12)' : 'rgba(0,0,0,0.04)',
+                              color: active ? BRAND_RED : '#555',
+                            }}
                           >
                             {t.icon}
                           </span>
+
+
                           <div className="min-w-0">
-                            <div className="font-bold text-sm leading-tight" style={{ fontFamily: 'Inter, sans-serif', color: active ? BRAND_RED : '#111' }}>
+                            <div
+                              className="font-bold text-sm leading-tight"
+                              style={{ fontFamily: 'Inter, sans-serif', color: active ? BRAND_RED : '#111' }}
+                            >
                               {t.title}
                             </div>
                             <div className="text-xs text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -497,6 +620,8 @@ export function Checkout() {
                   })}
                 </div>
 
+
+                {/* Info texts */}
                 {(paymentOption === 'gcash' || paymentOption === 'maya') && (
                   <p className="mt-3 text-xs text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
                     Payment must be completed within 30 minutes. Available 24/7.
@@ -508,13 +633,18 @@ export function Checkout() {
                   </p>
                 )}
 
-                {/* Card form */}
+
+                {/* ── Card accordion ── */}
                 {paymentOption === 'card' && (
-                  <div className="mt-3 rounded-md border bg-[#fafafa] p-4 space-y-3" style={{ borderColor: 'rgba(219,68,68,0.30)' }}>
+                  <div
+                    className="mt-3 rounded-md border bg-[#fafafa] p-4 space-y-3"
+                    style={{ borderColor: 'rgba(219,68,68,0.30)' }}
+                  >
                     <div className="flex items-center gap-2 mb-1">
                       <CreditCard className="w-4 h-4" style={{ color: BRAND_RED }} />
                       <span className="font-bold text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>Card Details</span>
                     </div>
+
 
                     <label className="block">
                       <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Card Number</span>
@@ -533,6 +663,7 @@ export function Checkout() {
                       />
                     </label>
 
+
                     <label className="block">
                       <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Name on Card</span>
                       <input
@@ -544,6 +675,7 @@ export function Checkout() {
                         style={{ fontFamily: 'Inter, sans-serif' }}
                       />
                     </label>
+
 
                     <div className="grid grid-cols-2 gap-3">
                       <label className="block">
@@ -579,6 +711,7 @@ export function Checkout() {
                       </label>
                     </div>
 
+
                     {!cardReady && (
                       <p className="text-xs font-semibold" style={{ color: BRAND_RED, fontFamily: 'Inter, sans-serif' }}>
                         Please complete all card details before placing your order.
@@ -588,6 +721,8 @@ export function Checkout() {
                 )}
               </div>
 
+
+              {/* Errors & notes */}
               {stockIssues.length > 0 && (
                 <p className="text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
                   Some selected items are out of stock or exceed available inventory. Please update your cart.
@@ -603,8 +738,11 @@ export function Checkout() {
               </p>
             </div>
           </div>
+
+
         </div>
       </div>
+
 
       {placing && (
         <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">

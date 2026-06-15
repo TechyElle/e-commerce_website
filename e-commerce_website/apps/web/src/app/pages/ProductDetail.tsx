@@ -10,7 +10,6 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { useCart } from '../context/CartContext';
@@ -19,50 +18,6 @@ import type { Product } from '../context/CartContext';
 import { useStore } from '../context/StoreContext';
 import { resolveProductImage } from '../lib/productImages';
 
-/* ──────────────────────────────────────────────
-   Image Map — same as ProductCard.tsx
-────────────────────────────────────────────── */
-const productImageMap: Record<string, string> = {
-  '400 holes breadboard':    'src/imports/Products/Products/400 holes Breadboard.png',
-  '830 holes breadboard':    'src/imports/Products/Products/830 Holes Breadboard.png',
-  '555 timer':               'src/imports/Products/Products/555 Timer.png',
-  '7 segment':               'src/imports/Products/Products/7 Segment.png',
-  'logic ic':                'src/imports/Products/Products/Logic IC.png',
-  'arduino nano':            'src/imports/Products/Products/Arduino Nano.png',
-  'arduino uno r3':          'src/imports/Products/Products/Arduino Uno r3.png',
-  'arduino uno':             'src/imports/Products/Products/Arduino Uno.png',
-  'esp32':                   'src/imports/Products/Products/Esp32 38pins.png',
-  'esp8266 expansion':       'src/imports/Products/Products/ESP8266 Expansion.png',
-  'esp8266':                 'src/imports/Products/Products/ESP8266.png',
-  'gsm sim800l':             'src/imports/Products/Products/GSM SIM800L.png',
-  'gsm sim900a':             'src/imports/Products/Products/GSM Sim900A.png',
-  'ir sensor':               'src/imports/Products/Products/IR Sensor.png',
-  'line tracking sensor':    'src/imports/Products/Products/Line tracking sensor.png',
-  'mq 2 smoke detector':     'src/imports/Products/Products/MQ 2 Smoke Detector.png',
-  'mq-2 smoke':              'src/imports/Products/Products/MQ 2 Smoke Detector.png',
-  'mq 5 gas detector':       'src/imports/Products/Products/MQ 5 Gas detector.png',
-  'mq-5 gas':                'src/imports/Products/Products/MQ 5 Gas detector.png',
-  'rain drop sensor':        'src/imports/Products/Products/Rain Drop Sensor.png',
-  'raindrop':                'src/imports/Products/Products/Rain Drop Sensor.png',
-  'jdy-31 bluetooth module': 'src/imports/Products/Products/JDY-31 Bluetooth Module.png',
-  'bluetooth module':        'src/imports/Products/Products/JDY-31 Bluetooth Module.png',
-  'rfid module':             'src/imports/Products/Products/RFID Module.png',
-  'rfid':                    'src/imports/Products/Products/RFID Module.png',
-  'motor driver controller': 'src/imports/Products/Products/Motor Driver Controller.png',
-  'motor driver':            'src/imports/Products/Products/Motor Driver Controller.png',
-  'l298n':                   'src/imports/Products/Products/Motor Driver Controller.png',
-  'oled 0.96':               'src/imports/Products/Products/OLED 0.96.png',
-  'oled':                    'src/imports/Products/Products/OLED 0.96.png',
-  'lcd 1602':                'src/imports/Products/Products/LCD 1602.png',
-  'lcd':                     'src/imports/Products/Products/LCD 1602.png',
-  'buzzer':                  'src/imports/Products/Products/Buzzer.png',
-  'diodes':                  'src/imports/Products/Products/Diodes.png',
-  'diode':                   'src/imports/Products/Products/Diodes.png',
-  'electronic kit':          'src/imports/Products/Products/Electronic Kit.png',
-  'starter kit':             'src/imports/Products/Products/Electronic Kit.png',
-  'keypad':                  'src/imports/Products/Products/Keypad.png',
-  'led':                     'src/imports/Products/Products/LED.png',
-};
 
 /**
  * Resolves the correct local image path from product name.
@@ -71,6 +26,7 @@ const productImageMap: Record<string, string> = {
 function resolveImage(product: Product): string {
   return resolveProductImage(product);
 }
+
 
 export function ProductDetail() {
   const { id } = useParams();
@@ -81,7 +37,9 @@ export function ProductDetail() {
   const [wishlisted, setWishlisted] = useState(false);
   const [added, setAdded] = useState(false);
 
+
   const product = products.find((p) => p.id === id);
+
 
   if (!product) {
     return (
@@ -107,16 +65,20 @@ export function ProductDetail() {
     );
   }
 
+
   const imageSrc = resolveImage(product);
   const available = product.inStock && (product.stock ?? 1) > 0;
+
 
   const relatedProducts = products
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
+
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
+
 
   const handleAddToCart = () => {
     if (!available) return;
@@ -128,8 +90,10 @@ export function ProductDetail() {
     toast.success(`Added ${quantity} ${quantity > 1 ? 'items' : 'item'} to cart`);
   };
 
+
   return (
     <div className="min-h-screen" style={{ background: '#ffffff', fontFamily: 'Inter, sans-serif' }}>
+
 
       {/* Breadcrumb */}
       <div style={{ background: '#ffffff', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
@@ -146,7 +110,9 @@ export function ProductDetail() {
         </div>
       </div>
 
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
 
         {/* Back Button */}
         <button
@@ -158,8 +124,10 @@ export function ProductDetail() {
           Back
         </button>
 
+
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-14">
+
 
           {/* ── Image Side ── */}
           <div>
@@ -175,6 +143,7 @@ export function ProductDetail() {
                 style={{ maxHeight: '420px' }}
               />
             </div>
+
 
             {/* Thumbnail row — shows same image 3x as placeholders */}
             <div className="flex gap-3">
@@ -199,6 +168,7 @@ export function ProductDetail() {
             </div>
           </div>
 
+
           {/* ── Info Side ── */}
           <div>
             {/* Category + Stock */}
@@ -219,6 +189,7 @@ export function ProductDetail() {
               )}
             </div>
 
+
             {/* Name */}
             <h1
               className="text-[#111111] mb-4 leading-tight"
@@ -226,6 +197,7 @@ export function ProductDetail() {
             >
               {product.name}
             </h1>
+
 
             {/* Rating */}
             <div className="flex items-center gap-2 mb-5">
@@ -244,6 +216,7 @@ export function ProductDetail() {
               <span className="text-[#111111] font-bold text-sm">{product.rating}</span>
               <span className="text-[#7d8184] text-sm">({product.reviews} reviews)</span>
             </div>
+
 
             {/* Price */}
             <div className="mb-5">
@@ -269,10 +242,12 @@ export function ProductDetail() {
               </div>
             </div>
 
+
             {/* Description */}
             <p className="text-[#7d8184] mb-5 leading-relaxed text-sm">
               {product.description}
             </p>
+
 
             {/* AI Recommendation */}
             <div
@@ -284,6 +259,7 @@ export function ProductDetail() {
                 <strong className="text-[#db4444]">AI Recommendation:</strong> This product is highly rated in its category and is a top pick among engineering students in the Philippines.
               </p>
             </div>
+
 
             {/* Quantity */}
             <div className="flex items-center gap-4 mb-5">
@@ -315,6 +291,7 @@ export function ProductDetail() {
               </div>
             </div>
 
+
             {/* Action Buttons */}
             <div className="flex gap-3 mb-6">
               <button
@@ -337,6 +314,7 @@ export function ProductDetail() {
                 )}
               </button>
 
+
               <button
                 onClick={() => setWishlisted(!wishlisted)}
                 className="w-12 h-12 flex items-center justify-center transition-all"
@@ -348,6 +326,7 @@ export function ProductDetail() {
               >
                 <Heart className={`w-5 h-5 ${wishlisted ? 'text-[#dc2626] fill-[#dc2626]' : 'text-[#111111]'}`} />
               </button>
+
 
               <button
                 className="w-12 h-12 flex items-center justify-center transition-all"
@@ -364,6 +343,7 @@ export function ProductDetail() {
                 <Share2 className="w-5 h-5 text-[#111111]" />
               </button>
             </div>
+
 
             {/* Trust Badges */}
             <div className="grid grid-cols-2 gap-3">
@@ -389,6 +369,7 @@ export function ProductDetail() {
           </div>
         </div>
 
+
         {/* ── Tabs ── */}
         <div
           className="mb-14"
@@ -411,6 +392,7 @@ export function ProductDetail() {
               ))}
             </TabsList>
 
+
             {/* Specs */}
             <TabsContent value="specs" className="p-6 mt-0">
               {product.specs && Object.keys(product.specs).length > 0 ? (
@@ -430,6 +412,7 @@ export function ProductDetail() {
                 <p className="text-[#7d8184] text-sm">No specifications available for this product.</p>
               )}
             </TabsContent>
+
 
             {/* Reviews */}
             <TabsContent value="reviews" className="p-6 mt-0">
@@ -466,6 +449,7 @@ export function ProductDetail() {
                 </div>
               </div>
 
+
               {/* Sample Reviews */}
               {[
                 { name: 'Juan D.', date: 'April 2026', text: 'Great product! Works perfectly for my IoT project. Fast delivery too.', verified: true },
@@ -494,6 +478,7 @@ export function ProductDetail() {
               ))}
             </TabsContent>
 
+
             {/* Shipping */}
             <TabsContent value="shipping" className="p-6 mt-0">
               <div className="space-y-4 text-sm text-[#7d8184]">
@@ -515,6 +500,7 @@ export function ProductDetail() {
             </TabsContent>
           </Tabs>
         </div>
+
 
         {/* ── Related Products ── */}
         {relatedProducts.length > 0 && (

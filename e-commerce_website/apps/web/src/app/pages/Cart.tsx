@@ -5,26 +5,35 @@ import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
 import { resolveProductImage } from '../lib/productImages';
 
+
 type CartItem = ReturnType<typeof useCart>['cart'][number];
+
 
 function formatPhp(n: number) {
   return `₱${n.toFixed(2)}`;
 }
 
+
 export function Cart() {
   const { cart, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
 
+
   const ACCENT_COLOR = 'var(--accent)';
   const BG_COLOR = 'var(--surface)';
+  const BRAND_RED = '#db4444';
+
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
   const [expandTotal, setExpandTotal] = useState(false);
 
+
   // UI mock
   const shipping = cartTotal >= 999 ? 0 : 50;
 
+
   const getSellerKey = (item: CartItem) => item.category || 'Xontrix Shop';
   const isAvailable = (item: CartItem) => item.inStock && (typeof item.stock !== 'number' || item.stock > 0);
+
 
   const shopGroups = useMemo(() => {
     const map = new Map<string, CartItem[]>();
@@ -35,6 +44,7 @@ export function Cart() {
     }
     return Array.from(map.entries()).map(([shopId, items]) => ({ shopId, items }));
   }, [cart]);
+
 
   const preferredShops = useMemo(() => {
     const preferred = new Set<string>();
@@ -47,21 +57,27 @@ export function Cart() {
     return preferred;
   }, [shopGroups]);
 
+
   const selectedItems = useMemo(() => cart.filter((i) => selectedIds.has(i.id) && isAvailable(i)), [cart, selectedIds]);
 
+
   const selectedCount = useMemo(() => selectedItems.reduce((acc, i) => acc + i.quantity, 0), [selectedItems]);
+
 
   const selectedSubtotal = useMemo(
     () => selectedItems.reduce((sum, i) => sum + i.price * i.quantity, 0),
     [selectedItems]
   );
 
+
   const selectedTotal = useMemo(() => {
     if (selectedItems.length === 0) return 0;
     return selectedSubtotal + (selectedSubtotal >= 999 || selectedSubtotal === 0 ? 0 : shipping);
   }, [selectedItems.length, selectedSubtotal, shipping]);
 
+
   const canCheckout = selectedCount > 0;
+
 
   const saved = useMemo(() => {
     const saleSavings = cart.reduce((sum, i) => {
@@ -71,7 +87,9 @@ export function Cart() {
     return Math.max(0, Math.round(saleSavings));
   }, [cart]);
 
+
   // Initial state is UNCHECKED
+
 
   useEffect(() => {
     const cartIds = new Set(cart.map((c) => c.id));
@@ -86,6 +104,7 @@ export function Cart() {
     });
   }, [cart]);
 
+
   const toggleItem = (id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
@@ -95,7 +114,8 @@ export function Cart() {
     });
   };
 
-  const toggleShop = (shopId: string, itemsInShop: CartItem[]) => {
+
+  const toggleShop = (_shopId: string, itemsInShop: CartItem[]) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
       const availableItems = itemsInShop.filter(isAvailable);
@@ -106,8 +126,13 @@ export function Cart() {
     });
   };
 
+
   const onCheckout = () => {
-    if (!canCheckout) return;
+    if (!canCheckout) {
+      alert('Please select the items you want to checkout first.');
+      return;
+    }
+
 
     // Persist selected items so Checkout can render them even if Store/Cart rerenders.
     try {
@@ -116,8 +141,10 @@ export function Cart() {
       // ignore
     }
 
+
     window.location.href = '/checkout';
   };
+
 
   if (cart.length === 0) {
     return (
@@ -173,10 +200,12 @@ export function Cart() {
     );
   }
 
+
   const totalItemCount = cart.reduce((acc, i) => acc + i.quantity, 0);
   const availableIds = cart.filter(isAvailable).map((c) => c.id);
   const selectedAvailableIds = availableIds.filter((id) => selectedIds.has(id));
   const allAvailableSelected = availableIds.length > 0 && selectedAvailableIds.length === availableIds.length;
+
 
   return (
     <div className="min-h-screen" style={{ background: BG_COLOR }}>
@@ -187,12 +216,15 @@ export function Cart() {
           </h1>
           <button
             onClick={clearCart}
-            className="px-5 py-2 text-sm bg-transparent text-[#dc2626] border border-[#dc2626] hover:bg-[#dc2626] hover:text-[#111111] transition-all rounded-sm"
-            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}
+            className="px-5 py-2 text-sm bg-transparent transition-all rounded-sm"
+            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, color: BRAND_RED, borderColor: BRAND_RED, border: `1px solid ${BRAND_RED}` }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = BRAND_RED; e.currentTarget.style.color = '#111111'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = BRAND_RED; }}
           >
             Delete
           </button>
         </div>
+
 
         <div className="space-y-4">
           {shopGroups.map(({ shopId, items }) => {
@@ -203,8 +235,10 @@ export function Cart() {
               .filter((i) => selectedIds.has(i.id))
               .reduce((acc, i) => acc + i.quantity, 0);
 
+
             const bundleDiscountPct = items.length >= 2 ? 2 : 0;
             const nextForDiscount = bundleDiscountPct ? `Add 1 more for ${bundleDiscountPct}% off` : null;
+
 
             return (
               <div key={shopId} className="bg-white border border-black/10 rounded-md overflow-hidden">
@@ -218,6 +252,7 @@ export function Cart() {
                     </span>
                   </div>
                 )}
+
 
                 <div className="px-4 py-3 border-b border-black/10 flex items-center gap-3">
                   <label className="flex items-center gap-3">
@@ -233,6 +268,7 @@ export function Cart() {
                     </span>
                   </label>
 
+
                   {preferred && (
                     <span
                       className="ml-2 px-2 py-0.5 text-xs rounded-sm border"
@@ -247,10 +283,12 @@ export function Cart() {
                     </span>
                   )}
 
+
                   <span className="ml-auto text-xs text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
                     {shopSelectedCount} selected
                   </span>
                 </div>
+
 
                 <div className="divide-y divide-black/5">
                   {items.map((item) => {
@@ -263,6 +301,7 @@ export function Cart() {
                         .join(' • ') || 'Variation: Default';
                     const itemSubtotal = item.price * item.quantity;
 
+
                     return (
                       <div key={item.id} className="px-4 py-3 flex items-start gap-3">
                         <input
@@ -274,11 +313,13 @@ export function Cart() {
                           style={{ accentColor: ACCENT_COLOR }}
                         />
 
+
                         <Link to={`/products/${item.id}`} className="flex-shrink-0">
                           <div className="w-16 h-16 bg-white border border-black/10 rounded-sm overflow-hidden">
                             <img src={resolveProductImage(item)} alt={item.name} className="w-full h-full object-contain p-1" />
                           </div>
                         </Link>
+
 
                         <div className="flex-1 min-w-0">
                           <Link to={`/products/${item.id}`} className="block hover:text-[var(--accent)]">
@@ -287,9 +328,11 @@ export function Cart() {
                             </div>
                           </Link>
 
+
                           <div className="text-sm text-[#7d8184] mt-1" style={{ fontFamily: 'Inter, sans-serif' }}>
                             {unavailable ? 'Out of Stock' : variation}
                           </div>
+
 
                           <div className="mt-2 flex items-baseline gap-2">
                             {onSale && (
@@ -297,18 +340,20 @@ export function Cart() {
                                 {`₱${(item.originalPrice ?? item.price).toFixed(2)}`}
                               </div>
                             )}
-                            <div className="text-base font-bold" style={{ fontFamily: 'Inter, sans-serif', color: ACCENT_COLOR }}>
+                            <div className="text-base font-bold" style={{ fontFamily: 'Inter, sans-serif', color: '#000000' }}>
                               {formatPhp(item.price)}
                             </div>
                           </div>
 
+
                           <div className="mt-2 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
                             <span className="text-[#7d8184]">Subtotal:</span>{' '}
-                            <span className="font-bold" style={{ color: ACCENT_COLOR }}>
+                            <span className="font-bold" style={{ color: '#000000' }}>
                               {formatPhp(itemSubtotal)}
                             </span>
                           </div>
                         </div>
+
 
                         <div className="w-44 flex flex-col items-end gap-3">
                           <div className="flex items-center gap-2">
@@ -318,6 +363,7 @@ export function Cart() {
                             >
                               <Minus className="w-4 h-4" style={{ color: ACCENT_COLOR }} />
                             </button>
+
 
                             <input
                               type="number"
@@ -329,6 +375,7 @@ export function Cart() {
                               style={{ fontFamily: 'Inter, sans-serif' }}
                             />
 
+
                             <button
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
                               disabled={typeof item.stock === 'number' && item.quantity >= item.stock}
@@ -338,11 +385,13 @@ export function Cart() {
                             </button>
                           </div>
 
+
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => removeFromCart(item.id)}
-                            className="text-[var(--accent)] hover:bg-[rgba(219,68,68,0.08)] hover:text-[var(--accent)] px-2 w-auto"
+                            className="px-2 w-auto"
+                            style={{ color: BRAND_RED }}
                           >
                             <Trash2 className="w-4 h-4" />
                             <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800 }}>Delete</span>
@@ -357,6 +406,7 @@ export function Cart() {
           })}
         </div>
       </div>
+
 
       {/* Sticky bottom bar */}
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-black/10">
@@ -382,8 +432,9 @@ export function Cart() {
               </span>
             </label>
 
+
             <div className="flex items-center gap-3 flex-1">
-              <button className="text-sm font-bold" style={{ fontFamily: 'Inter, sans-serif', color: ACCENT_COLOR }}>
+              <button className="text-sm font-bold" style={{ fontFamily: 'Inter, sans-serif', color: BRAND_RED }}>
                 Delete
               </button>
               <button className="text-sm" style={{ fontFamily: 'Inter, sans-serif', color: '#7d8184' }}>
@@ -393,6 +444,7 @@ export function Cart() {
                 Move to My Likes
               </button>
             </div>
+
 
             <div className="min-w-[260px] text-right">
               <button
@@ -408,11 +460,12 @@ export function Cart() {
                 }}
               >
                 <span className="font-semibold">Total ({selectedCount} items):</span>
-                <span className="font-bold" style={{ color: ACCENT_COLOR }}>
+                <span className="font-bold" style={{ color: '#000000' }}>
                   {`₱${selectedTotal.toFixed(0)}`}
                 </span>
                 <span className="text-[#7d8184]">▾</span>
               </button>
+
 
               {expandTotal && (
                 <div className="text-xs mt-1 text-[#7d8184] font-semibold" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -420,13 +473,14 @@ export function Cart() {
                 </div>
               )}
 
+
               <button
                 onClick={canCheckout ? onCheckout : undefined}
                 disabled={!canCheckout}
                 className="mt-2 w-full rounded-sm transition-all py-3 font-bold"
                 style={{
                   fontFamily: 'Inter, sans-serif',
-                  background: ACCENT_COLOR,
+                  background: BRAND_RED,
                   color: '#ffffff',
                   opacity: canCheckout ? 1 : 0.5,
                   cursor: canCheckout ? 'pointer' : 'not-allowed',
@@ -441,4 +495,3 @@ export function Cart() {
     </div>
   );
 }
-
