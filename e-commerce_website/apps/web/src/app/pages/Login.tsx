@@ -9,7 +9,6 @@ import {
   Loader2,
   Lock,
   Mail,
-  ShieldCheck,
   User,
 } from 'lucide-react';
 import logoImg from '../../imports/Logo & QR/LOGO.png';
@@ -68,7 +67,10 @@ export function Login() {
           email: formData.email.trim().toLowerCase(),
           password: formData.password,
         });
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
 
+=======
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
         signIn({ id: res.id, email: res.email, name: res.name ?? 'Xontrix User', role: res.role });
         toast.success('Maligayang pagbabalik!');
         navigate(res.role === 'admin' ? '/admin' : '/');
@@ -78,14 +80,17 @@ export function Login() {
           email: formData.email.trim().toLowerCase(),
           password: formData.password,
         });
-
         toast.success('Account created successfully!');
         setSubmitted(true);
       }
     } catch (error: any) {
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
       console.error(error);
       const messageFromBackend = error?.message || error?.error;
       const message = messageFromBackend || 'May mali sa pag-login. Pakisubukang muli.';
+=======
+      const message = error?.message || error?.error || 'May mali sa pag-login. Pakisubukang muli.';
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
       toast.error(message);
     } finally {
       setLoading(false);
@@ -104,9 +109,7 @@ export function Login() {
       const result = await signInWithPopup(auth, provider);
       const email = result.user.email;
 
-      if (!email) {
-        throw new Error('Google account has no email address.');
-      }
+      if (!email) throw new Error('Google account has no email address.');
 
       const res = await usersApi.googleLogin({
         email: email.trim().toLowerCase(),
@@ -114,12 +117,7 @@ export function Login() {
         providerUid: result.user.uid,
       });
 
-      signIn({
-        id: res.id,
-        email: res.email,
-        name: res.name,
-        role: res.role,
-      });
+      signIn({ id: res.id, email: res.email, name: res.name, role: res.role });
       toast.success('Signed in with Google.');
       navigate('/');
     } catch (error: any) {
@@ -139,11 +137,18 @@ export function Login() {
     const pwd = formData.password;
     const lengthScore = Math.min(4, Math.floor(pwd.length / 4));
     const variety =
-      (/[a-z]/.test(pwd) ? 1 : 0) + (/[A-Z]/.test(pwd) ? 1 : 0) + (/[0-9]/.test(pwd) ? 1 : 0) + (/[^A-Za-z0-9]/.test(pwd) ? 1 : 0);
+      (/[a-z]/.test(pwd) ? 1 : 0) +
+      (/[A-Z]/.test(pwd) ? 1 : 0) +
+      (/[0-9]/.test(pwd) ? 1 : 0) +
+      (/[^A-Za-z0-9]/.test(pwd) ? 1 : 0);
     const total = Math.min(8, lengthScore + variety);
 
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
     if (!pwd) return { label: '', score: 0, hintColor: 'text-white/60' } as const;
 
+=======
+    if (!pwd) return { label: '', score: 0, hintColor: 'text-[#6b7280]' } as const;
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
     if (total <= 2) return { label: 'Weak', score: total, hintColor: 'text-[#ff7a7a]' } as const;
     if (total <= 5) return { label: 'Fair', score: total, hintColor: 'text-[#ffd166]' } as const;
     if (total <= 7) return { label: 'Strong', score: total, hintColor: 'text-[#00bfdf]' } as const;
@@ -151,16 +156,24 @@ export function Login() {
   }, [formData.password]);
 
   return (
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
       <div className="relative min-h-screen bg-[#0a0f1b] px-4 py-8 text-white sm:px-6 lg:px-10">
 
       <div className="relative mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         {/* Left: Benefits panel (hidden on mobile) */}
+=======
+    <div className="relative min-h-screen bg-white px-4 py-8 text-[#111111] sm:px-6 lg:px-10">
+      <div className="relative mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+
+        {/* Left: Image panel */}
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
         <aside className="hidden lg:flex lg:min-h-[640px] lg:flex-col lg:justify-center lg:rounded-lg lg:p-8">
           <div className="flex items-center gap-3 mb-8">
             <img src={logoImg} alt="Xontrix Logo" className="h-12 w-12 object-contain" />
             <span className="text-2xl font-black tracking-normal text-white">XONTRIX</span>
           </div>
 
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
           <div className="relative rounded-lg bg-gradient-to-br from-[#c85353] to-[#a63d3d] p-8 text-white overflow-hidden">
             <div className="absolute inset-0 bg-black/10" />
             <div className="relative">
@@ -195,6 +208,12 @@ export function Login() {
         {/* Right: Login form panel */}
         <main className="w-full max-w-xl justify-self-center lg:justify-self-end">
           <div className="rounded-lg border border-white/20 bg-[#0f1623] p-6 shadow-sm shadow-black/5 sm:p-8 lg:p-10">
+=======
+        {/* Right: Form panel */}
+        <main className="w-full max-w-xl justify-self-center lg:justify-self-end">
+          <div className="rounded-lg border border-[#111111]/10 bg-white p-6 shadow-sm shadow-black/5 sm:p-8 lg:p-10">
+
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
             <div className="lg:hidden">
               <Link to="/" className="mb-6 inline-flex items-center gap-3">
                 <img src={logoImg} alt="Xontrix Logo" className="h-12 w-12 object-contain" />
@@ -239,6 +258,7 @@ export function Login() {
                   </p>
                 </div>
 
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
                 {/* Mode switching buttons */}
                 {isLogin && (
                   <div className="mb-6 flex gap-3">
@@ -260,6 +280,8 @@ export function Login() {
                 )}
 
                 {/* Mode switching: replace tabs/buttons with single primary action (Login) + register link */}
+=======
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
                 <form className="space-y-5" noValidate onSubmit={handleSubmit}>
                   {!isLogin && (
                     <div>
@@ -273,45 +295,46 @@ export function Login() {
                           placeholder="Your full name"
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
 
                           aria-describedby={errors.name ? 'name-error' : undefined}
                           className="h-[52px] w-full rounded-lg border border-white/10 bg-white/5 pl-10 pr-4 text-white placeholder:text-white/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+=======
+                          className="h-[52px] w-full rounded-lg border border-[#111111]/10 bg-white pl-10 pr-4 text-[#111111] placeholder:text-[#111111]/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
                         />
                       </div>
-                      {errors.name && (
-                        <p id="name-error" role="alert" className="mt-2 text-sm text-[#ff7a7a]">
-                          {errors.name}
-                        </p>
-                      )}
+                      {errors.name && <p className="mt-2 text-sm text-[#ff7a7a]">{errors.name}</p>}
                     </div>
                   )}
 
-                  {/* Floating label: Email */}
                   <div>
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
                     <div className="mb-2 block text-sm font-semibold text-white">EMAIL ADDRESS</div>
+=======
+                    <div className="mb-2 block text-sm font-semibold text-[#111111]">EMAIL ADDRESS</div>
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
                     <div className="relative">
                       <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
                       <input
                         id="email"
                         type="email"
                         autoComplete="email"
-                        inputMode="email"
                         placeholder="your@email.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
 
                         aria-describedby={errors.email ? 'email-error' : undefined}
                         className="h-[52px] w-full rounded-lg border border-white/10 bg-white/5 pl-10 pr-4 text-white placeholder:text-white/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+=======
+                        className="h-[52px] w-full rounded-lg border border-[#111111]/10 bg-white pl-10 pr-4 text-[#111111] placeholder:text-[#111111]/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
                       />
                     </div>
-                    {errors.email && (
-                      <p id="email-error" role="alert" className="mt-2 text-sm text-[#ff7a7a]">
-                        {errors.email}
-                      </p>
-                    )}
+                    {errors.email && <p className="mt-2 text-sm text-[#ff7a7a]">{errors.email}</p>}
                   </div>
 
-                  {/* Floating label: Password */}
                   <div>
                     <div className="mb-2 block text-sm font-semibold text-white">PASSWORD</div>
                     <div className="relative">
@@ -323,32 +346,31 @@ export function Login() {
                         placeholder="Password"
                         value={formData.password}
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
 
                         aria-describedby={errors.password ? 'password-error' : undefined}
                         className="h-[52px] w-full rounded-lg border border-white/10 bg-white/5 pl-10 pr-12 text-white placeholder:text-white/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+=======
+                        className="h-[52px] w-full rounded-lg border border-[#111111]/10 bg-white pl-10 pr-12 text-[#111111] placeholder:text-[#111111]/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
                       />
-
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
                         className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-white/50 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00BFDF]"
                         aria-label={showPassword ? 'Hide password' : 'Show password'}
+=======
+                        className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-[#111111]/50 hover:bg-[#111111]/5 hover:text-[#111111]"
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
                       >
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
-
-                    {/* Password strength hint on focus */}
-                    <div className={`mt-2 text-xs font-semibold ${passwordMeta.hintColor} opacity-0 focus-within:opacity-100`}>
-                      <span className="mr-2">Strength:</span>
-                      <span>{passwordMeta.label || '—'}</span>
+                    <div className={`mt-2 text-xs font-semibold ${passwordMeta.hintColor}`}>
+                      {formData.password && <span>Strength: {passwordMeta.label}</span>}
                     </div>
-
-                    {errors.password && (
-                      <p id="password-error" role="alert" className="mt-2 text-sm text-[#ff7a7a]">
-                        {errors.password}
-                      </p>
-                    )}
+                    {errors.password && <p className="mt-2 text-sm text-[#ff7a7a]">{errors.password}</p>}
                   </div>
 
                   {!isLogin && (
@@ -363,16 +385,16 @@ export function Login() {
                           placeholder="Confirm password"
                           value={formData.confirmPassword}
                           onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
 
                           aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined}
                           className="h-[52px] w-full rounded-lg border border-white/10 bg-white/5 pl-10 pr-4 text-white placeholder:text-white/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+=======
+                          className="h-[52px] w-full rounded-lg border border-[#111111]/10 bg-white pl-10 pr-4 text-[#111111] placeholder:text-[#111111]/40 transition-all focus:border-[#00BFDF] focus:outline-none focus:ring-2 focus:ring-[#00BFDF]/25"
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
                         />
                       </div>
-                      {errors.confirmPassword && (
-                        <p id="confirm-password-error" role="alert" className="mt-2 text-sm text-[#ff7a7a]">
-                          {errors.confirmPassword}
-                        </p>
-                      )}
+                      {errors.confirmPassword && <p className="mt-2 text-sm text-[#ff7a7a]">{errors.confirmPassword}</p>}
                     </div>
                   )}
 
@@ -380,7 +402,12 @@ export function Login() {
                     <div className="text-right">
                       <button
                         type="button"
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
                         className="min-h-[44px] text-sm font-semibold text-[#00BFDF] transition-colors hover:text-[#00d4f5]"
+=======
+                        onClick={() => toast.error('Forgot Password is not implemented yet.')}
+                        className="min-h-[44px] text-sm font-semibold text-[#00BFDF] hover:text-[#00d4f5]"
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
                       >
                         Forgot Password?
                       </button>
@@ -410,8 +437,7 @@ export function Login() {
                       type="button"
                       onClick={handleGoogleSignIn}
                       disabled={loading || googleLoading || !isFirebaseConfigured}
-                      title={!isFirebaseConfigured ? 'Firebase Google sign-in is not configured.' : undefined}
-                      className="min-h-[52px] w-full rounded-lg border border-white/20 bg-white py-3 font-bold text-[#111111] transition-colors hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60 flex items-center justify-center gap-3"
+                      className="min-h-[52px] w-full rounded-lg border border-[#111111]/10 bg-white py-3 font-bold text-[#111111] hover:bg-[#f5f5f5] transition-colors disabled:cursor-not-allowed disabled:opacity-60 flex items-center justify-center gap-3"
                     >
                       {googleLoading ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -420,36 +446,36 @@ export function Login() {
                           G
                         </span>
                       )}
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
                       CONTINUE WITH GOOGLE
                     </button>
                   )}
 
                   {/* Register link below the primary login button */}
+=======
+                      SIGN IN WITH GOOGLE
+                    </button>
+                  )}
+
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
                   <div className="pt-1 text-center">
                     {isLogin ? (
                       <span className="text-sm font-semibold text-white/70">
                         Wala pang account?{' '}
-                        <button
-                          type="button"
-                          onClick={() => switchMode(false)}
-                          className="font-bold text-[#00bfdf] transition-colors hover:text-[#00d4f5]"
-                        >
+                        <button type="button" onClick={() => switchMode(false)} className="font-bold text-[#00bfdf] hover:text-[#00d4f5]">
                           Register
                         </button>
                       </span>
                     ) : (
                       <span className="text-sm font-semibold text-white/70">
                         May account na?{' '}
-                        <button
-                          type="button"
-                          onClick={() => switchMode(true)}
-                          className="font-bold text-[#00bfdf] transition-colors hover:text-[#00d4f5]"
-                        >
+                        <button type="button" onClick={() => switchMode(true)} className="font-bold text-[#00bfdf] hover:text-[#00d4f5]">
                           Login
                         </button>
                       </span>
                     )}
                   </div>
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
 
                   {isLogin && (
                     <div className="mt-6 space-y-2 border-t border-white/10 pt-6 text-center">
@@ -466,12 +492,15 @@ export function Login() {
                       </p>
                     </div>
                   )}
+=======
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
                 </form>
               </div>
             )}
           </div>
         </main>
 
+<<<<<<< HEAD:e-commerce_website/apps/web/src/app/pages/Login.tsx
         {/* Mobile: full-bleed light hero panel (form only on small screens) */}
         <section className="relative col-span-2 -mx-4 mt-8 block overflow-hidden rounded-lg border border-white/10 bg-gradient-to-br from-[#c85353] to-[#a63d3d] px-4 py-10 lg:hidden">
           <div className="relative flex flex-col items-center justify-center">
@@ -481,10 +510,17 @@ export function Login() {
             </div>
             <h3 className="text-2xl font-black text-white mb-2">Manage orders and shop faster</h3>
             <p className="text-sm font-semibold text-white/90 text-center">with your Xontrix account</p>
+=======
+        {/* Mobile hero */}
+        <section className="relative col-span-2 -mx-4 mt-8 block overflow-hidden rounded-lg border border-[#111111]/10 bg-white px-4 py-10 lg:hidden">
+          <div className="relative flex flex-col items-center justify-center">
+            <img src={logoImg} alt="Xontrix Logo" className="relative h-20 w-20 object-contain mb-4" />
+            <h3 className="text-2xl font-black text-black mb-2">Manage orders and shop faster</h3>
+            <p className="text-sm font-semibold text-black text-center">with your Xontrix account</p>
+>>>>>>> 8bda908 (Gold: update Checkout and Login from aipowered version):src/app/pages/Login.tsx
           </div>
         </section>
       </div>
     </div>
   );
 }
-

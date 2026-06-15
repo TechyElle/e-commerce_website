@@ -7,11 +7,15 @@ import {
   MapPin,
   MessageSquare,
   Pencil,
+  Check,
+  X,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useStore, type StoreOrder } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
 import { resolveProductImage } from '../lib/productImages';
+
+const BRAND_RED = '#db4444';
 
 function formatPhp(n: number) {
   return `₱${n.toFixed(2)}`;
@@ -30,7 +34,6 @@ export function Checkout() {
   const [placedOrder, setPlacedOrder] = useState<StoreOrder | null>(null);
   const [placeError, setPlaceError] = useState<string | null>(null);
 
-  // Restore selected items from Cart selection
   const [checkoutCart, setCheckoutCart] = useState<typeof cart>([]);
   useEffect(() => {
     try {
@@ -46,18 +49,37 @@ export function Checkout() {
 
   const effectiveCart = checkoutCart.length > 0 ? checkoutCart : cart;
 
-  // UI state
-  const [paymentTab, setPaymentTab] = useState<string>('payment_center');
-  const [paymentOption, setPaymentOption] = useState<'7eleven' | 'gcash' | 'maya' | 'cod' | 'card'>('gcash');
+  const [paymentOption, setPaymentOption] = useState<'gcash' | 'maya' | 'cod' | 'card'>('gcash');
+
   const [cardDetails, setCardDetails] = useState({
     number: '',
     name: '',
     expiry: '',
     cvc: '',
   });
-  const [recipientName] = useState(user?.displayName || 'Juan Dela Cruz');
-  const [recipientPhone] = useState('09XXXXXXXXX');
-  const [addressLine] = useState('Brgy. Example, City, Country');
+
+  const [isEditingAddress, setIsEditingAddress] = useState(false);
+  const [savedAddress, setSavedAddress] = useState({
+    name: user?.displayName || 'Juan Dela Cruz',
+    phone: '09XXXXXXXXX',
+    street: 'Brgy. Example',
+    city: 'City',
+    province: 'Province',
+    zip: '0000',
+  });
+  const [draftAddress, setDraftAddress] = useState({ ...savedAddress });
+
+  const handleSaveAddress = () => {
+    setSavedAddress({ ...draftAddress });
+    setIsEditingAddress(false);
+  };
+
+  const handleCancelAddress = () => {
+    setDraftAddress({ ...savedAddress });
+    setIsEditingAddress(false);
+  };
+
+  const addressDisplay = `${savedAddress.street}, ${savedAddress.city}, ${savedAddress.province} ${savedAddress.zip}`;
 
   const merchandiseSubtotal = useMemo(
     () => effectiveCart.reduce((sum, i) => sum + i.price * i.quantity, 0),
@@ -73,7 +95,6 @@ export function Checkout() {
   );
 
   const paymentMethodLabel = useMemo(() => {
-    if (paymentOption === '7eleven') return 'payment_center_7eleven';
     if (paymentOption === 'maya') return 'maya';
     if (paymentOption === 'cod') return 'cod';
     if (paymentOption === 'card') return 'card';
@@ -123,7 +144,7 @@ export function Checkout() {
       const placed = await createOrder({
         items: effectiveCart,
         paymentMethod: paymentMethodLabel,
-        customerName: recipientName,
+        customerName: savedAddress.name,
         customerEmail: user?.email || 'guest@xontrix.local',
       });
       setPlacedOrder(placed);
@@ -138,6 +159,9 @@ export function Checkout() {
 
   const ACCENT_COLOR = 'var(--accent)';
   const BG_COLOR = 'var(--surface)';
+
+  const inputClass = `h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none transition-colors focus:border-[#db4444]`;
+  const labelClass = `mb-1 block text-xs font-bold uppercase text-[#7d8184]`;
 
   if (effectiveCart.length === 0 && !placedOrder) {
     return (
@@ -232,6 +256,13 @@ export function Checkout() {
     );
   }
 
+  const paymentTiles = [
+    { key: 'gcash' as const, title: 'GCash', sub: 'Pay instantly', icon: 'G' },
+    { key: 'maya' as const, title: 'Maya', sub: 'Pay instantly', icon: 'M' },
+    { key: 'cod' as const, title: 'Cash on Delivery', sub: 'Pay when received', icon: '₱' },
+    { key: 'card' as const, title: 'Credit / Debit Card', sub: 'Secure checkout', icon: '💳' },
+  ];
+
   return (
     <div className="min-h-screen" style={{ background: BG_COLOR }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -242,32 +273,82 @@ export function Checkout() {
 
             {/* Delivery Address */}
             <div className="bg-white border border-black/10 rounded-md p-5">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-5 h-5" style={{ color: ACCENT_COLOR }} />
-                <h2 className="text-lg" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800, color: ACCENT_COLOR }}>
+              <div className="flex items-center gap-2 mb-4">
+                <MapPin className="w-5 h-5" style={{ color: BRAND_RED }} />
+                <h2 className="text-lg" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800, color: BRAND_RED }}>
                   Delivery Address
                 </h2>
               </div>
-              <div className="mt-4 flex items-start justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <div className="font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{recipientName}</div>
-                    <div className="font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{recipientPhone}</div>
+
+              {!isEditingAddress ? (
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <span className="font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{savedAddress.name}</span>
+                      <span className="text-[#7d8184]">|</span>
+                      <span className="font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{savedAddress.phone}</span>
+                    </div>
+                    <p className="mt-2 text-sm text-[#444]" style={{ fontFamily: 'Inter, sans-serif' }}>{addressDisplay}</p>
+                    <span
+                      className="inline-flex items-center border px-3 py-1 text-xs font-bold mt-3"
+                      style={{ fontFamily: 'Inter, sans-serif', borderColor: 'rgba(219,68,68,0.4)', color: BRAND_RED }}
+                    >
+                      Default
+                    </span>
                   </div>
-                  <div className="mt-2 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>{addressLine}</div>
-                  <span className="inline-flex items-center border border-black/10 px-3 py-1 text-xs font-bold mt-3" style={{ fontFamily: 'Inter, sans-serif' }}>
-                    Default
-                  </span>
+                  <button
+                    onClick={() => { setDraftAddress({ ...savedAddress }); setIsEditingAddress(true); }}
+                    className="inline-flex items-center gap-1 text-sm font-bold shrink-0 hover:underline"
+                    style={{ color: BRAND_RED, fontFamily: 'Inter, sans-serif' }}
+                  >
+                    <Pencil className="w-4 h-4" /> Edit
+                  </button>
                 </div>
-                <a href="#" onClick={(e) => e.preventDefault()} className="inline-flex items-center gap-1 text-sm font-bold shrink-0" style={{ color: ACCENT_COLOR, fontFamily: 'Inter, sans-serif' }}>
-                  <Pencil className="w-4 h-4" /> Change
-                </a>
-              </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label className="block">
+                      <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Full Name</span>
+                      <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.name} onChange={(e) => setDraftAddress({ ...draftAddress, name: e.target.value })} placeholder="Juan Dela Cruz" />
+                    </label>
+                    <label className="block">
+                      <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Phone Number</span>
+                      <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.phone} onChange={(e) => setDraftAddress({ ...draftAddress, phone: e.target.value })} placeholder="09XXXXXXXXX" inputMode="tel" />
+                    </label>
+                  </div>
+                  <label className="block">
+                    <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Street Address / Barangay</span>
+                    <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.street} onChange={(e) => setDraftAddress({ ...draftAddress, street: e.target.value })} placeholder="123 Rizal St., Brgy. San Antonio" />
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <label className="block">
+                      <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>City / Municipality</span>
+                      <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.city} onChange={(e) => setDraftAddress({ ...draftAddress, city: e.target.value })} placeholder="Quezon City" />
+                    </label>
+                    <label className="block">
+                      <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Province</span>
+                      <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.province} onChange={(e) => setDraftAddress({ ...draftAddress, province: e.target.value })} placeholder="Metro Manila" />
+                    </label>
+                    <label className="block">
+                      <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>ZIP Code</span>
+                      <input className={inputClass} style={{ fontFamily: 'Inter, sans-serif' }} value={draftAddress.zip} onChange={(e) => setDraftAddress({ ...draftAddress, zip: e.target.value.replace(/\D/g, '').slice(0, 4) })} placeholder="1100" inputMode="numeric" />
+                    </label>
+                  </div>
+                  <div className="flex gap-3 pt-1">
+                    <button onClick={handleSaveAddress} className="inline-flex items-center gap-2 px-5 py-2 text-white text-sm font-bold rounded-sm hover:opacity-90" style={{ background: BRAND_RED, fontFamily: 'Inter, sans-serif' }}>
+                      <Check className="w-4 h-4" /> Save Address
+                    </button>
+                    <button onClick={handleCancelAddress} className="inline-flex items-center gap-2 px-5 py-2 text-sm font-bold rounded-sm border border-black/15 bg-white hover:bg-[#f5f5f5]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                      <X className="w-4 h-4" /> Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Products Ordered */}
             <div className="bg-white border border-black/10 rounded-md p-5">
-              <h2 className="text-lg mb-3" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 900, color: ACCENT_COLOR }}>
+              <h2 className="text-lg mb-3" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 900, color: BRAND_RED }}>
                 Products Ordered
               </h2>
               <div className="hidden md:grid grid-cols-12 gap-2 text-xs text-[#7d8184] mb-3">
@@ -282,7 +363,7 @@ export function Checkout() {
                   <div key={group.seller} className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{group.seller}</div>
-                      <a href="#" onClick={(e) => e.preventDefault()} className="inline-flex items-center gap-1 text-sm font-bold" style={{ color: ACCENT_COLOR, fontFamily: 'Inter, sans-serif' }}>
+                      <a href="#" onClick={(e) => e.preventDefault()} className="inline-flex items-center gap-1 text-sm font-bold" style={{ color: BRAND_RED, fontFamily: 'Inter, sans-serif' }}>
                         <MessageSquare className="w-4 h-4" /> chat now
                       </a>
                     </div>
@@ -300,25 +381,23 @@ export function Checkout() {
                             </div>
                           </div>
                         </div>
-                        <div className="md:col-span-2 text-center text-sm font-bold" style={{ color: ACCENT_COLOR, fontFamily: 'Inter, sans-serif' }}>
+                        <div className="md:col-span-2 text-center text-sm font-bold" style={{ color: BRAND_RED, fontFamily: 'Inter, sans-serif' }}>
                           {formatPhp(item.price)}
                         </div>
                         <div className="md:col-span-2 text-center text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
                           {item.quantity}
                         </div>
-                        <div className="md:col-span-2 text-right text-sm font-bold" style={{ color: ACCENT_COLOR, fontFamily: 'Inter, sans-serif' }}>
+                        <div className="md:col-span-2 text-right text-sm font-bold" style={{ color: BRAND_RED, fontFamily: 'Inter, sans-serif' }}>
                           {formatPhp(item.price * item.quantity)}
                         </div>
                       </div>
                     ))}
 
-                    <input className="w-full h-11 px-3 bg-white border border-black/10 rounded-sm" placeholder="Please leave a message..." style={{ fontFamily: 'Inter, sans-serif' }} />
+                    <input className="w-full h-11 px-3 bg-white border border-black/10 rounded-sm outline-none focus:border-[#db4444] transition-colors" placeholder="Please leave a message..." style={{ fontFamily: 'Inter, sans-serif' }} />
 
                     <div className="bg-white border border-black/10 rounded-md px-3 py-3">
-                      <div className="text-sm font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>
-                        Estimated delivery: 3-5 days
-                      </div>
-                      <div className="text-sm font-bold mt-1" style={{ color: ACCENT_COLOR, fontFamily: 'Inter, sans-serif' }}>
+                      <div className="text-sm font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>Estimated delivery: 3-5 days</div>
+                      <div className="text-sm font-bold mt-1" style={{ color: BRAND_RED, fontFamily: 'Inter, sans-serif' }}>
                         {shippingSubtotal === 0 ? 'FREE Shipping' : `Shipping: ${formatPhp0(shippingSubtotal)}`}
                       </div>
                     </div>
@@ -326,190 +405,202 @@ export function Checkout() {
                 ))}
               </div>
             </div>
-
-            {/* Payment Method */}
-            <div className="bg-white border border-black/10 rounded-md p-5">
-              <h2 className="text-lg" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 900, color: ACCENT_COLOR }}>
-                Payment Method
-              </h2>
-
-              <div className="mt-4 border-b border-black/10 flex flex-wrap gap-2">
-                {[
-                  { id: 'payment_center', label: 'E-Wallet (GCash / Maya)' },
-                  { id: 'card', label: 'Card' },
-                  { id: 'cod', label: 'Cash on Delivery' },
-                ].map((t) => {
-                  const active = paymentTab === t.id;
-                  return (
-                    <button
-                      key={t.id}
-                      onClick={() => {
-                        setPaymentTab(t.id);
-                        if (t.id === 'cod') setPaymentOption('cod');
-                        else if (t.id === 'card') setPaymentOption('card');
-                        else setPaymentOption('gcash');
-                      }}
-                      className="px-3 py-2 text-sm font-bold"
-                      style={{
-                        fontFamily: 'Inter, sans-serif',
-                        color: active ? ACCENT_COLOR : '#111111',
-                        borderBottom: active ? `2px solid ${ACCENT_COLOR}` : '2px solid transparent',
-                      }}
-                    >
-                      {t.label}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {paymentTab === 'payment_center' && (
-                <div className="mt-4 space-y-3">
-                  <label className="flex items-start gap-3 p-3 border rounded-md cursor-pointer" style={{ borderColor: paymentOption === 'gcash' ? 'rgba(219,68,68,0.35)' : 'rgba(0,0,0,0.1)' }}>
-                    <input type="radio" name="pc" checked={paymentOption === 'gcash'} onChange={() => setPaymentOption('gcash')} className="mt-1" style={{ accentColor: ACCENT_COLOR }} />
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-md flex items-center justify-center" style={{ background: 'rgba(219,68,68,0.12)' }}>
-                          <span style={{ fontWeight: 900, color: ACCENT_COLOR }}>G</span>
-                        </div>
-                        <div className="font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>GCash</div>
-                      </div>
-                      <div className="text-sm text-[#7d8184] mt-1" style={{ fontFamily: 'Inter, sans-serif' }}>
-                        Payment should be completed within 30 mins. Accessible 24/7.
-                      </div>
-                    </div>
-                  </label>
-
-                  <label className="flex items-start gap-3 p-3 border rounded-md cursor-pointer" style={{ borderColor: paymentOption === 'maya' ? 'rgba(219,68,68,0.35)' : 'rgba(0,0,0,0.1)' }}>
-                    <input type="radio" name="pc" checked={paymentOption === 'maya'} onChange={() => setPaymentOption('maya')} className="mt-1" style={{ accentColor: ACCENT_COLOR }} />
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-md border border-black/10 flex items-center justify-center font-bold" style={{ color: ACCENT_COLOR }}>M</div>
-                        <div className="font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>Maya</div>
-                      </div>
-                      <div className="text-sm text-[#7d8184] mt-1" style={{ fontFamily: 'Inter, sans-serif' }}>
-                        Payment should be completed within 30 mins. Accessible 24/7.
-                      </div>
-                    </div>
-                  </label>
-                </div>
-              )}
-
-              {paymentTab === 'card' && (
-                <div className="mt-4 rounded-md border border-black/10 bg-[#f5f5f5] p-4">
-                  <label className="block">
-                    <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Card Number</span>
-                    <input
-                      inputMode="numeric"
-                      autoComplete="cc-number"
-                      value={cardDetails.number}
-                      onChange={(event) => setCardDetails({ ...cardDetails, number: event.target.value })}
-                      placeholder="1234 5678 9012 3456"
-                      className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
-                      style={{ fontFamily: 'Inter, sans-serif' }}
-                    />
-                  </label>
-                  <label className="mt-3 block">
-                    <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Name on Card</span>
-                    <input
-                      autoComplete="cc-name"
-                      value={cardDetails.name}
-                      onChange={(event) => setCardDetails({ ...cardDetails, name: event.target.value })}
-                      placeholder="Juan Dela Cruz"
-                      className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
-                      style={{ fontFamily: 'Inter, sans-serif' }}
-                    />
-                  </label>
-                  <div className="mt-3 grid grid-cols-2 gap-3">
-                    <label className="block">
-                      <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Expiry</span>
-                      <input
-                        inputMode="numeric"
-                        autoComplete="cc-exp"
-                        value={cardDetails.expiry}
-                        onChange={(event) => setCardDetails({ ...cardDetails, expiry: event.target.value })}
-                        placeholder="MM/YY"
-                        className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
-                        style={{ fontFamily: 'Inter, sans-serif' }}
-                      />
-                    </label>
-                    <label className="block">
-                      <span className="mb-1 block text-xs font-bold uppercase text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>CVC</span>
-                      <input
-                        inputMode="numeric"
-                        autoComplete="cc-csc"
-                        value={cardDetails.cvc}
-                        onChange={(event) => setCardDetails({ ...cardDetails, cvc: event.target.value })}
-                        placeholder="123"
-                        className="h-11 w-full rounded-sm border border-black/10 bg-white px-3 text-sm outline-none focus:border-[var(--accent)]"
-                        style={{ fontFamily: 'Inter, sans-serif' }}
-                      />
-                    </label>
-                  </div>
-                  {!cardReady && (
-                    <p className="mt-3 text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
-                      Complete the card details before placing the order.
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {paymentTab === 'cod' && (
-                <div className="mt-4 p-4 border border-black/10 rounded-md bg-[#f5f5f5]">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">💵</span>
-                    <div>
-                      <div className="font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>Cash on Delivery</div>
-                      <div className="text-sm text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>Pay when you receive your order.</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Right column */}
           <div className="lg:col-span-1">
-            <div className="bg-white border border-black/10 rounded-md p-5 sticky top-20">
-              <h3 className="text-base font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>Order Summary</h3>
-              <div className="mt-4 space-y-3 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
-                <div className="flex justify-between">
-                  <span className="text-[#7d8184]">Merchandise Subtotal</span>
-                  <span className="font-bold">{formatPhp(merchandiseSubtotal)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[#7d8184]">Shipping</span>
-                  <span className="font-bold">{shippingSubtotal === 0 ? <span className="text-[#10b981]">FREE</span> : formatPhp(shippingSubtotal)}</span>
-                </div>
-                <div className="border-t border-black/10 pt-3 flex justify-between">
-                  <span className="text-[#7d8184]">Total Payment</span>
-                  <span className="font-bold text-xl" style={{ color: ACCENT_COLOR }}>{formatPhp(totalPayment)}</span>
+            <div className="bg-white border border-black/10 rounded-md p-5 sticky top-20 space-y-5">
+
+              {/* Order Summary */}
+              <div>
+                <h3 className="text-base font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>Order Summary</h3>
+                <div className="mt-4 space-y-3 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  <div className="flex justify-between">
+                    <span className="text-[#7d8184]">Merchandise Subtotal</span>
+                    <span className="font-bold">{formatPhp(merchandiseSubtotal)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[#7d8184]">Shipping</span>
+                    <span className="font-bold">
+                      {shippingSubtotal === 0 ? <span className="text-[#10b981]">FREE</span> : formatPhp(shippingSubtotal)}
+                    </span>
+                  </div>
+                  <div className="border-t border-black/10 pt-3 flex justify-between">
+                    <span className="text-[#7d8184]">Total Payment</span>
+                    <span className="font-bold text-xl" style={{ color: BRAND_RED }}>{formatPhp(totalPayment)}</span>
+                  </div>
                 </div>
               </div>
 
+              {/* Place Order button */}
               <button
                 onClick={onPlaceOrder}
                 disabled={!canPlace}
-                className="mt-5 w-full py-4 text-white font-bold transition-all"
-                style={{ fontFamily: 'Inter, sans-serif', background: ACCENT_COLOR, opacity: canPlace ? 1 : 0.6, cursor: canPlace ? 'pointer' : 'not-allowed' }}
+                className="w-full py-4 text-white font-bold rounded-sm transition-all hover:opacity-90 active:scale-[0.98]"
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  background: BRAND_RED,
+                  opacity: canPlace ? 1 : 0.6,
+                  cursor: canPlace ? 'pointer' : 'not-allowed',
+                  fontSize: '1rem',
+                  letterSpacing: '0.03em',
+                }}
               >
-                {placing ? 'Placing Order...' : 'Place Order'}
+                {placing ? 'Placing Order…' : 'Place Order'}
               </button>
 
-              {stockIssues.length > 0 && (
-                <div className="mt-3 text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
-                  Some selected items are out of stock or exceed available inventory. Please update your cart.
-                </div>
-              )}
+              {/* Payment Method */}
+              <div>
+                <h4 className="text-sm font-bold mb-3 uppercase tracking-wide" style={{ fontFamily: 'Inter, sans-serif', color: '#111' }}>
+                  Payment Method
+                </h4>
 
-              {placeError && (
-                <div className="mt-3 text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
-                  {placeError}
+                <div className="space-y-2">
+                  {paymentTiles.map((t) => {
+                    const active = paymentOption === t.key;
+                    return (
+                      <button
+                        key={t.key}
+                        type="button"
+                        onClick={() => setPaymentOption(t.key)}
+                        className="w-full text-left p-3 rounded-md border transition-all"
+                        style={{
+                          borderColor: active ? BRAND_RED : 'rgba(0,0,0,0.10)',
+                          background: active ? 'rgba(219,68,68,0.05)' : '#ffffff',
+                          boxShadow: active ? `0 0 0 2px rgba(219,68,68,0.18)` : 'none',
+                        }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span
+                            className="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0"
+                            style={{ borderColor: active ? BRAND_RED : '#ccc', background: active ? BRAND_RED : 'transparent' }}
+                          >
+                            {active && <span className="w-1.5 h-1.5 rounded-full bg-white block" />}
+                          </span>
+                          <span
+                            className="w-8 h-8 rounded-md flex items-center justify-center font-black text-sm shrink-0"
+                            style={{ background: active ? 'rgba(219,68,68,0.12)' : 'rgba(0,0,0,0.04)', color: active ? BRAND_RED : '#555' }}
+                          >
+                            {t.icon}
+                          </span>
+                          <div className="min-w-0">
+                            <div className="font-bold text-sm leading-tight" style={{ fontFamily: 'Inter, sans-serif', color: active ? BRAND_RED : '#111' }}>
+                              {t.title}
+                            </div>
+                            <div className="text-xs text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                              {t.sub}
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
-              )}
 
-              <div className="mt-3 text-xs text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
-                By placing your order, you agree to the checkout terms.
+                {(paymentOption === 'gcash' || paymentOption === 'maya') && (
+                  <p className="mt-3 text-xs text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                    Payment must be completed within 30 minutes. Available 24/7.
+                  </p>
+                )}
+                {paymentOption === 'cod' && (
+                  <p className="mt-3 text-xs text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                    Pay in cash when your order arrives at your door.
+                  </p>
+                )}
+
+                {/* Card form */}
+                {paymentOption === 'card' && (
+                  <div className="mt-3 rounded-md border bg-[#fafafa] p-4 space-y-3" style={{ borderColor: 'rgba(219,68,68,0.30)' }}>
+                    <div className="flex items-center gap-2 mb-1">
+                      <CreditCard className="w-4 h-4" style={{ color: BRAND_RED }} />
+                      <span className="font-bold text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>Card Details</span>
+                    </div>
+
+                    <label className="block">
+                      <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Card Number</span>
+                      <input
+                        inputMode="numeric"
+                        autoComplete="cc-number"
+                        value={cardDetails.number}
+                        onChange={(e) => {
+                          const digits = e.target.value.replace(/\D/g, '').slice(0, 19);
+                          const spaced = digits.replace(/(\d{4})(?=\d)/g, '$1 ');
+                          setCardDetails({ ...cardDetails, number: spaced });
+                        }}
+                        placeholder="1234 5678 9012 3456"
+                        className={inputClass}
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                      />
+                    </label>
+
+                    <label className="block">
+                      <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Name on Card</span>
+                      <input
+                        autoComplete="cc-name"
+                        value={cardDetails.name}
+                        onChange={(e) => setCardDetails({ ...cardDetails, name: e.target.value })}
+                        placeholder="Juan Dela Cruz"
+                        className={inputClass}
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                      />
+                    </label>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <label className="block">
+                        <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>Expiry</span>
+                        <input
+                          inputMode="numeric"
+                          autoComplete="cc-exp"
+                          value={cardDetails.expiry}
+                          onChange={(e) => {
+                            const raw = e.target.value.replace(/\D/g, '').slice(0, 4);
+                            const next = raw.length >= 3 ? `${raw.slice(0, 2)}/${raw.slice(2)}` : raw;
+                            setCardDetails({ ...cardDetails, expiry: next });
+                          }}
+                          placeholder="MM/YY"
+                          className={inputClass}
+                          style={{ fontFamily: 'Inter, sans-serif' }}
+                        />
+                      </label>
+                      <label className="block">
+                        <span className={labelClass} style={{ fontFamily: 'Inter, sans-serif' }}>CVC</span>
+                        <input
+                          inputMode="numeric"
+                          autoComplete="cc-csc"
+                          value={cardDetails.cvc}
+                          onChange={(e) => {
+                            const next = e.target.value.replace(/\D/g, '').slice(0, 4);
+                            setCardDetails({ ...cardDetails, cvc: next });
+                          }}
+                          placeholder="123"
+                          className={inputClass}
+                          style={{ fontFamily: 'Inter, sans-serif' }}
+                        />
+                      </label>
+                    </div>
+
+                    {!cardReady && (
+                      <p className="text-xs font-semibold" style={{ color: BRAND_RED, fontFamily: 'Inter, sans-serif' }}>
+                        Please complete all card details before placing your order.
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
+
+              {stockIssues.length > 0 && (
+                <p className="text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  Some selected items are out of stock or exceed available inventory. Please update your cart.
+                </p>
+              )}
+              {placeError && (
+                <p className="text-xs font-semibold text-[#dc2626]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  {placeError}
+                </p>
+              )}
+              <p className="text-xs text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                By placing your order, you agree to the checkout terms.
+              </p>
             </div>
           </div>
         </div>
