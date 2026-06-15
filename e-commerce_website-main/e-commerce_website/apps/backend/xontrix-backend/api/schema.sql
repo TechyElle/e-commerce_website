@@ -1,0 +1,59 @@
+CREATE DATABASE IF NOT EXISTS xontrix_store
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE xontrix_store;
+
+CREATE TABLE IF NOT EXISTS products (
+  id VARCHAR(36) PRIMARY KEY,
+  name VARCHAR(160) NOT NULL,
+  price DECIMAL(10,2) NOT NULL DEFAULT 0,
+  category VARCHAR(120) NOT NULL,
+  description TEXT NOT NULL,
+  image VARCHAR(255) NOT NULL,
+  stock INT NOT NULL DEFAULT 0,
+  in_stock TINYINT(1) NOT NULL DEFAULT 1,
+  rating DECIMAL(3,2) NOT NULL DEFAULT 0,
+  reviews INT NOT NULL DEFAULT 0,
+  is_new TINYINT(1) NOT NULL DEFAULT 0,
+  specs JSON NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  id VARCHAR(36) PRIMARY KEY,
+  name VARCHAR(120) NOT NULL,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+  id VARCHAR(36) PRIMARY KEY,
+  customer_name VARCHAR(120) NOT NULL,
+  customer_email VARCHAR(190) NOT NULL,
+  payment_method VARCHAR(80) NOT NULL,
+  status ENUM('pending', 'shipped', 'delivered') NOT NULL DEFAULT 'pending',
+  subtotal DECIMAL(10,2) NOT NULL DEFAULT 0,
+  shipping DECIMAL(10,2) NOT NULL DEFAULT 0,
+  total DECIMAL(10,2) NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_orders_email (customer_email),
+  INDEX idx_orders_created_at (created_at)
+);
+
+CREATE TABLE IF NOT EXISTS order_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id VARCHAR(36) NOT NULL,
+  product_id VARCHAR(36) NOT NULL,
+  name VARCHAR(160) NOT NULL,
+  price DECIMAL(10,2) NOT NULL DEFAULT 0,
+  quantity INT NOT NULL DEFAULT 1,
+  image VARCHAR(255) NULL,
+  FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+  INDEX idx_order_items_product (product_id)
+);
+
