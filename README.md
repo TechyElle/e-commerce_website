@@ -47,17 +47,17 @@
 
 ## 🏗️ Architecture
 
-This repository is split into two main parts:
+This repository is structured as a monorepo containing:
 
 ### Frontend (React + Vite)
-- **Location**: `src/`
+- **Location**: `apps/web/src/`
 - **Dev Server**: `pnpm dev` (Vite dev server)
-- **API Client**: `src/app/lib/api.ts`
+- **API Client**: `apps/web/src/app/lib/api.ts`
 
 ### Backend (PHP + MySQL)
-- **Location**: `xontrix-backend/`
+- **Location**: `apps/backend/xontrix-backend/`
 - **Server**: Apache (e.g., XAMPP)
-- **Install & Schema**: `xontrix-backend/api/install.php`, `xontrix-backend/api/schema.sql`
+- **Install & Schema**: `apps/backend/xontrix-backend/api/install.php`, `apps/backend/xontrix-backend/api/schema.sql`
 
 ---
 
@@ -65,9 +65,9 @@ This repository is split into two main parts:
 
 ### 1️⃣ Run the PHP/MySQL Backend (XAMPP)
 
-Follow `xontrix-backend/README.md`:
+Follow `apps/backend/xontrix-backend/README.md`:
 
-1. Copy `xontrix-backend` into:
+1. Copy `apps/backend/xontrix-backend` into:
    ```
    C:\xampp\htdocs\xontrix-backend
    ```
@@ -87,12 +87,12 @@ Follow `xontrix-backend/README.md`:
 
 ### 2️⃣ Configure Frontend API Base URL
 
-The frontend API client uses `src/app/lib/api.ts` with:
+The frontend API client uses `apps/web/src/app/lib/api.ts` with:
 ```
 BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost/xontrix-backend/api'
 ```
 
-Add a `.env` file at the project root:
+Add a `.env` file at the project root or under `apps/web/`:
 ```bash
 VITE_API_URL=http://localhost/xontrix-backend/api
 ```
@@ -163,23 +163,24 @@ Available routes in the UI:
 
 ```
 .
-├── index.html                 # Vite entry point
-├── package.json               # Frontend scripts & dependencies
-├── vite.config.ts             # React + Tailwind config
-├── src/
-│   ├── main.tsx               # Application bootstrap
-│   ├── app/
-│   │   ├── App.tsx            # Root component
-│   │   ├── routes.tsx         # Routing configuration
-│   │   ├── pages/             # Page components (Home, Products, Cart, etc.)
-│   │   ├── components/        # Reusable UI components
-│   │   ├── context/           # Auth/Cart/Store state management
-│   │   └── lib/               # Utilities & API client
-│   ├── imports/               # Local assets (images, logo)
-│   └── styles/                # Tailwind & global styles
-└── xontrix-backend/
-    └── api/                   # PHP endpoints, schema & installation
+├── package.json               # Root dependencies & workspace scripts
+├── pnpm-workspace.yaml        # pnpm workspace configuration
+├── pnpm-lock.yaml             # pnpm lockfile
+├── apps/
+│   ├── web/                   # Frontend React + Vite app
+│   │   ├── index.html         # Vite entry point
+│   │   ├── vite.config.ts     # React + Tailwind config
+│   │   ├── package.json       # Web-specific script config
+│   │   └── src/
+│   │       ├── main.tsx       # Application bootstrap
+│   │       └── app/           # App routes, pages, components, context, and lib
+│   ├── backend/
+│   │   └── xontrix-backend/   # PHP backend API endpoints & database config
+│   └── mobile/
+│   │   └── cordova-mobile/    # Cordova mobile app source
+└── docs/                      # Project documentation and screenshots
 ```
+
 
 ---
 
