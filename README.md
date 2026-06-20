@@ -143,6 +143,7 @@ If any Firebase config value is missing or blank, `isFirebaseConfigured` in `app
 
 Available routes in the UI:
 
+
 | Route | Description |
 |:------|:------------|
 | `/` | Home page |
@@ -167,19 +168,21 @@ Available routes in the UI:
 ├── pnpm-workspace.yaml        # pnpm workspace configuration
 ├── pnpm-lock.yaml             # pnpm lockfile
 ├── apps/
-│   ├── web/                   # Frontend React + Vite app
+│   ├── web/                   # Frontend (React + Vite + Tailwind + shadcn/ui)
 │   │   ├── index.html         # Vite entry point
-│   │   ├── vite.config.ts     # React + Tailwind config
-│   │   ├── package.json       # Web-specific script config
+│   │   ├── vite.config.ts     # Vite config
+│   │   ├── package.json       # Web app scripts/deps
 │   │   └── src/
 │   │       ├── main.tsx       # Application bootstrap
-│   │       └── app/           # App routes, pages, components, context, and lib
+│   │       └── app/           # routes, pages, components, context, lib
 │   ├── backend/
-│   │   └── xontrix-backend/   # PHP backend API endpoints & database config
+│   │   └── xontrix-backend/  # PHP/MySQL REST-like API (Apache + MySQL)
 │   └── mobile/
-│   │   └── cordova-mobile/    # Cordova mobile app source
-└── docs/                      # Project documentation and screenshots
+│       └── cordova-mobile/   # Cordova mobile app
+└── docs/                      # Documentation + screenshots + assets
+    └── screenshots/
 ```
+
 
 
 ---
@@ -196,7 +199,30 @@ Serve the `dist/` folder with any static server or deploy via Vercel/Netlify.
 
 ---
 
+## 🖼️ Screenshots
+
+A few moments from the Xontrix experience — crafted for fast browsing, confident checkout, and an admin dashboard that brings sales insights to life.
+
+### Screenshots Gallery
+
+| # | Page | Preview |
+|---:|---|---|
+| 1 | Homepage | ![1_homepage](docs/screenshots/1_homepage.png) |
+| 2 | Homepage (alt) | ![1.1_homepage](docs/screenshots/1.1_homepage.png) |
+| 3 | Homepage Footer | ![1.2_footer](docs/screenshots/1.2_footer.png) |
+| 4 | Shop / Products | ![2_shoppage](docs/screenshots/2_shoppage.png) |
+| 5 | “Sulit Deal” / Deals | ![3_sulitdealpage](docs/screenshots/3_sulitdealpage.png) |
+| 6 | About | ![4_aboutpage](docs/screenshots/4_aboutpage.png) |
+| 7 | Contact | ![5_contactpage](docs/screenshots/5_contactpage.png) |
+| 8 | Cart (Empty) | ![6_cartempty](docs/screenshots/6_cartempty.png) |
+| 9 | Checkout | ![7_checkout](docs/screenshots/7_checkout.png) |
+
+> Tip: The screenshots are stored under `docs/screenshots/`.
+
+---
+
 ## 🗺️ Roadmap
+
 
 Current high-level items:
 
