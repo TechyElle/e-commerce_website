@@ -1,0 +1,121 @@
+ NAME  DESCRIPTION  PRODUCT  PRICE  
+Sim800l  Gsm  Quad-Band  Gprs  Module  Micro  Sim  Card  Core  Wireless  Board  Ttl  Serial  Port  With  Antenna  For  Arduino  Smart  Phone  
+SIM800L  GPRS  GSM  Module  Core  Quad-band  TTL  Serial  Port  IPX  Interface  PCB  Antenna  Micro  SIM  Card  for  Arduino  Smart  Phone  
+ ₱249  Pesos  
+MQ  Gas  Detector  Sensor  MQ-2  MQ-5  MQ-7  MQ-8  MQ-135  Air  Quality  Smoke  Alcohol  LPG  CNG  Hydrogen  Gases  
+For  harmful  gas  family,  environment  detection  device,  is  suitable  for  the  detection  of  the  ammonia,  aromatic  compounds,  sulfide,  benzene  vapor,  smoke  and  other  harmful  gas,  gas  sensitive  element  concentration  range:  10  to  1000ppm  provides  reference  cases.  
+ ₱100  Pesos  
+NodeMCU  ESP8266  Expansion  Base  Board  
+This  NodeMCU  ESP8266  Expansion  Base  Board  is  an  expansion  board  designed  to  work  with  the  NodeMCU  V3  ESP8266  ESP-12E.  Powered  by  6V  to  24V  DC  input.  
+ ₱100  Pesos  
+HC05  HC06  JDY-31  Wireless  RF  Data  Transfer  Bluetooth  Serial  Port  TX  RX  Module  Robotics  PIC  for  Arduino  
+The  HC-05,  HC-06,  and  JDY-31  are  popular,  low-cost  Bluetooth  2.0  Serial  Port  Modules  used  to  add  wireless  RF  communication  to  microcontrollers  like  Arduino.  
+ ₱145  Pesos  
+28BYJ-48  Stepper  Motor,  ULN2003,  5V  Stepping  Motor  With  Driver  Board  For  Arduino  
+28BYJ-48  is  a  popular,  low-cost,  5-wire  unipolar  stepper  motor  commonly  used  in  hobbyist  robotics,  Arduino  projects,  and  simple  automation.  
+ ₱145  Pesos  
+NodeMCU  V3  ESP8266  ESP-12E  Arduino  CH340  WiFi  
+Experience  seamless  IoT  development  with  the  NodeMCU  V3  ESP8266  WiFi  
+ ₱199Pesos  Board  Development  Board!  This  board  is  designed  for  both  beginners  and  advanced  users,  offering  a  built-in  ESP-12E  WiFi  module  and  an  integrated  USB  interface  for  effortless  programming  and  debugging.   
+30  pins  and  38  pins  ESP32  WiFi  IoT  Development  Board  
+This  ESP-32  Development  Board  with  2.4  GHz  ultra-low  power  dual-mode  Wi-Fi  and  Bluetooth  dev  kit  is  ideal  for  prototyping  IoT  or  other  devices  which  require  wireless  and  internet  connectivity,  utilizing  the  powerful  ESP32  microcontroller.  
+ ₱299Pesos  
+UNO  R3  CH340G+MEGA328P  Chip  16Mhz  For  Arduino  UNO  R3  Development  board  +  USB  CABLE  
+high  quality  One  set  UNO  R3  CH340G+MEGA328P  Chip  16Mhz  For  Arduino  UNO  R3  Development  board  +  USB  CABLE  
+  ₱245  Pesos  
+Type-C  Nano  with  The  Bootloader  Compatible  Nano  3.0  Controller  for  Arduino  CH340  USB  Driver  16Mhz  Nano  V3.0  ATMEGA328P  
+Type-C  Nano  with  The  Bootloader  Compatible  Nano  3.0  Controller  for  Arduino  CH340  USB  Driver  16Mhz  Nano  V3.0  ATMEGA328P  
+ ₱220  Pesos  
+Water  Liquid  level  height  sensor,  Water  Level  Sensor  for  Arduino,  Red  Water  Level  Hight  Module  
+Water  Sensor  water  level  sensor  is  an  easy-to-use,  cost-effective  high  level/drop  recognition  sensor,  which  is  obtained  by  having  a  series  of  parallel  wires  exposed  traces  measured  droplets/water  volume  in  order  to  determine  the  water  level.  
+ ₱35  pesos  
+Ttp223  Touch  Button  Module  Self-Lock  Point  Capacitive  
+NEW  TTP223  Touch  button  Module  Capacitor  type  Single  Channel  Self  Locking  
+  ₱20  pesos  Switch  Touch  switch  sensor    
+RC522  RFID  Module  with  White  card  and  blue  key  
+Experience  fast  and  eﬃcient  RFID  reading  with  the  MFRC-522  RFID  Module!  Designed  for  developers  and  hobbyists,  this  module  delivers  high-speed  data  transfer  up  to  10Mbit/s,  making  it  perfect  for  a  wide  range  of  applications  such  as  access  control,  attendance  systems,  and  smart  card  projects.   
+ ₱110  pesos  
+Ultrasonic  Sensor  HC-SR04  Distance  Measuring  Module  
+Experience  high  precision  measurement  with  an  accuracy  of  up  to  0.3cm!  This  sensor  boasts  a  wide  detection  range  from  2cm  to  450cm,  making  it  perfect  for  a  variety  of  applications.  Whether  you're  working  on  robotics,  automation,  or  any  project  requiring  accurate  non-contact  distance  detection,  this  module  has  got  you  covered!   
+ ₱95  Pesos  
+Infrared  IR  Proximity  Sensor  module  for  Arduino  Raspberry  Pi  
+The  sensor  outputs  a  logic  zero  (0V)  at  the  digital  output  when  an  object  is  placed  in  front  of  the  sensor  and  a  logic  1(+5V)  when  there  is  no  object  in  front  of  the  sensor.  An  onboard  LED  is  used  to  indicate  the  presence  of  an  object.  This  digital  output  can  be  directly  connected  to  an  Arduino,  Raspberry  Pi,  AVR,  PIC,  8051  or  any  other  microcontroller  to  read  the  sensor  output.   
+  ₱50  pesos  
+DHT11  Temperature  and  Humidity  Sensor  Module  
+The  DHT11  Temperature  and  Humidity  Sensor  is  a  basic,  ultra  low-cost  digital  temperature  and  humidity  
+ ₱85  pesos  sensor.  It  uses  a  capacitive  humidity  sensor  and  a  thermistor  to  measure  the  surrounding  air,  and  outputs  a  digital  signal  on  the  data  pin  (no  analog  input  pins  needed).   
+Soil  Moisture  Sensor  Module  for  Arduino  Raspberry  Pi  
+This  Soil  Moisture  Sensor  Module  can  be  used  to  detect  the  moisture  of  soil  or  judge  if  there  is  water  around  the  sensor,  let  the  plants  in  your  garden  reach  out  for  human  help.Insert  this  module  into  the  soil  and  then  adjust  the  on-board  potentiometer  to  adjust  the  sensitivity.   
+ ₱99  pesos  
+Raindrops  Module  Raindrop  Detection  Sensor  Humidity  Rain  Weather  Sensitivity  Monitoring  for  Arduino  
+The  sensor  is  made  of  high-quality  FR-04  double-sided  material.  The  surface  is  treated  with  nickel  plating,  which  has  superior  performance  in  terms  of  oxidation  resistance,  conductivity,  and  service  life.   
+ ₱99  pesos  
+4x4,  3x3  Matrix  Membrane  Keypad  
+This  4×4,  3x3  Matrix  Membrane  Keypad  provides  an  easy  interface  for  embedded  systems  such  as  an  Arduino.  it’s  made  of  a  thin,  ﬂexible  membrane  material  with  an  adhesive  backing  (just  remove  the  paper)  so  you  can  attach  it  to  nearly  anything.   
+ ₱79  pesos  
+1  Channel  Line  Tracking  Following  Sensor  TCRT5000  Line  Sensor  KY-033  
+Brand  new  Black/White  Line  Hunting  Sensor  for  Intelligent  Car  Tracing.   
+ ₱79  pesos  
+0.96  inch  oled  IIC  Serial  White  OLED  Display  Module  128X64  I2C  
+Hign-concerned  Chemical  :  None  Display  Mode  :  128*64  Resolution  :  128*64  
+ ₱140  pesos  SSD1306  12864  LCD  Screen  Board  For  Arduino  
+Model  Number  :  0.96  oled  Type  :  OLED   
+1602  16x2  Character  LCD  Module  Display  HD44780  with  I2C  
+This  16x2  LCD  display  module  is  designed  for  seamless  use  with  Arduino  and  other  microcontroller  projects,  making  it  a  must-have  for  hobbyists  and  engineers  alike.   
+ ₱150  pesos  
+74LSxx  LOGIC  GATES  LOGIC  IC  7400  7402  7404  7408   7432  7447  7486  
+74LSxx  SERIES  7400  -  2  INPUT  NAND  GATE  7404  -  HEX  INVERTER  7432  -  2  INPUT  OR  GATE  7408  -  2  INPUT  AND  GATE  7402  -  2  INPUT  NOR  GATE  7486  -  2-Input  Exclusive-OR  Gate  (74F86)   
+ ₱25  pesos  
+GP  Greencell  160G  9V  Battery  
+GP  Greencel  9V  Battery    ₱45  pesos  
+9V  Battery  Connector  15cm  Electronical  Wire  Snap  Clip  Lead  Wires  Holder  Wire  
+9V  Battery  Connector  15cm  Electronical  Wire  Snap  Clip  Lead  Wires  Holder  Wire   
+ ₱15  pesos  
+ne555  TIMER  IC  NE555p  LM555p  Dip  IC  555  Chip  DIP  DIP-8  Frequency  IC  LM555  LM555CN  ne555  signal  
+The  555  timer  IC  is  an  integrated  circuit  (chip)  used  in  a  variety  of  timer,  delay,  pulse  generation,  and  oscillator  applications.  Derivatives  provide  two  (556)  or  four  (558)  timing  circuits  in  one  package.   
+ ₱20  pesos  
+SG90/MG90S  Micro  Servo  Motor  –  Metal  Gear  for  RC  Robots,  Ships,  and  Toys  
+This  high  torque  micro  servo  motor  delivers  consistent  performance,  making  it  perfect  for  a  wide  range  of  applications.  Enjoy  the  ﬂexibility  of  choosing  between  180°  and  360°  rotation  options,  and  select  the  gear  type—metal  or  plastic—to  best  suit  your  project  needs.    
+ ₱95  Pesos  High  Quality  Yellow  DC  TT  Gear  Geared  Motor+Wheel  Robot  Car  Wheels  Robot  Gear  Motor  
+Experience  reliable  performance  with  our  TT  Gear  Motor  with  Wheel,  perfect  for  DIY  robotics,  smart  cars,  and  remote  control  vehicles.  This  set  is  designed  for  those  who  value  versatility  and  durability  in  their  projects.    
+ ₱80  pesos  
+L298N  Brushed  Motor  Driver  Controller,  Stepper  Motor  Control  Module,  DC  Dual  H-Bridge  For  Arduino  Smart  Car  
+-  Dual  H-Bridge  design  for  versatile  motor  applications  -  Supports  both  DC  and  stepper  motors  -  Adjustable  speed  control  via  PWM   
+ ₱120  pesos  
+830  Breadboard  Set  Tie-points  Breadboard  Set  Electronic  Component  Basic  Starter  Kit  Resistor  
+Materials:  Electronic  materials  Color:  As  shown  in  the  picture  Model:  830  breadboard  Power  supply  voltage:  5V  Power  supply  current:  1A  Power  :100  w  Item  weight:  Approximately  250  grams  /  8.82  ounces  Dimensions:  Approximately  18*8.7*4.5cm  /  7.09*3.43*1.77  inch  
+ ₱395v  pesos  
+1pc  universal  PCB  prototyping  board  5x7cm  7x9cm  9x15cm  DIY  PCB  universal  pcb  5*7cm  7*9cm  9*15cm  
+Professional  Wholesale  And  Retail.Electronic  Accessories  Various  Electronic  Components  And  Modules  Single  Piece  Wholesale.   
+ ₱20  pesos  
+Solid  Wire  22   AWG  1Meter  Electrical  Copper  Cable  LED  Audio  DIY  Electronics  Projects  
+-  Sold  per  meter  -  Purchases  more  than  1  meter  will  not  be  cut  -  Product  color  may  slightly  vary  due  to  photographic  lighting  -  Not  advisable  for  automotive  wiring    
+ ₱20  pesos  Gauge/s:  22  AWG  24  AWG   
+Ichiban  Soldering  Lead  Sold  per  meter  0.8mm  60/40  No  Need  Solder  Paste  Quick  Melt  Solder  Wire  
+Quick  melting  and  smooth  ﬂuidity  ensure  eﬃcient  soldering.  -  Excellent  wetting  and  strong  oxidation  resistance  for  consistent  results.  -  Minimal  splashing  and  smoke,  creating  a  more  comfortable  workspace.   
+ ₱25  pesos  
+1/4W  Carbon  Resister  5 ％ 1R~10M  Plug-in  Resistance  Elements  Package  Carbon  Film  Resistors  Assorted  Kit  
+High  precision  and  stability  ensure  reliable  performance  in  every  circuit.  -  Wide  resistance  range  from  1  ohm  to  10M  ohm  makes  this  kit  suitable  for  a  variety  of  electronic  needs.  -  1/4W  power  rating  and  +/-5%  tolerance  provide  consistent  results  for  your  projects.    
+ ₱1  pesos  
+Solderless  PCB  Breadboard  SYB  MB102  -  Half  &  Full  Size,  Tie  Points,  830/400/170,  Circuit  Prototype  Board  
+Choose  the  right  size  for  your  needs!  Available  in  models  with  170,  400,  or  830  tie  points,  you  can  select  the  best  ﬁt  for  your  project,  whether  it’s  a  small  experiment  or  a  more  complex  build.   
+ ₱45-125  pesos  
+SPST  KCD11  2  Pin  Miniature  Rocker  Switch  ON-OFF  
+Current  rating:  3A  125VAC,  6A  250VAC  Terminals:  2  Pin  Color:  Black,Red   
+ ₱15  pesos  
+ALUMINUM  ELECTROLYTIC  CAPACITOR  16V  25V  35V  50V  
+*  ELECTROLYTIC  CAPACITOR  *  SOLD  PER  PIECE  *  BRAND  NEW   
+ ₱8s  pesos  3mm  5mm  10mm  LED  Light  Emitting  Diode  Red  Green  Blue  White  Yellow  Lamp  Bulb  Arduino  DIY  
+  ₱3  pesos  
+L7905  Voltage  regulator  lm7905  ka7905  Voltage  Regulators  Linear  negative  -35V  5V  1.1V  1A   
+Power  Management  (PMIC)  Voltage  Regulators  -  Linear  Product  Status  -  Active  Output  Conﬁguration  -  Negative  Output  Type  -  Fixed  Number  of  Regulators  1  Voltage  -  Input  (Max)  -30V  Voltage  -  Output  (Min/Fixed)-5V  Voltage  Dropout  (Max)-  1.1V  @  1A  (Typ)  Current  -  Output  -  1.5A   
+ ₱25  pesos  
+Durable  3-24V  Piezo  Electronic  Buzzer  Alarm  95DB  Continuous  Sound  Beeper  For  Arduino  Car  Van  
+High  95  dB  sound  pressure  level  for  clear,  attention-grabbing  alerts  -  Built-in  drive  circuit  for  easy  integration  and  use  -  Wide  voltage  compatibility  from  3V  to  24V,  suitable  for  various  devices   
+ ₱45  pesos  
+Tactile  Push  Button  Switch  Tact  Switch  switches  for  home  use  
+Conﬁguration:SPST-NO  Terminal  Type:Through  Hole  Actuator  Length:1.5mm  Actuator  Colour:   Black  Actuator  Type:   Button  Rating  :50  mA  @  12  V  dc    
+ ₱3  pesos  
+1N4007  Rectifier  Diodes  –  1A  1000V  DO ‑ 41  High ‑ Quality  
+-  High  voltage  capability  for  demanding  applications  -  Compact  DO-41  package  for  easy  integration  -  Ideal  for  rectiﬁcation,  power  supplies,  and  signal  processing   
+ ₱4  pesos   

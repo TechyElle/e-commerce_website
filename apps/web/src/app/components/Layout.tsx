@@ -7,8 +7,8 @@ import {
 import { useCart } from '../context/CartContext';
 import { Badge } from './ui/badge';
 import { useState, useEffect, useRef } from 'react';
-import logoImg from '../../imports/Logo & QR/LOGO.png';
-import logoQrImg from '../../imports/Logo & QR/LOGO QR.png';
+import logoImg from '../../assets/logo/LOGO.png';
+import logoQrImg from '../../assets/logo/LOGO QR.png';
 import { products } from '../data/products';
 import { useAuth } from '../context/AuthContext';
 

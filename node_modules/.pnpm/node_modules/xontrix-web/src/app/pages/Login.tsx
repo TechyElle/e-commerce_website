@@ -11,14 +11,14 @@ import {
   Mail,
   User,
 } from 'lucide-react';
-import logoImg from '../../imports/Logo & QR/LOGO.png';
-import googleLogoImg from '../../imports/Logo & QR/LOGO QR.png';
-import xontrixLoginImg from '../../imports/Images/Xontrix Login Image.png';
+import logoImg from '../../assets/logo/LOGO.png';
+import googleLogoImg from '../../assets/logo/LOGO QR.png';
+import xontrixLoginImg from '../../assets/images/Xontrix Login Image.png';
 
 
 import { useAuth } from '../context/AuthContext';
 import { usersApi } from '../lib/api';
-import { auth, isFirebaseConfigured } from '../lib/firebase';
+import { auth, isFirebaseConfigured, isRealFirebaseConfigured } from '../lib/firebase';
 import { toast } from 'sonner';
 
 
@@ -31,6 +31,10 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [showMockGoogleModal, setShowMockGoogleModal] = useState(false);
+  const [useCustomMockAccount, setUseCustomMockAccount] = useState(false);
+  const [mockEmail, setMockEmail] = useState('');
+  const [mockName, setMockName] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -127,11 +131,15 @@ export function Login() {
 
 
   const handleGoogleSignIn = async () => {
-    if (!auth || !isFirebaseConfigured) {
-      toast.error('Google sign-in is not configured yet.');
+    if (!isRealFirebaseConfigured) {
+      setShowMockGoogleModal(true);
       return;
     }
 
+    if (!auth) {
+      toast.error('Firebase Auth is not available.');
+      return;
+    }
 
     setGoogleLoading(true);
     try {
@@ -139,11 +147,9 @@ export function Login() {
       const result = await signInWithPopup(auth, provider);
       const email = result.user.email;
 
-
       if (!email) {
         throw new Error('Google account has no email address.');
       }
-
 
       const res = await usersApi.googleLogin({
         email: email.trim().toLowerCase(),
@@ -151,6 +157,39 @@ export function Login() {
         providerUid: result.user.uid,
       });
 
+      signIn({
+        id: res.id,
+        email: res.email,
+        name: res.name,
+        role: res.role,
+      });
+      toast.success(isLogin ? 'Signed in with Google.' : 'Successfully registered with Google.');
+      navigate('/');
+    } catch (error: any) {
+      toast.error(error?.message || 'Google sign-in failed.');
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
+  const handleMockGoogleSubmit = async (selectedEmail: string, selectedName: string) => {
+    if (!selectedEmail.trim()) {
+      toast.error('Email is required for Google authentication.');
+      return;
+    }
+
+    setGoogleLoading(true);
+    setShowMockGoogleModal(false);
+    try {
+      // Simulate OAuth redirect/popup delay
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      const mockUid = 'mock-google-uid-' + selectedEmail.replace(/[^a-zA-Z0-9]/g, '');
+      const res = await usersApi.googleLogin({
+        email: selectedEmail.trim().toLowerCase(),
+        name: selectedName.trim() || 'Google User',
+        providerUid: mockUid,
+      });
 
       signIn({
         id: res.id,
@@ -158,10 +197,11 @@ export function Login() {
         name: res.name,
         role: res.role,
       });
-      toast.success('Signed in with Google.');
+      
+      toast.success(isLogin ? `Maligayang pagbabalik, ${res.name}! (Google Mock)` : `Account registered successfully! (Google Mock)`);
       navigate('/');
     } catch (error: any) {
-      toast.error(error?.message || 'Google sign-in failed.');
+      toast.error(error?.message || 'Mock Google sign-in failed.');
     } finally {
       setGoogleLoading(false);
     }
@@ -413,22 +453,19 @@ export function Login() {
                   </button>
 
 
-                  {isLogin && (
-                    <button
-                      type="button"
-                      onClick={handleGoogleSignIn}
-                      disabled={loading || googleLoading || !isFirebaseConfigured}
-                      title={!isFirebaseConfigured ? 'Firebase Google sign-in is not configured.' : undefined}
-                      className="min-h-[52px] w-full rounded-lg border border-white/20 bg-white py-3 font-bold text-[#111111] transition-colors hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60 flex items-center justify-center gap-3"
-                    >
-                      {googleLoading ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <img src={googleLogoImg} alt="Google" className="h-5 w-5" />
-                      )}
-                      SIGN UP WITH GOOGLE
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={handleGoogleSignIn}
+                    disabled={loading || googleLoading}
+                    className="min-h-[52px] w-full rounded-lg border border-[#111111]/10 bg-white py-3 font-bold text-[#111111] transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 flex items-center justify-center gap-3 shadow-sm"
+                  >
+                    {googleLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-[#111111]" />
+                    ) : (
+                      <img src={googleLogoImg} alt="Google" className="h-5 w-5" />
+                    )}
+                    {isLogin ? 'SIGN IN WITH GOOGLE' : 'SIGN UP WITH GOOGLE'}
+                  </button>
 
 
 
@@ -484,6 +521,147 @@ export function Login() {
           </div>
         </section>
       </div>
+
+      {showMockGoogleModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 text-[#111111]">
+          <div className="w-full max-w-md overflow-hidden rounded-2xl border border-[#111111]/10 bg-white p-6 shadow-2xl text-[#111111]">
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-slate-50 shadow-inner">
+                <img src={googleLogoImg} alt="Google logo" className="h-6 w-6 object-contain" />
+              </div>
+              <h3 className="text-xl font-bold tracking-tight">Sign in with Google</h3>
+              <p className="text-sm text-[#111111]/60 mt-1">to continue to Xontrix E-Commerce</p>
+            </div>
+
+            <div className="my-4 rounded-lg bg-amber-50 border border-amber-200/60 p-3 text-xs text-amber-800 text-left">
+              <span className="font-bold">Developer Sandbox Mode:</span> Firebase environment variables are not configured. Using Google Sign-in simulation.
+            </div>
+
+            {!useCustomMockAccount ? (
+              <div className="space-y-3 mt-4">
+                <button
+                  type="button"
+                  onClick={() => handleMockGoogleSubmit('john.doe@gmail.com', 'John Doe')}
+                  className="flex w-full items-center gap-3 rounded-xl border border-[#111111]/5 bg-slate-50/50 p-3 text-left transition-all hover:bg-slate-100 hover:border-[#111111]/10"
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#ff6b5b]/10 text-sm font-bold text-[#ff6b5b]">
+                    JD
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold truncate">John Doe</p>
+                    <p className="text-xs text-[#111111]/50 truncate">john.doe@gmail.com</p>
+                  </div>
+                  <div className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full shrink-0">
+                    Example
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleMockGoogleSubmit('jane.smith@gmail.com', 'Jane Smith')}
+                  className="flex w-full items-center gap-3 rounded-xl border border-[#111111]/5 bg-slate-50/50 p-3 text-left transition-all hover:bg-slate-100 hover:border-[#111111]/10"
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#00bfdf]/10 text-sm font-bold text-[#00bfdf]">
+                    JS
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold truncate">Jane Smith</p>
+                    <p className="text-xs text-[#111111]/50 truncate">jane.smith@gmail.com</p>
+                  </div>
+                  <div className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full shrink-0">
+                    Example
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setUseCustomMockAccount(true)}
+                  className="flex w-full items-center gap-3 rounded-xl border border-[#111111]/10 border-dashed bg-white p-3 text-left transition-all hover:bg-slate-50"
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-bold text-slate-600">
+                    +
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-slate-800">Use another account</p>
+                    <p className="text-xs text-slate-500">Sign in with a custom name & email</p>
+                  </div>
+                </button>
+              </div>
+            ) : (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleMockGoogleSubmit(mockEmail, mockName);
+                }}
+                className="space-y-4 mt-4 text-left"
+              >
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#111111]/70 mb-1">
+                    Google Full Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Maria Clara"
+                    value={mockName}
+                    onChange={(e) => setMockName(e.target.value)}
+                    className="h-11 w-full rounded-lg border border-[#111111]/10 bg-white px-3 text-sm focus:border-[#00BFDF] focus:outline-none focus:ring-1 focus:ring-[#00BFDF]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#111111]/70 mb-1">
+                    Google Email Address
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="e.g. maria.clara@gmail.com"
+                    value={mockEmail}
+                    onChange={(e) => setMockEmail(e.target.value)}
+                    className="h-11 w-full rounded-lg border border-[#111111]/10 bg-white px-3 text-sm focus:border-[#00BFDF] focus:outline-none focus:ring-1 focus:ring-[#00BFDF]"
+                  />
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUseCustomMockAccount(false);
+                      setMockEmail('');
+                      setMockName('');
+                    }}
+                    className="flex-1 h-11 rounded-lg border border-[#111111]/10 font-bold text-sm text-[#111111] hover:bg-slate-50 transition-colors"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 h-11 rounded-lg bg-[#00bfdf] font-bold text-sm text-black hover:bg-[#00a5c1] transition-colors"
+                  >
+                    Sign In
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <div className="mt-6 border-t border-[#111111]/10 pt-4 flex justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMockGoogleModal(false);
+                  setUseCustomMockAccount(false);
+                  setMockEmail('');
+                  setMockName('');
+                }}
+                className="h-9 px-4 rounded-lg bg-slate-100 font-semibold text-xs text-slate-600 hover:bg-slate-200 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

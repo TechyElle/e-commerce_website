@@ -2,7 +2,7 @@ import { Mail, MapPin, Phone, Send } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useState } from 'react';
-import logoQrImg from '../../imports/Logo & QR/LOGO QR.png';
+import logoQrImg from '../../assets/logo/LOGO QR.png';
 
 export function Contact() {
   const [formData, setFormData] = useState({

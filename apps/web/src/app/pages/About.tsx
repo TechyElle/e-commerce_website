@@ -1,5 +1,5 @@
 import { Cpu, Target, Zap } from 'lucide-react';
-import logoQrImg from '../../imports/Logo & QR/LOGO QR.png';
+import logoQrImg from '../../assets/logo/LOGO QR.png';
 
 export function About() {
   return (

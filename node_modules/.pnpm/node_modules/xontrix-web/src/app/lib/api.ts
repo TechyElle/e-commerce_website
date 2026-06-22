@@ -67,6 +67,30 @@ export interface ApiUser {
   created_at: string;
 }
 
+export interface ApiFeedback {
+  customer_name: string;
+  customer_email: string;
+  rating: number;
+  comment: string;
+  created_at: string;
+}
+
+export interface ApiLoyaltyCustomer {
+  name: string;
+  email: string;
+  total_spent: number;
+  order_count: number;
+  badge: 'Bronze' | 'Silver' | 'Gold' | 'Platinum';
+}
+
+export interface ApiCalendarEvent {
+  id: string;
+  title: string;
+  date: string;
+  type: 'success' | 'warning' | 'info' | 'danger';
+  desc: string;
+}
+
 export interface SalesSummary {
   total_orders: number;
   total_revenue: number;
@@ -75,8 +99,14 @@ export interface SalesSummary {
   delivered_count: number;
   today_revenue: number;
   month_revenue: number;
+  growth_rate: number;
+  target_achievement: number;
+  active_deals: number;
   best_sellers: { product_id: string; name: string; total_sold: number; revenue: number }[];
   low_stock: { id: string; name: string; stock: number }[];
+  feedback: ApiFeedback[];
+  loyalty_customers: ApiLoyaltyCustomer[];
+  calendar_events: ApiCalendarEvent[];
 }
 
 // ── Products ─────────────────────────────────────────────────────────────────
@@ -164,4 +194,19 @@ export const salesApi = {
 
   monthly: () =>
     request<{ month: string; orders: number; revenue: number }[]>('/sales.php?period=monthly'),
+
+  loyalty: async (): Promise<ApiLoyaltyCustomer[]> => {
+    const s = await request<SalesSummary>('/sales.php?period=summary');
+    return s.loyalty_customers ?? [];
+  },
+
+  feedback: async (): Promise<ApiFeedback[]> => {
+    const s = await request<SalesSummary>('/sales.php?period=summary');
+    return s.feedback ?? [];
+  },
+
+  calendarEvents: async (): Promise<ApiCalendarEvent[]> => {
+    const s = await request<SalesSummary>('/sales.php?period=summary');
+    return s.calendar_events ?? [];
+  },
 };

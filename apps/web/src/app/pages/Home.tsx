@@ -21,10 +21,10 @@ import {
 import { Badge } from '../components/ui/badge';
 import { ProductCard } from '../components/ProductCard';
 import { products } from '../data/products';
-import arduinoHero from '../../imports/Products/Products/Arduino Uno r3.png';
-import espHero from '../../imports/Products/Products/Esp32 38pins.png';
-import kitHero from '../../imports/Products/Products/Electronic Kit.png';
-import sensorHero from '../../imports/Products/Products/IR Sensor.png';
+import arduinoHero from '../../assets/products/Arduino Uno r3.png';
+import espHero from '../../assets/products/Esp32 38pins.png';
+import kitHero from '../../assets/products/Electronic Kit.png';
+import sensorHero from '../../assets/products/IR Sensor.png';
 
 const heroItems = [
   { label: 'Arduino-ready', image: arduinoHero },
