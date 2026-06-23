@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <p align="center">
   <img src="https://img.shields.io/badge/🛒_Xontrix-Electronics_E--Commerce-FF6B6B?style=for-the-badge&logoColor=white" alt="Xontrix Badge" />
 </p>
@@ -6,180 +5,499 @@
 <h1 align="center">🛒 Xontrix</h1>
 
 <p align="center">
-  <strong>Integrated Electronics E-Commerce & AI-Powered Business Management Platform</strong>
+  <strong>Shop. Manage. Analyze Smarter.</strong>
 </p>
 
 <p align="center">
-  Electronics e-commerce for components & kits, backed by a simple PHP/MySQL API, and designed to be extended with AI/insights.
+  An integrated Electronics E-Commerce, Inventory & AI Business Intelligence platform featuring a component catalog, multi-channel checkout, sales analytics dashboard, and AI-powered advisor agents.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind" />
-  <img src="https://img.shields.io/badge/shadcn/ui-000000?style=flat-square&logo=shadcnui&logoColor=white" alt="shadcn/ui" />
-  <img src="https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white" alt="PHP" />
-  <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="MySQL" />
+  <img src="https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React" />
+  <img src="https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/TypeScript-6-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/shadcn/ui-0-000000?style=flat-square&logo=shadcnui&logoColor=white" alt="shadcn/ui" />
+  <img src="https://img.shields.io/badge/Recharts-2.15-3178C6?style=flat-square&logo=recharts&logoColor=white" alt="Recharts" />
+  <img src="https://img.shields.io/badge/PHP-8-777BB4?style=flat-square&logo=php&logoColor=white" alt="PHP" />
+  <img src="https://img.shields.io/badge/MySQL-8-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="MySQL" />
+  <img src="https://img.shields.io/badge/Cordova-12-E0A100?style=flat-square&logo=apache-cordova&logoColor=white" alt="Cordova" />
+  <img src="https://img.shields.io/badge/pnpm-9-F69220?style=flat-square&logo=pnpm&logoColor=white" alt="pnpm" />
 </p>
 
 <p align="center">
-  <a href="#-quick-start">Quick Start</a> •
-  <a href="#-highlights">Highlights</a> •
+  <img src="https://img.shields.io/badge/Hosted_on-Apache_Local-D11F24?style=flat-square&logo=apache&logoColor=white" alt="Apache" />
+  <img src="https://img.shields.io/badge/Database-MySQL_Local-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="MySQL DB" />
+  <img src="https://img.shields.io/badge/Target_OS-Android_APK-3DDC84?style=flat-square&logo=android&logoColor=white" alt="Android APK" />
+  <img src="https://img.shields.io/badge/Source-GitHub-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub" />
+</p>
+
+<p align="center">
+  <a href="#-introduction">Introduction</a> •
+  <a href="#-local-setup--credentials">Local Setup & Credentials</a> •
+  <a href="#-screenshots">Screenshots</a> •
+  <a href="#-features">Features</a> •
   <a href="#️-architecture">Architecture</a> •
-  <a href="#-routes--pages">Routes</a> •
+  <a href="#-design-patterns">Design Patterns</a> •
+  <a href="#-tech-stack">Tech Stack</a> •
+  <a href="#-services--environment-configuration">Services & Environment Configuration</a> •
+  <a href="#-getting-started">Getting Started</a> •
+  <a href="#-api-reference">API Reference</a> •
+  <a href="#-database-schema">Database Schema</a> •
   <a href="#-project-structure">Project Structure</a> •
-  <a href="#-build-for-production">Build</a> •
-  <a href="#-roadmap">Roadmap</a>
+  <a href="#-product-categories">Product Categories</a> •
+  <a href="#-roadmap">Roadmap</a> •
+  <a href="#-contributing">Contributing</a> •
+  <a href="#-license">License</a>
 </p>
 
 ---
 
-## ✨ Highlights
+## 📖 Introduction
 
-- **Electronics product catalog** with product detail pages
-- **Cart + Checkout UI** (client-side experience)
-- **Admin/Dashboard pages** backed by authenticated API endpoints
-- **Backend-driven data** via a PHP/MySQL REST-like API (`xontrix-backend`)
-- **shadcn/ui** powered interface components
-- **Responsive layout** with Tailwind CSS
+**Xontrix** is a full-stack, monorepo-based electronic components e-commerce platform and business intelligence suite. Built to provide hobbyists and professional builders with an easy way to purchase microcontrollers, sensors, motors, and shields, Xontrix also delivers a powerful web portal for administrators to run sales analytics, track stock levels, and coordinate delivery calendars.
+
+The platform links a clean React web frontend and an Apache Cordova mobile client with a simple, high-performance PHP/MySQL API server. By integrating inventory capping checks, role-based access, and conversational AI advisor widgets (an Admin-side AI Strategic Advisor and a User-side AI Electronics Consultant), Xontrix is a comprehensive showcase of modern e-commerce engineering.
+
+> 💡 **Designed for local & mobile deploy**, Xontrix utilizes XAMPP (Apache + MySQL) to keep backend setups simple and lightweight. This makes it easy to run local demonstrations, debug database states, and compile native Android packages directly against the local web API.
+
+---
+
+## 🌐 Local Setup & Credentials
+
+### Local Services
+
+| Service | Address / Port | Technology | Location |
+|:--------|:---------------|:-----------|:---------|
+| 🌐 **Web Portal** | [http://localhost:5173](http://localhost:5173) | React 18 + Vite 6 + Tailwind 4 | `apps/web/` |
+| ⚙️ **API Server** | [http://localhost/xontrix-backend/api](http://localhost/xontrix-backend/api) | PHP REST-like API | `apps/backend/xontrix-backend/` |
+| 💾 **Seed Installer** | [http://localhost/xontrix-backend/api/install.php](http://localhost/xontrix-backend/api/install.php) | Schema seed engine | `apps/backend/xontrix-backend/api/install.php` |
+| 📦 **Mobile App** | Target Android APK | Apache Cordova CLI wrapper | `apps/mobile/cordova-mobile/` |
+
+### Default Seeded Credentials
+
+The database installer includes seeded user records to speed up development. Running the seeder initializes the default admin user listed below. You can log in using these credentials to access the analytics and management dashboards:
+
+| Role | Email | Password | Admin Access |
+|:-----|:------|:---------|:-------------|
+| **Platform Administrator** | `admin@xontrix.local` | `admin123` | ✅ Full access to sales analytics, orders, products, inventory, user lists, and AI reports |
+
+> **Note**: To seed or reset the database back to default records (including products, orders, user accounts, and feedback comments), run the `install.php` file in your browser once. For production security, restrict access or delete this file in deployment environments.
+
+---
+
+## 📸 Screenshots
+
+<details open>
+<summary><strong>🏠 Homepage</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/1_homepage.png" alt="Xontrix Homepage" width="90%" />
+</p>
+<p align="center"><em>Modern storefront landing page featuring catalog search, category grids, promo headers, and interactive deal banners.</em></p>
+</details>
+
+<details>
+<summary><strong>🏠 Homepage (Alternative View)</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/1.1_homepage.png" alt="Xontrix Homepage Alternative View" width="90%" />
+</p>
+<p align="center"><em>Responsive catalog highlights showing newly added components and quick-to-cart deals.</em></p>
+</details>
+
+<details>
+<summary><strong>👣 Homepage Footer</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/1.2_footer.png" alt="Xontrix Homepage Footer" width="90%" />
+</p>
+<p align="center"><em>Clean, descriptive footer layout listing store links, customer attributions, and design credits.</em></p>
+</details>
+
+<details>
+<summary><strong>🛍️ Shop / Products Page</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/2_shoppage.png" alt="Xontrix Shop Catalog" width="90%" />
+</p>
+<p align="center"><em>Product catalog screen featuring category sidebar filters, search bar, item ratings, stock status, and add-to-cart actions.</em></p>
+</details>
+
+<details>
+<summary><strong>🏷️ "Sulit Deal" / Promos</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/3_sulitdealpage.png" alt="Xontrix Promos Page" width="90%" />
+</p>
+<p align="center"><em>Dedicated promos dashboard featuring discounted electronics bundles, bulk component packs, and time-sensitive offers.</em></p>
+</details>
+
+<details>
+<summary><strong>📘 About Page</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/4_aboutpage.png" alt="Xontrix About Page" width="90%" />
+</p>
+<p align="center"><em>Frosted-glass UI details introducing the store's mission, quality standards, and technical partner attributions.</em></p>
+</details>
+
+<details>
+<summary><strong>📞 Contact Page</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/5_contactpage.png" alt="Xontrix Contact Page" width="90%" />
+</p>
+<p align="center"><em>Clean contact page containing an interactive query form, customer support links, and office coordinates.</em></p>
+</details>
+
+<details>
+<summary><strong>🛒 Cart (Empty State)</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/6_cartempty.png" alt="Xontrix Empty Cart" width="90%" />
+</p>
+<p align="center"><em>Empty cart state showing friendly placeholder illustrations and call-to-actions to prompt catalog exploration.</em></p>
+</details>
+
+<details>
+<summary><strong>💳 Checkout Page</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/7_checkout.png" alt="Xontrix Checkout Page" width="90%" />
+</p>
+<p align="center"><em>Checkout layout showing summary pricing, shipping calculations, and multi-channel payment method options.</em></p>
+</details>
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|:--------|:------------|
+| 🛒 **Product Catalog & Filters** | Dynamic electronics catalog with category sorting, search, item ratings, reviews, stock labels, and new item flags. |
+| 💳 **Flexible Checkout Flow** | Step-by-step transaction form supporting GCash, Maya, Cash on Delivery (COD), and credit card configurations. |
+| 📦 **Real-Time Inventory Sync** | Automatic database checks that block purchases when quantities exceed stock, updating stock values on successful orders. |
+| 📊 **Admin Sales Analytics** | Business Intelligence dashboard with charts, MoM growth metrics, targets, pending/shipped order states, and low-stock warnings. |
+| 🤖 **AI Strategic Advisor** | Admin-side chatbot that scans sales metrics and historical feedback to generate financial advice. |
+| 💬 **AI Electronics Consultant** | Customer-side floating chat widget that guides users on picking compatible microcontrollers and sensors. |
+| 📅 **Delivery Order Calendar** | Dynamic calendar displaying shipping statuses, order delivery deadlines, and priority warnings. |
+| 🏅 **Customer Loyalty Tiers** | Automatically places customers into Bronze, Silver, Gold, or Platinum tiers based on total spend and order counts. |
+| 🔐 **Multi-Auth Protocol** | Standard session-based login alongside Google Authentication via a complete Firebase Auth SDK pathway. |
+| 📱 **Cordova Mobile Wrapper** | Cordova project setup targeting Android platforms, allowing the web portal to be compiled into a native APK. |
+| 🏗️ **PNPM Monorepo Layout** | organized workspaces grouping web apps, API backends, documentation, and mobile build wrappers. |
 
 ---
 
 ## 🏗️ Architecture
 
-This repository is structured as a monorepo containing:
+### System Architecture Diagram
 
-### Frontend (React + Vite)
-- **Location**: `apps/web/src/`
-- **Dev Server**: `pnpm dev` (Vite dev server)
-- **API Client**: `apps/web/src/app/lib/api.ts`
+```mermaid
+graph TB
+    subgraph Client ["🖥️ Client Layer"]
+        WEB["React 18 & TypeScript<br/>Web Portal<br/>(Vite 6)"]
+        MOBILE["Apache Cordova<br/>Mobile App<br/>(Android APK Target)"]
+    end
 
-### Backend (PHP + MySQL)
-- **Location**: `apps/backend/xontrix-backend/`
-- **Server**: Apache (e.g., XAMPP)
-- **Install & Schema**: `apps/backend/xontrix-backend/api/install.php`, `apps/backend/xontrix-backend/api/schema.sql`
+    subgraph API ["⚙️ API Layer (Apache / XAMPP)"]
+        BOOTSTRAP["bootstrap.php<br/>Global Init & Cors"]
+        CONFIG["config.php<br/>MySQL DB Config"]
+        PRODUCTS["products.php<br/>Product Catalog CRUD"]
+        ORDERS["orders.php<br/>Order Placement & Sync"]
+        USERS["users.php<br/>Session Auth & Roles"]
+        SALES["sales.php<br/>Sales & Analytics API"]
+        UPLOAD["upload.php<br/>Image Uploader"]
+    end
+
+    subgraph Data ["💾 Data Layer (Local Server)"]
+        MYSQL["MySQL Database<br/>(Local Relational tables)"]
+    end
+
+    subgraph Services ["🌐 External Services"]
+        FIREBASE["Firebase Auth SDK<br/>Google Login Portal"]
+    end
+
+    subgraph UserAI ["💬 Client-side User AI"]
+        CONSULTANT["AI Floating Widget<br/>Electronics Consultant"]
+    end
+
+    subgraph AdminAI ["🤖 Admin-side AI"]
+        ADVISOR["AI Strategic Advisor<br/>Chatbot Interface"]
+    end
+
+    WEB -->|"HTTP Requests"| API
+    MOBILE -->|"HTTP Requests"| API
+    WEB -->|"OAuth Tokens"| FIREBASE
+    API -->|"SQL Queries"| MYSQL
+    WEB -->|"Floating Chat"| CONSULTANT
+    WEB -->|"Admin Chat"| ADVISOR
+    ADVISOR -->|"Scans Context"| API
+
+    style Client fill:#1e1b4b,stroke:#818cf8,color:#f8fafc
+    style API fill:#111827,stroke:#10b981,color:#f8fafc
+    style Data fill:#1e1b4b,stroke:#eab308,color:#f8fafc
+    style Services fill:#111827,stroke:#f97316,color:#f8fafc
+    style UserAI fill:#1e293b,stroke:#06b6d4,color:#f8fafc
+    style AdminAI fill:#1e293b,stroke:#a855f7,color:#f8fafc
+```
+
+### Data Flow
+
+```
+User / Admin Interaction
+  │
+  ├─── [Products List / Catalog] ─→ productsApi.list() ──→ products.php ──→ MySQL (SELECT)
+  │
+  ├─── [Checkout Transaction] ────→ ordersApi.create() ──→ orders.php
+  │                                                          ├──→ Check Stock Availability
+  │                                                          ├──→ Deduct MySQL Inventory (UPDATE)
+  │                                                          ├──→ Insert Order & Items (INSERT)
+  │                                                          └──→ Return ApiOrder JSON
+  │
+  ├─── [AI Strategic Advice] ─────→ Admin Dashboard ─────→ salesApi.summary() ──→ sales.php
+  │                                                          ├──→ Compute financial KPIs
+  │                                                          ├──→ Retrieve daily/weekly/monthly charts
+  │                                                          └──→ Strategic advice prompt context
+  │
+  └─── [Google Authentication] ───→ Firebase Auth SDK ───→ usersApi.googleLogin() ──→ users.php
+                                                             ├──→ Create / Login User Record
+                                                             └──→ Return Session Cookie
+```
 
 ---
 
-## 🚀 Quick Start
+## 📐 Design Patterns
 
-### 1️⃣ Run the PHP/MySQL Backend (XAMPP)
+| Pattern | Usage | Details |
+|:--------|:------|:--------|
+| 🔀 **Monorepo Structure** | Workspace Layout | Manages multiple applications (frontend, backend, mobile) within a single codebase using `pnpm-workspace.yaml`. |
+| 📋 **Model-View-Controller (MVC)** | Backend Routing | PHP controllers act as routers (Controllers), database queries represent data shapes (Models), and JSON outputs serve as views (Views). |
+| 🧱 **Type-Safe Contracts** | API Interface Client | TypeScript interfaces in the web app mirror MySQL schema fields exactly, creating an end-to-end data contract. |
+| 🔐 **Session-Based State** | User Authentication | Uses PHP sessions for login persistence combined with JWT/Firebase tokens for client-side API authorization. |
+| 🛡️ **Guard / Policy Pattern** | Admin Route Protection | Middleware checks roles (e.g., admin role check) both in React Router (frontend) and on the PHP backend APIs (backend). |
+| 🎣 **State Synchronization** | React Hooks & Context | Syncs shopping cart state, session user profiles, and catalog cache across pages using React Context providers. |
+| ⚙️ **Inventory Safety** | Optimistic Locking | Verifies quantity caps during cart updates and re-validates stock levels at the moment of checkout transaction. |
+| 🤖 **Conversational Interface Agent** | UI Chat Widgets | Integrates floating conversational UI components leveraging context-aware responses to guide users and advise admins. |
 
-Follow `apps/backend/xontrix-backend/README.md`:
+---
 
-1. Copy `apps/backend/xontrix-backend` into:
-   ```
-   C:\xampp\htdocs\xontrix-backend
-   ```
+## 🛠 Tech Stack
 
-2. Start Apache + MySQL in XAMPP.
+### 🎨 Frontend
 
-3. Open once to install schema + seed data:
-   ```
-   http://localhost/xontrix-backend/api/install.php
-   ```
+| Technology | Purpose |
+|:-----------|:--------|
+| ![React](https://img.shields.io/badge/React_18-61DAFB?style=flat-square&logo=react&logoColor=black) | Component-based UI rendering, local state management, and virtual DOM diffing. |
+| ![TypeScript](https://img.shields.io/badge/TypeScript_6-3178C6?style=flat-square&logo=typescript&logoColor=white) | End-to-end type safety, auto-completion of API models, and compile-time error checks. |
+| ![Vite](https://img.shields.io/badge/Vite_6-646CFF?style=flat-square&logo=vite&logoColor=white) | Bundle compiler, development server, dynamic hot module replacement, and environment configurations. |
+| ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white) | Responsive utilities, layouts, gradients, and custom components styling. |
+| ![shadcn/ui](https://img.shields.io/badge/shadcn/ui-000000?style=flat-square&logo=shadcnui&logoColor=white) | Modular accessible building components built on Radix UI primitives. |
+| ![Recharts](https://img.shields.io/badge/Recharts-2.15-3178C6?style=flat-square&logo=recharts&logoColor=white) | Custom interactive area and line charts for daily/weekly/monthly revenue tracking. |
 
-4. Login with default seeded account:
-   ```
-   Email: admin@xontrix.local
-   Password: admin123
-   ```
+### ⚙️ Backend
 
-### 2️⃣ Configure Frontend API Base URL
+| Technology | Purpose |
+|:-----------|:--------|
+| ![PHP](https://img.shields.io/badge/PHP_8-777BB4?style=flat-square&logo=php&logoColor=white) | Server-side script request routing, JSON generation, session management, and stock deduction. |
+| ![MySQL](https://img.shields.io/badge/MySQL_8-4479A1?style=flat-square&logo=mysql&logoColor=white) | Relational database engine storing products, user details, order lists, analytics, and feedback. |
+| ![Firebase](https://img.shields.io/badge/Firebase_Auth-FFCA28?style=flat-square&logo=firebase&logoColor=black) | Google sign-in provider SDK, handling client token flows for account login matching. |
 
-The frontend API client uses `apps/web/src/app/lib/api.ts` with:
+### 🧰 Mobile & Tooling
+
+| Technology | Purpose |
+|:-----------|:--------|
+| ![Cordova](https://img.shields.io/badge/Cordova_12-E0A100?style=flat-square&logo=apache-cordova&logoColor=white) | Hybrid wrapper compilation to bundle Vite production assets into a native Android APK target. |
+| ![pnpm](https://img.shields.io/badge/pnpm_9-F69220?style=flat-square&logo=pnpm&logoColor=white) | Workspace package manager handling dependencies, workspace scripts, and monorepo orchestration. |
+
+---
+
+## ☁️ Services & Environment Configuration
+
+### Deployment Workflow
+
 ```
-BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost/xontrix-backend/api'
+Workspace (Local Edit)
+   │
+   ├─── Web Assets Build ──→ pnpm build ──→ dist/ ──→ Deploy to Static Apache Root
+   │
+   ├─── Mobile APK Build ──→ cordova build android ──→ platforms/android/app/.../app-debug.apk
+   │
+   └─── Backend Setup ─────→ Copy apps/backend/xontrix-backend to htdocs/
+                                └─── Trigger db seeder install.php
 ```
 
-Add a `.env` file at the project root or under `apps/web/`:
-```bash
+### Service Roles
+
+| # | Service | Role | Server / Local | Description |
+|:-:|:--------|:-----|:---------------|:------------|
+| 1 | **Apache HTTP Server** | Web API Host | Local (XAMPP) | Hosts the PHP controllers and assets, handling API routing calls. |
+| 2 | **MySQL Database** | Relational Storage | Local (XAMPP) | Stores core entities: products, inventory, users, sales metrics, and logs. |
+| 3 | **Firebase Console** | Google Identity Provider | Cloud Service | Authenticates user clients and returns credentials for Google login sync. |
+| 4 | **Cordova Android SDK** | APK Compiler | Local CLI | Wraps frontend files into native Android app package configurations. |
+
+### Environment Configuration Reference
+
+To let the frontend web portal communicate with the backend PHP endpoints and Google Auth, create a `.env` file at the root or under `apps/web/` containing:
+
+```env
+# ── API Connection (XAMPP Local Server) ──
 VITE_API_URL=http://localhost/xontrix-backend/api
+
+# ── Google Authentication (Firebase Console Setup) ──
+VITE_FIREBASE_API_KEY=your_firebase_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_firebase_app_id
 ```
 
-> If you host the backend under a different folder/port, update `VITE_API_URL`.
+---
 
-### 3️⃣ Start the Frontend
-=======
-# E-Commerce Website
+## 🚀 Getting Started
 
-This is a modern E-Commerce website for electronics components and kits, built with React, TypeScript, Vite, TailwindCSS, and shadcn/ui. Originally imported from [Figma design](https://www.figma.com/design/0gN8cl3tMhrqdRIk4GiDKp/E-commerce-website).
+### 📋 Prerequisites
 
-https://github.com/TechyElle/e-commerce_website
+Ensure you have the following software installed locally:
 
-Features:
-- Responsive design with TailwindCSS 4
-- Client-side routing with React Router
-- Product catalog with details and cart functionality
-- UI components from shadcn/ui (Radix UI primitives)
-- Product images and mock data included
+| Tool | Version | Link |
+|:-----|:--------|:-----|
+| 🟢 **Node.js** | `≥ 18.0` | [nodejs.org](https://nodejs.org/) |
+| 📦 **pnpm** | `≥ 9.0` | [pnpm.io](https://pnpm.io/) |
+| 🎛️ **XAMPP / WampServer** | Latest (PHP 8+, MySQL) | [apachefriends.org](https://www.apachefriends.org/) |
+| 📱 **Android Studio / SDK** | Command Line Tools & Gradle | [developer.android.com](https://developer.android.com/studio) |
+| ☕ **Java JDK** | `17` | [oracle.com](https://www.oracle.com/java/) |
 
-## Prerequisites
+### ⚡ Local Project Setup
 
-- Node.js >= 18
-- [pnpm](https://pnpm.io/installation) (recommended, as per lockfile)
+**1. Clone the repository**
+```bash
+git clone https://github.com/TechyElle/e-commerce_website.git
+cd e-commerce_website
+```
 
-## Quick Start
->>>>>>> 648854986551826cb5709d30fed8729fdb16c3f7
-
+**2. Install dependencies**
 ```bash
 pnpm install
-pnpm dev
 ```
 
-<<<<<<< HEAD
-**Dev server**: http://localhost:5173
+**3. Configure the PHP / MySQL Backend (XAMPP)**
+- Copy the folder `apps/backend/xontrix-backend` into your XAMPP htdocs directory:
+  ```
+  C:\xampp\htdocs\xontrix-backend
+  ```
+- Open XAMPP Control Panel and start **Apache** and **MySQL**.
+
+**4. Generate & Seed the Database**
+- Open your browser and navigate once to:
+  ```
+  http://localhost/xontrix-backend/api/install.php
+  ```
+  This creates the tables defined in `schema.sql` and inserts mock electronics products, orders, and users.
+
+**5. Start the Frontend Web App**
+- Ensure you configured your `.env` file under `apps/web/`.
+- Launch the development server:
+  ```bash
+  pnpm dev
+  ```
+- Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### 📱 Building the Mobile App (Android)
+
+**1. Navigate to the cordova workspace**
+```bash
+cd apps/mobile/cordova-mobile/
+```
+
+**2. Add the Android platform**
+```bash
+cordova platform add android
+```
+
+**3. Compile target APK**
+```bash
+cordova build android
+```
+- The output APK will be generated at:
+  `platforms/android/app/build/outputs/apk/debug/app-debug.apk`
 
 ---
 
-## 🔧 Frontend Configuration
+## 📡 API Reference
 
-### Firebase
-
-This app already includes Google sign-in via Firebase. To enable it:
-
-1. Copy `apps/web/.env.example` to `apps/web/.env`.
-2. Create a Firebase project in the Firebase Console.
-3. Add a Web app and enable Google authentication in Firebase Authentication.
-4. Paste the generated Firebase config values into `apps/web/.env`.
-
-Example keys you must fill in:
-
-- `VITE_FIREBASE_API_KEY`
-
-
-
-- `VITE_FIREBASE_AUTH_DOMAIN`
-- `VITE_FIREBASE_PROJECT_ID`
-- `VITE_FIREBASE_STORAGE_BUCKET`
-- `VITE_FIREBASE_MESSAGING_SENDER_ID`
-- `VITE_FIREBASE_APP_ID`
-
-Once configured, the login page will use Firebase's `signInWithPopup()` flow and then call the backend `users.php?action=google` endpoint.
-
-If any Firebase config value is missing or blank, `isFirebaseConfigured` in `apps/web/src/app/lib/firebase.ts` becomes `false` and the Google button stays disabled.
+All backend REST endpoints are hosted at `http://localhost/xontrix-backend/api`.
 
 ---
 
-## 🗺️ Routes & Pages
+## 🗄️ Database Schema
 
-Available routes in the UI:
+The relational database (hosted locally on MySQL) is structured as follows:
 
+```mermaid
+erDiagram
+    users {
+        int id PK
+        varchar name
+        varchar email UK
+        varchar password
+        varchar role
+        timestamp created_at
+    }
 
-| Route | Description |
-|:------|:------------|
-| `/` | Home page |
-| `/products` | Product catalog |
-| `/products/:id` | Product detail |
-| `/cart` | Shopping cart |
-| `/checkout` | Checkout flow |
-| `/dashboard` | Dashboard (admin area) |
-| `/admin` | Admin panel |
-| `/login` | Login page |
-| `/about` | About page |
-| `/contact` | Contact page |
-| `*` | 404 Not Found |
+    products {
+        varchar id PK
+        varchar name
+        decimal price
+        varchar category
+        text description
+        varchar image
+        int stock
+        float rating
+        int reviews
+        boolean is_new
+        json specs
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    orders {
+        varchar id PK
+        varchar customer_name
+        varchar customer_email
+        varchar payment_method
+        varchar status
+        decimal subtotal
+        decimal shipping
+        decimal total
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    order_items {
+        int id PK
+        varchar order_id FK
+        varchar product_id FK
+        varchar name
+        decimal price
+        int quantity
+        varchar image
+    }
+
+    feedback {
+        int id PK
+        varchar customer_name
+        varchar customer_email
+        int rating
+        text comment
+        timestamp created_at
+    }
+
+    users ||--o{ orders : "places"
+    orders ||--|{ order_items : "contains"
+    products ||--o{ order_items : "ordered_in"
+```
 
 ---
 
@@ -187,191 +505,199 @@ Available routes in the UI:
 
 ```
 .
-├── package.json               # Root dependencies & workspace scripts
-├── pnpm-workspace.yaml        # pnpm workspace configuration
-├── pnpm-lock.yaml             # pnpm lockfile
-├── apps/
-│   ├── web/                   # Frontend (React + Vite + Tailwind + shadcn/ui)
-│   │   ├── index.html         # Vite entry point
-│   │   ├── vite.config.ts     # Vite config
-│   │   ├── package.json       # Web app scripts/deps
-│   │   └── src/
-│   │       ├── main.tsx       # Application bootstrap
-│   │       └── app/           # routes, pages, components, context, lib
-│   ├── backend/
-│   │   └── xontrix-backend/  # PHP/MySQL REST-like API (Apache + MySQL)
-│   └── mobile/
-│       └── cordova-mobile/   # Cordova mobile app
-└── docs/                      # Documentation + screenshots + assets
-    └── screenshots/
+├── 📂 apps/
+│   ├── 🌐 web/                    # React 18 + Vite 6 + Tailwind 4 Frontend (→ Local Host)
+│   │   ├── 📂 src/
+│   │   │   ├── 📂 app/
+│   │   │   │   ├── 📂 components/ # UI Components (shadcn/ui + custom widgets)
+│   │   │   │   ├── 📂 context/    # React Contexts (AuthContext, CartContext, StoreContext)
+│   │   │   │   ├── 📂 hooks/      # Custom React hooks (useScrollReveal)
+│   │   │   │   ├── 📂 lib/        # API Client client wrapper (api.ts)
+│   │   │   │   ├── 📂 pages/      # Route pages (Home, Products, Admin, Dashboard, Cart, etc.)
+│   │   │   │   ├── 📄 App.tsx     # Root app router provider
+│   │   │   │   └── 📄 routes.tsx  # Dynamic router configuration
+│   │   │   ├── 📂 imports/        # Image assets, logo, QR code
+│   │   │   ├── 📂 styles/         # Globals.css containing Tailwind utility theme config
+│   │   │   └── 📄 main.tsx        # React bootstrap entry point
+│   │   ├── 📄 vite.config.ts      # Vite 6 compiler and proxy settings
+│   │   └── 📄 package.json
+│   │
+│   ├── ⚙️ backend/
+│   │   └── 📂 xontrix-backend/    # PHP / MySQL API Server Application (→ Apache)
+│   │       ├── 📂 api/
+│   │       │   ├── 📄 bootstrap.php  # Global CORS and header setups
+│   │       │   ├── 📄 config.php     # MySQL database credentials & PDO wrapper
+│   │       │   ├── 📄 install.php    # Automatic table generation & dataset seeder
+│   │       │   ├── 📄 orders.php     # Order CRUD and inventory deduct actions
+│   │       │   ├── 📄 products.php   # Product catalog manager (CRUD API)
+│   │       │   ├── 📄 sales.php      # Sales analytics summary & dashboard events API
+│   │       │   ├── 📄 schema.sql     # Database schema structure dump
+│   │       │   ├── 📄 upload.php     # File upload handlers for admin products
+│   │       │   └── 📄 users.php      # Session registration, login, and roles
+│   │       └── 📄 README.md          # Backend configuration instructions
+│   │
+│   └── 📱 mobile/
+│       └── 📂 cordova-mobile/    # Apache Cordova Mobile wrapper configuration (→ APK)
+│           ├── 📂 config.xml      # Cordova app configs (name, bundle id, permissions)
+│           └── 📂 www/            # Compiled static files folder for Cordova builds
+│
+├── 📂 docs/
+│   ├── 📂 planning/               # Architecture designs, planning checklists
+│   ├── 📂 screenshots/            # Showcase images of pages
+│   ├── 📄 Attributions.md         # Framework and asset attributions
+│   ├── 📄 PRODUCTS.pdf            # PDF documentation on electronic products
+│   ├── 📄 README.md               # Standard client setup guide
+│   ├── 📄 task.md                 # AI sales feature implementation status
+│   └── 📄 TODO.md                 # Project QA checklists
+│
+├── 📄 pnpm-workspace.yaml         # PNPM workspace configurations
+├── 📄 pnpm-lock.yaml              # Lockfile
+└── 📄 README.md                   # You are here!
 ```
-
-
 
 ---
 
-## 🔨 Build for Production
-=======
-The development server will start at http://localhost:5173.
+## 🗂️ Product Categories
 
-## Detailed Setup
+Xontrix organizes its electronic components catalog into **6 core product categories**:
 
-1. **Clone the repository** (if not already):
-   ```bash
-   git clone https://github.com/TechyElle/e-commerce_website.git
-   cd e-commerce_website
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   pnpm install
-   ```
-   If you prefer npm:
-   ```bash
-   npm install
-   ```
-   (Note: pnpm is recommended for exact dependency resolution.)
-
-3. **Start development server**:
-   ```bash
-   pnpm dev
-   ```
-   - Opens http://localhost:5173
-   - Hot reload enabled
-   - TypeScript checking on
-
-## Project Structure
-
-```
-.
-├── index.html          # Entry point
-├── package.json        # Dependencies & scripts
-├── vite.config.ts      # Vite config (React + Tailwind + aliases)
-├── src/
-│   ├── main.tsx        # App entry
-│   ├── app/
-│   │   ├── App.tsx           # Root component
-│   │   ├── routes.tsx        # Routing config
-│   │   ├── pages/            # Page components (Home, Products, Cart, etc.)
-│   │   ├── components/       # UI components (Layout, ProductCard, shadcn/ui)
-│   │   ├── context/          # CartContext
-│   │   └── data/             # Mock products
-│   ├── imports/              # Assets (products images, logo)
-│   └── styles/               # Global CSS (Tailwind)
-├── pnpm-lock.yaml      # Lockfile
-└── ...
-```
-
-## Available Pages/Routes
-
-- `/` - Home
-- `/products` - Product catalog
-- `/products/:id` - Product detail
-- `/cart` - Shopping cart
-- `/about` - About
-- `/contact` - Contact
-- `/dashboard` - Dashboard
-- `*` - 404 Not Found
-
-## Build for Production
->>>>>>> 648854986551826cb5709d30fed8729fdb16c3f7
-
-```bash
-pnpm build
-```
-
-<<<<<<< HEAD
-**Output**: `dist/`
-
-Serve the `dist/` folder with any static server or deploy via Vercel/Netlify.
-
----
-
-## 🖼️ Screenshots
-
-A few moments from the Xontrix experience — crafted for fast browsing, confident checkout, and an admin dashboard that brings sales insights to life.
-
-### Screenshots Gallery
-
-| # | Page | Preview |
-|---:|---|---|
-| 1 | Homepage | ![1_homepage](docs/screenshots/1_homepage.png) |
-| 2 | Homepage (alt) | ![1.1_homepage](docs/screenshots/1.1_homepage.png) |
-| 3 | Homepage Footer | ![1.2_footer](docs/screenshots/1.2_footer.png) |
-| 4 | Shop / Products | ![2_shoppage](docs/screenshots/2_shoppage.png) |
-| 5 | “Sulit Deal” / Deals | ![3_sulitdealpage](docs/screenshots/3_sulitdealpage.png) |
-| 6 | About | ![4_aboutpage](docs/screenshots/4_aboutpage.png) |
-| 7 | Contact | ![5_contactpage](docs/screenshots/5_contactpage.png) |
-| 8 | Cart (Empty) | ![6_cartempty](docs/screenshots/6_cartempty.png) |
-| 9 | Checkout | ![7_checkout](docs/screenshots/7_checkout.png) |
-
-> Tip: The screenshots are stored under `docs/screenshots/`.
+| Icon | Category Name | Description & Key Examples |
+|:----:|:--------------|:---------------------------|
+| 🧠 | **Microcontrollers** | Core processor units: Arduino Uno, ESP8266 NodeMCU, ESP32, Arduino Nano |
+| 📡 | **Sensors** | Interaction modules: DHT11 Temp, MQ-2 Smoke, Ultrasonic HC-SR04, Soil Moisture |
+| ⚙️ | **Actuators & Motors** | Movement drivers: Stepper Motor, Servo Motor SG90, DC Gearbox Robot Motor |
+| 🛡️ | **Shields & Modules** | Expandable shield boards: Motor Driver L298N, RFID RC522, ESP8266 Expansion |
+| 🔌 | **Accessories & Cables** | Prototype tools: Breadboard, Jumper Wires, 5V Regulator LM7805, Logic ICs |
+| 🔋 | **Power & Switches** | Energy controllers: Rocker Switch 2-pin, 9V Battery Snap, Toggle buttons |
 
 ---
 
 ## 🗺️ Roadmap
 
+- [x] Scaffolding monorepo layouts using PNPM workspaces
+- [x] Implementing React storefront components catalog
+- [x] Implementing PHP MySQL backend endpoints
+- [x] Coding dynamic cart management cap-checked by available inventory
+- [x] Writing auto-deduct SQL orders transaction triggers
+- [x] Adding Firebase Google Auth SDK route configurations
+- [x] Adding Admin sales analytics charts and calendar views
+- [x] Designing strategic AI Advisor and user AI Consultant chatbot views
+- [x] Building Cordova hybrid project configs to compile Android APK targets
+- [ ] Integrating GCash and Maya real payment gateway merchant APIs
+- [ ] Implementing real-time push notifications for delivery deadlines
+- [ ] Setting up automated daily database backup scripts
+- [ ] Adding multi-vendor admin access controls to `/admin` routes
 
-Current high-level items:
+---
 
-- Shopee-like cart experience updates
-- Checkout payment & place-order flow refinements
+## 🤝 Contributing
 
-See `TODO.md` for more details.
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. **Fork** the repository
+2. **Create** your feature branch
+   ```bash
+   git checkout -b feat/amazing-feature
+   ```
+3. **Commit** your changes
+   ```bash
+   git commit -m "feat: add amazing feature"
+   ```
+4. **Push** to the branch
+   ```bash
+   git push origin feat/amazing-feature
+   ```
+5. **Open** a Pull Request
+
+### 📝 Commit Convention
+
+This project follows [Conventional Commits](https://www.conventionalcommits.org/):
+
+| Prefix | Description |
+|:-------|:------------|
+| `feat:` | New feature |
+| `fix:` | Bug fix |
+| `docs:` | Documentation changes |
+| `style:` | Code style (formatting, no logic change) |
+| `refactor:` | Code refactoring |
+| `test:` | Adding or updating tests |
+| `chore:` | Maintenance tasks |
 
 ---
 
-## 📄 Credits & Licensing
+## 👥 Team
 
-- **Design Inspiration**: Figma E-Commerce (see `src/app/Attributions.md` and `Attributions.md`)
-- **UI Components**: [shadcn/ui](https://ui.shadcn.com/) (Radix UI primitives)
-- **Assets**: Product images in `imports/`
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <strong>Ghani Regina Gold San Luis </strong><br/>
+      <sub>Quality Assurance Engineer</sub>
+    </td>
+        <td align="center" width="33%">
+      <strong>Cielle Mae Peñamora</strong><br/>
+      <sub>Full-Stack Engineer</sub>
+    </td>
+    <td align="center" width="33%">
+      <strong>Jayson Cris Mamaril</strong><br/>
+      <sub>Mobile Engineer</sub>
+    </td>
+  </tr>
+</table>
 
-Additional attributions and licenses are available in `Attributions.md`.
+
 
 ---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+```
+MIT License
+
+Copyright (c) 2026 TechyElle | Ghani Regina Gold
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## 🙏 Acknowledgements
+
+- [React](https://react.dev/) — The library for web user interfaces
+- [Vite](https://vite.dev/) — Next-generation frontend tooling
+- [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS styling
+- [PHP](https://www.php.net/) — Fast, general-purpose scripting language
+- [MySQL](https://www.mysql.com/) — Relational database system
+- [Apache Cordova](https://cordova.apache.org/) — Mobile application development framework
+- [Firebase Auth](https://firebase.google.com/docs/auth) — Google identity provider toolkit
+- [Recharts](https://recharts.org/) — Redefined chart library for React applications
+- [Lucide React](https://lucide.dev/) — Clean community-designed SVG icons
+- [shadcn/ui](https://ui.shadcn.com/) — Premium accessible React component primitives
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Built_with-React_%2B_TypeScript-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
-  <img src="https://img.shields.io/badge/Styled_with-Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-  <img src="https://img.shields.io/badge/Powered_by-PHP_%2B_MySQL-4479A1?style=for-the-badge&logo=php&logoColor=white" />
+  <strong>Built with 💡 for efficient electronics development</strong>
 </p>
 
-=======
-- Outputs to `dist/` folder
-- Serve with any static server, e.g., `npx serve dist`
-- Or deploy to Vercel/Netlify (Vite supports zero-config).
-
-## Scripts
-
-From `package.json`:
-
-| Script | Description |
-|--------|-------------|
-| `pnpm dev` | Start dev server |
-| `pnpm build` | Build for production |
-
-## Troubleshooting
-
-- **pnpm not found**: Install with `npm install -g pnpm`
-- **Port in use**: `pnpm dev --port 3000`
-- **TypeScript errors**: Ensure `@types/*` installed (`pnpm install`)
-- **Styles missing**: Tailwind is configured via Vite plugin; clear cache if needed (`rm -rf node_modules/.vite`)
-
-## Tech Stack
-
-- **Framework**: React 18 + TypeScript
-- **Build Tool**: Vite 6
-- **Styling**: TailwindCSS 4 + shadcn/ui
-- **Routing**: React Router
-- **Icons**: Lucide React
-- **State**: React Context (Cart)
-
-## Credits
-
-- Design: [Figma E-Commerce](https://www.figma.com/design/0gN8cl3tMhrqdRIk4GiDKp/E-commerce-website)
-- Components: [shadcn/ui](https://ui.shadcn.com/)
-- Product images: Local assets
-
-Enjoy building your e-commerce site!
->>>>>>> 648854986551826cb5709d30fed8729fdb16c3f7
+<p align="center">
+  <img src="https://img.shields.io/badge/Made_with-React_%2B_TypeScript-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/Powered_by-PHP_%2B_MySQL-777BB4?style=for-the-badge&logo=php&logoColor=white" />
+  <img src="https://img.shields.io/badge/Wrapped_in-Apache_Cordova-E0A100?style=for-the-badge&logo=apache-cordova&logoColor=white" />
+  <img src="https://img.shields.io/badge/Supported_by-Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" />
+</p>

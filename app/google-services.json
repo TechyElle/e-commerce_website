@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "83987538053",
+    "project_id": "xontrix-cd4b8",
+    "storage_bucket": "xontrix-cd4b8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83987538053:android:c45e0bafedc96581ed89ec",
+        "android_client_info": {
+          "package_name": "electronics.xontrix.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB49DnJOyl7Ae8VatJZgx4An_n3myy1cIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
