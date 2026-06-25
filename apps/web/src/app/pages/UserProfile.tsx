@@ -57,11 +57,11 @@ const STATS = [
 ];
 
 const MENU_ITEMS = [
-  { icon: <ShoppingBag className="w-5 h-5" />, label: 'My Orders', desc: 'Track and view past orders', path: '#' },
-  { icon: <Heart className="w-5 h-5" />, label: 'Wishlist', desc: 'Saved items for later', path: '#' },
-  { icon: <MapPin className="w-5 h-5" />, label: 'Addresses', desc: 'Manage delivery addresses', path: '#' },
-  { icon: <Bell className="w-5 h-5" />, label: 'Notifications', desc: 'Email & SMS preferences', path: '#' },
-  { icon: <Shield className="w-5 h-5" />, label: 'Security', desc: 'Password & account safety', path: '#' },
+  { icon: <ShoppingBag className="w-5 h-5" />, label: 'My Orders', desc: 'Track and view past orders', path: '/orders' },
+  { icon: <Heart className="w-5 h-5" />, label: 'Wishlist', desc: 'Saved items for later', path: '/wishlist' },
+  { icon: <MapPin className="w-5 h-5" />, label: 'Addresses', desc: 'Manage delivery addresses', path: '/addresses' },
+  { icon: <Bell className="w-5 h-5" />, label: 'Notifications', desc: 'Email & SMS preferences', path: '/notifications' },
+  { icon: <Shield className="w-5 h-5" />, label: 'Security', desc: 'Password & account safety', path: '/security' },
 ];
 
 export function UserProfile() {

@@ -15,6 +15,11 @@ const Contact = lazy(() => import("./pages/Contact").then((module) => ({ default
 const Login = lazy(() => import("./pages/Login").then((module) => ({ default: module.Login })));
 const Checkout = lazy(() => import("./pages/Checkout").then((module) => ({ default: module.Checkout })));
 const UserProfile = lazy(() => import("./pages/UserProfile").then((module) => ({ default: module.UserProfile })));
+const UserOrders = lazy(() => import("./pages/UserOrders").then((module) => ({ default: module.UserOrders })));
+const UserWishlist = lazy(() => import("./pages/UserWishlist").then((module) => ({ default: module.UserWishlist })));
+const UserAddresses = lazy(() => import("./pages/UserAddresses").then((module) => ({ default: module.UserAddresses })));
+const UserNotifications = lazy(() => import("./pages/UserNotifications").then((module) => ({ default: module.UserNotifications })));
+const UserSecurity = lazy(() => import("./pages/UserSecurity").then((module) => ({ default: module.UserSecurity })));
 const NotFound = lazy(() => import("./pages/NotFound").then((module) => ({ default: module.NotFound })));
 
 function PageFallback() {
@@ -62,6 +67,11 @@ export const router = createBrowserRouter([
       { path: "contact", element: <LazyPage><Contact /></LazyPage> },
       { path: "login", element: <LazyPage><Login /></LazyPage> },
       { path: "profile", element: <LazyPage><UserProfile /></LazyPage> },
+      { path: "orders", element: <LazyPage><UserOrders /></LazyPage> },
+      { path: "wishlist", element: <LazyPage><UserWishlist /></LazyPage> },
+      { path: "addresses", element: <LazyPage><UserAddresses /></LazyPage> },
+      { path: "notifications", element: <LazyPage><UserNotifications /></LazyPage> },
+      { path: "security", element: <LazyPage><UserSecurity /></LazyPage> },
       { path: "checkout", element: <LazyPage><Checkout /></LazyPage> },
       { path: "*", element: <LazyPage><NotFound /></LazyPage> },
     ],
