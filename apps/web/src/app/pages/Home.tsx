@@ -25,6 +25,11 @@ import arduinoHero from '../../assets/products/Arduino Uno r3.png';
 import espHero from '../../assets/products/Esp32 38pins.png';
 import kitHero from '../../assets/products/Electronic Kit.png';
 import sensorHero from '../../assets/products/IR Sensor.png';
+import uniPhoto1 from '../../assets/top_universities/1.png';
+import uniPhoto2 from '../../assets/top_universities/2.png';
+import uniPhoto3 from '../../assets/top_universities/3.png';
+import uniPhoto4 from '../../assets/top_universities/4.png';
+import uniPhoto5 from '../../assets/top_universities/5.png';
 
 const heroItems = [
   { label: 'Arduino-ready', image: arduinoHero },
@@ -47,6 +52,34 @@ const categories = [
   { name: 'Motor Control', icon: Zap, detail: 'Motor drivers, relay modules, servos' },
   { name: 'Connectors', icon: Layers3, detail: 'Jumper wires, USB breakouts, headers' },
   { name: 'Tools', icon: SlidersHorizontal, detail: 'Breadboards, shields, prototyping kits' },
+];
+
+const universities = [
+  {
+    name: 'Technological University of the Philippines',
+    abbreviation: 'TUP',
+    photo: uniPhoto1,
+  },
+  {
+    name: 'Systems Technology Institute',
+    abbreviation: 'STI',
+    photo: uniPhoto2,
+  },
+  {
+    name: 'Polytechnic University of the Philippines',
+    abbreviation: 'PUP',
+    photo: uniPhoto3,
+  },
+  {
+    name: 'Quezon City University',
+    abbreviation: 'QCU',
+    photo: uniPhoto4,
+  },
+  {
+    name: 'National University',
+    abbreviation: 'NU',
+    photo: uniPhoto5,
+  },
 ];
 
 function Countdown() {
@@ -209,6 +242,34 @@ export function Home() {
               <p className="mt-1 text-sm leading-6 text-[#666666]">{detail}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Top Universities Section */}
+      <section className="border-b border-black/10 bg-[#f8fafc] py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 text-center sm:text-left">
+            <p className="mb-2 text-sm font-bold uppercase text-[#db4444]">Campuses We Service</p>
+            <h2 className="text-3xl font-black text-[#111111]">Top 5 schools we deliver to.</h2>
+            <p className="mt-2 text-sm text-[#666666]">Get your prototyping parts delivered directly to your campus with zero hassle.</p>
+          </div>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
+            {universities.map((uni) => (
+              <div
+                key={uni.abbreviation}
+                className="group relative h-80 overflow-hidden rounded-xl transition-all duration-300 hover:-translate-y-1"
+              >
+                <img
+                  src={uni.photo}
+                  alt={`${uni.name} campus`}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-3">
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -3,12 +3,15 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import { ArrowLeft, MapPin, Plus, Trash2, Edit3, Check, X } from 'lucide-react';
 
+
 const INITIAL_ADDRESSES = [
   { id: 1, label: 'Home', name: 'Ghani Regina Gold', phone: '09171234567', street: '123 Mabini Street', city: 'Quezon City', province: 'Metro Manila', zip: '1100', isDefault: true },
   { id: 2, label: 'School', name: 'Ghani Regina Gold', phone: '09171234567', street: 'PUP Main Campus, Anonas Street', city: 'Sta. Mesa, Manila', province: 'Metro Manila', zip: '1008', isDefault: false },
 ];
 
+
 const EMPTY_FORM = { label: 'Home', name: '', phone: '', street: '', city: '', province: '', zip: '', isDefault: false };
+
 
 export function UserAddresses() {
   const [addresses, setAddresses] = useState(INITIAL_ADDRESSES);
@@ -17,17 +20,20 @@ export function UserAddresses() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [saved, setSaved] = useState(false);
 
+
   const handleEdit = (addr) => {
     setEditId(addr.id);
     setForm({ ...addr });
     setShowForm(true);
   };
 
+
   const handleNew = () => {
     setEditId(null);
     setForm(EMPTY_FORM);
     setShowForm(true);
   };
+
 
   const handleSave = () => {
     if (!form.name || !form.street || !form.city) return;
@@ -43,13 +49,16 @@ export function UserAddresses() {
     setTimeout(() => { setSaved(false); setShowForm(false); }, 1200);
   };
 
+
   const handleDelete = (id) => {
     setAddresses(prev => prev.filter(a => a.id !== id));
   };
 
+
   const handleSetDefault = (id) => {
     setAddresses(prev => prev.map(a => ({ ...a, isDefault: a.id === id })));
   };
+
 
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -63,6 +72,7 @@ export function UserAddresses() {
             <Plus className="w-3.5 h-3.5" /> Add New
           </button>
         </div>
+
 
         {/* Form */}
         {showForm && (
@@ -117,6 +127,7 @@ export function UserAddresses() {
           </div>
         )}
 
+
         {/* Address List */}
         <div className="space-y-3">
           {addresses.length === 0 ? (
@@ -151,3 +162,4 @@ export function UserAddresses() {
     </div>
   );
 }
+

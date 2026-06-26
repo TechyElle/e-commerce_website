@@ -355,6 +355,7 @@ export function Layout() {
   const { cartCount } = useCart();
   const { isAdmin, user } = useAuth();
   const location = useLocation();
+  const isAdminPage = location.pathname.startsWith('/admin');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -419,14 +420,16 @@ export function Layout() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className={`min-h-screen ${isAdminPage ? 'bg-black text-white' : 'bg-white'}`}>
       {/* Announcement Ticker */}
       <AnnouncementBar />
 
       {/* ── HEADER ── */}
       <header
         className={`sticky top-0 z-50 transition-all duration-300 ${
-          scrolled
+          isAdminPage
+            ? 'bg-black text-white border-b border-white/10 shadow-sm shadow-black/40'
+            : scrolled
             ? 'bg-white/95 backdrop-blur-md border-b border-black/10 shadow-sm shadow-black/5'
             : 'bg-white border-b border-black/10'
         }`}
@@ -435,9 +438,9 @@ export function Layout() {
           <div className="flex items-center justify-between h-16 gap-4">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 shrink-0">
-              <img src={logoImg} alt="Xontrix Logo" className="w-10 h-10" />
+              <img src={logoImg} alt="Xontrix Logo" className="w-13 h-10" />
               <span
-                className="text-xl text-[#111111] hidden sm:block"
+                className={`text-xl hidden sm:block ${isAdminPage ? 'text-white' : 'text-[#111111]'}`}
                 style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800 }}
               >
                 XONTRIX
@@ -456,7 +459,11 @@ export function Layout() {
                     key={item.name}
                     to={item.path}
                     className={`relative py-1 transition-colors text-sm ${
-                      active ? 'text-[#db4444]' : 'text-[#111111] hover:text-[#db4444]'
+                      active
+                        ? 'text-[#db4444]'
+                        : isAdminPage
+                        ? 'text-white hover:text-[#db4444]'
+                        : 'text-[#111111] hover:text-[#db4444]'
                     }`}
                     style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500 }}
                   >
@@ -479,7 +486,11 @@ export function Layout() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setSearchFocused(true)}
-                  className="w-full h-10 pl-9 pr-3 bg-[#f5f5f5] border border-transparent text-[#111111] text-sm placeholder:text-[#7d8184] focus:border-[#db4444] focus:outline-none focus:ring-1 focus:ring-[#db4444]/20 transition-all rounded-sm"
+                  className={`w-full h-10 pl-9 pr-3 border text-sm placeholder:text-[#7d8184] focus:border-[#db4444] focus:outline-none focus:ring-1 focus:ring-[#db4444]/20 transition-all rounded-sm ${
+                    isAdminPage
+                      ? 'bg-white/10 border-white/10 text-white'
+                      : 'bg-[#f5f5f5] border-transparent text-[#111111]'
+                  }`}
                   style={{ fontFamily: 'Inter, sans-serif' }}
                 />
               </div>
@@ -491,7 +502,7 @@ export function Layout() {
             {/* Actions */}
             <div className="flex items-center gap-1">
               <Link to="/cart">
-                <button className="relative w-10 h-10 flex items-center justify-center text-[#111111] hover:text-[#db4444] transition-colors">
+                <button className={`relative w-10 h-10 flex items-center justify-center transition-colors ${isAdminPage ? 'text-white hover:text-[#db4444]' : 'text-[#111111] hover:text-[#db4444]'}`}>
                   <ShoppingCart className="w-5 h-5" />
                   {cartCount > 0 && (
                     <span className="absolute -top-0.5 -right-0.5 w-5 h-5 flex items-center justify-center text-xs bg-[#db4444] text-white rounded-full font-bold">
@@ -501,13 +512,13 @@ export function Layout() {
                 </button>
               </Link>
               <Link to={isAdmin ? '/admin' : (user ? '/profile' : '/login')}>
-                <button className="w-10 h-10 hidden md:flex items-center justify-center text-[#111111] hover:text-[#db4444] transition-colors">
+                <button className={`w-10 h-10 hidden md:flex items-center justify-center transition-colors ${isAdminPage ? 'text-white hover:text-[#db4444]' : 'text-[#111111] hover:text-[#db4444]'}`}>
                   <User className="w-5 h-5" />
                 </button>
               </Link>
               {/* Mobile burger */}
               <button
-                className="md:hidden w-10 h-10 flex items-center justify-center text-[#111111] hover:text-[#db4444] transition-colors"
+                className={`md:hidden w-10 h-10 flex items-center justify-center transition-colors ${isAdminPage ? 'text-white hover:text-[#db4444]' : 'text-[#111111] hover:text-[#db4444]'}`}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -518,7 +529,7 @@ export function Layout() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-[rgba(0,0,0,0.06)] bg-white">
+          <div className={`md:hidden border-t ${isAdminPage ? 'border-white/10 bg-black' : 'border-[rgba(0,0,0,0.06)] bg-white'}`}>
             <div className="px-4 py-4 space-y-1">
               {/* Mobile Search */}
               <div className="relative mb-3">
@@ -526,7 +537,9 @@ export function Layout() {
                 <input
                   type="text"
                   placeholder="Hanapin ng produkto..."
-                  className="w-full h-11 pl-9 pr-3 bg-[#f5f5f5] border border-black/10 text-[#111111] text-sm placeholder:text-[#7d8184] focus:border-[#db4444] focus:outline-none"
+                  className={`w-full h-11 pl-9 pr-3 border text-sm placeholder:text-[#7d8184] focus:border-[#db4444] focus:outline-none ${
+                    isAdminPage ? 'bg-white/10 border-white/10 text-white' : 'bg-[#f5f5f5] border-black/10 text-[#111111]'
+                  }`}
                   style={{ fontFamily: 'Inter, sans-serif' }}
                 />
               </div>
@@ -543,6 +556,8 @@ export function Layout() {
                       );
                     })()
                       ? 'text-[#db4444] bg-[#fff5f5] border-l-2 border-[#db4444]'
+                      : isAdminPage
+                      ? 'text-white hover:bg-white/10 hover:text-[#db4444] border-l-2 border-transparent'
                       : 'text-[#111111] hover:bg-[#f5f5f5] hover:text-[#db4444] border-l-2 border-transparent'
                   }`}
                   style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500 }}
@@ -555,20 +570,24 @@ export function Layout() {
         )}
 
         {/* ── Category Chip Row with fade edges ── */}
-        <div className="border-t border-black/10">
+        <div className={`border-t ${isAdminPage ? 'border-white/10 bg-black' : 'border-black/10'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative">
               {/* Left fade */}
-              <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-r from-white to-transparent" />
+              <div className={`pointer-events-none absolute left-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-r ${isAdminPage ? 'from-black' : 'from-white'} to-transparent`} />
               {/* Right fade */}
-              <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-l from-white to-transparent" />
+              <div className={`pointer-events-none absolute right-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-l ${isAdminPage ? 'from-black' : 'from-white'} to-transparent`} />
 
               <div className="flex gap-2 overflow-x-auto py-2.5 scrollbar-hide px-2">
                 {categories.map((cat) => (
                   <Link
                     key={cat.label}
                     to={cat.path}
-                    className="px-4 py-1.5 min-h-[36px] flex items-center bg-white border border-black/10 hover:border-[#db4444] hover:bg-[#fff5f5] text-[#4f4f4f] hover:text-[#db4444] whitespace-nowrap transition-all text-sm shrink-0 rounded-sm"
+                    className={`px-4 py-1.5 min-h-[36px] flex items-center border hover:border-[#db4444] hover:text-[#db4444] whitespace-nowrap transition-all text-sm shrink-0 rounded-sm ${
+                      isAdminPage
+                        ? 'bg-white/5 border-white/15 text-white hover:bg-white/10'
+                        : 'bg-white border-black/10 hover:bg-[#fff5f5] text-[#4f4f4f]'
+                    }`}
                     style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500 }}
                   >
                     {cat.label}
@@ -581,25 +600,25 @@ export function Layout() {
       </header>
 
       {/* ── MAIN CONTENT ── */}
-      <main className="pb-20 md:pb-0 bg-white">
+      <main className={`pb-20 md:pb-0 ${isAdminPage ? 'bg-black text-white' : 'bg-white'}`}>
         <Outlet />
       </main>
 
       {/* ── FOOTER ── */}
-      <footer className="bg-white border-t border-[rgba(0,0,0,0.06)] text-[#111111] mt-16 pb-20 md:pb-0">
+      <footer className={`${isAdminPage ? 'bg-black border-white/10 text-white' : 'bg-white border-[rgba(0,0,0,0.06)] text-[#111111]'} border-t mt-16 pb-20 md:pb-0`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <img src={logoImg} alt="Xontrix Logo" className="w-10 h-10" />
+                <img src={logoImg} alt="Xontrix Logo" className="w-13 h-10" />
                 <span className="text-xl" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800 }}>
                   XONTRIX
                 </span>
               </div>
-              <p className="text-[#7d8184] text-sm mb-6" style={{ fontFamily: 'Inter, sans-serif' }}>
+              <p className={`${isAdminPage ? 'text-white/70' : 'text-[#7d8184]'} text-sm mb-6`} style={{ fontFamily: 'Inter, sans-serif' }}>
                 Ang inyong trusted source ng quality na electronic components sa Pilipinas.
               </p>
-              <div className="bg-[#f5f5f5] border border-black/10 p-4 inline-block">
+              <div className={`${isAdminPage ? 'bg-white/5 border-white/10' : 'bg-[#f5f5f5] border-black/10'} border p-4 inline-block`}>
                 <img src={logoQrImg} alt="Scan to Connect" className="w-28 h-auto mb-2" />
                 <p className="text-[#db4444] text-xs text-center" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
                   SCAN TO CONNECT
@@ -612,10 +631,10 @@ export function Layout() {
               { title: 'Company', links: [{ label: 'About Us', path: '/about' }, { label: 'Contact', path: '/contact' }, { label: 'Careers', path: '#' }] },
             ].map((col) => (
               <div key={col.title}>
-                <h3 className="mb-4" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
+                <h3 className={`mb-4 ${isAdminPage ? 'text-white' : ''}`} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>
                   {col.title}
                 </h3>
-                <ul className="space-y-2 text-sm text-[#7d8184]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                    <ul className={`space-y-2 text-sm ${isAdminPage ? 'text-white/65' : 'text-[#7d8184]'}`} style={{ fontFamily: 'Inter, sans-serif' }}>
                   {col.links.map((l) => (
                     <li key={l.label}>
                       <Link to={l.path} className="hover:text-[#db4444] transition-colors">
@@ -627,7 +646,7 @@ export function Layout() {
               </div>
             ))}
           </div>
-          <div className="mt-8 pt-8 border-t border-black/10 text-center text-sm text-[#7d8184]">
+          <div className={`mt-8 pt-8 border-t text-center text-sm ${isAdminPage ? 'border-white/10 text-white/65' : 'border-black/10 text-[#7d8184]'}`}>
             <p style={{ fontFamily: 'Inter, sans-serif' }}>
               &copy; 2026 XONTRIX ELECTRONICS. All rights reserved.
             </p>
@@ -636,7 +655,7 @@ export function Layout() {
       </footer>
 
       {/* ── MOBILE BOTTOM NAV TAB BAR ── */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-black/10">
+      <nav className={`md:hidden fixed bottom-0 left-0 right-0 z-50 backdrop-blur-md border-t ${isAdminPage ? 'bg-black/95 border-white/10' : 'bg-white/95 border-black/10'}`}>
         <div className="flex">
           {mobileNav.map((item) => {
             const isActive = location.pathname === item.path;
@@ -645,7 +664,11 @@ export function Layout() {
                 key={item.name}
                 to={item.path}
                 className={`flex-1 flex flex-col items-center justify-center py-3 gap-1 min-h-[56px] transition-all relative ${
-                  isActive ? 'text-[#db4444]' : 'text-[#7d8184] hover:text-[#111111]'
+                  isActive
+                    ? 'text-[#db4444]'
+                    : isAdminPage
+                    ? 'text-white/65 hover:text-white'
+                    : 'text-[#7d8184] hover:text-[#111111]'
                 }`}
               >
                 {/* Active indicator */}

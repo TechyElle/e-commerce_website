@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+
 /* ────────────────────────────────────────────────
    MOCK ORDER HISTORY (displayed as sample data)
 ──────────────────────────────────────────────── */
@@ -49,12 +50,14 @@ const MOCK_ORDERS = [
   },
 ];
 
+
 const STATS = [
   { label: 'Total Orders', value: '12', icon: <ShoppingBag className="w-5 h-5" /> },
   { label: 'Items Purchased', value: '38', icon: <Package className="w-5 h-5" /> },
   { label: 'Wishlist', value: '5', icon: <Heart className="w-5 h-5" /> },
   { label: 'Reviews Given', value: '7', icon: <Star className="w-5 h-5" /> },
 ];
+
 
 const MENU_ITEMS = [
   { icon: <ShoppingBag className="w-5 h-5" />, label: 'My Orders', desc: 'Track and view past orders', path: '/orders' },
@@ -64,13 +67,16 @@ const MENU_ITEMS = [
   { icon: <Shield className="w-5 h-5" />, label: 'Security', desc: 'Password & account safety', path: '/security' },
 ];
 
+
 export function UserProfile() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [signingOut, setSigningOut] = useState(false);
 
+
   const displayName = user?.displayName || 'Xontrix User';
   const email = user?.email || '';
+
 
   // Generate initials for avatar
   const initials = displayName
@@ -80,11 +86,13 @@ export function UserProfile() {
     .toUpperCase()
     .slice(0, 2);
 
+
   const handleSignOut = async () => {
     setSigningOut(true);
     await signOut();
     navigate('/login');
   };
+
 
   const joinDate = user?.uid?.startsWith('user-')
     ? new Date(Number(user.uid.replace('user-', ''))).toLocaleDateString('en-PH', {
@@ -92,6 +100,7 @@ export function UserProfile() {
         year: 'numeric',
       })
     : 'June 2026';
+
 
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -112,6 +121,7 @@ export function UserProfile() {
           className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full opacity-10"
           style={{ background: '#db4444' }}
         />
+
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6">
@@ -136,6 +146,7 @@ export function UserProfile() {
               </button>
             </div>
 
+
             {/* Name & email */}
             <div className="text-center sm:text-left flex-1 pb-1">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
@@ -157,6 +168,7 @@ export function UserProfile() {
               </p>
             </div>
 
+
             {/* Verified badge */}
             <div
               className="px-3 py-1.5 rounded-full text-xs font-semibold text-white flex items-center gap-1.5 shrink-0"
@@ -168,6 +180,7 @@ export function UserProfile() {
           </div>
         </div>
       </div>
+
 
       {/* ── STATS ROW ── */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
@@ -184,6 +197,7 @@ export function UserProfile() {
           ))}
         </div>
       </div>
+
 
       {/* ── MAIN CONTENT ── */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-3 gap-5">
@@ -217,6 +231,7 @@ export function UserProfile() {
             ))}
           </div>
 
+
           {/* Sign Out */}
           <button
             onClick={handleSignOut}
@@ -232,6 +247,7 @@ export function UserProfile() {
             {signingOut ? 'Signing out…' : 'Sign Out'}
           </button>
         </div>
+
 
         {/* Right column — Orders */}
         <div className="lg:col-span-2 space-y-3">
@@ -278,6 +294,7 @@ export function UserProfile() {
             </div>
           </div>
 
+
           {/* Account Info Card */}
           <div className="bg-white rounded-xl overflow-hidden shadow-sm">
             <div className="px-4 py-3 border-b border-[#f5f5f5]">
@@ -316,6 +333,7 @@ export function UserProfile() {
             </div>
           </div>
 
+
           {/* Shop CTA */}
           <div
             className="rounded-xl p-5 flex items-center justify-between"
@@ -339,3 +357,4 @@ export function UserProfile() {
     </div>
   );
 }
+

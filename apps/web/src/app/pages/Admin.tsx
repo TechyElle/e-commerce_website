@@ -832,7 +832,7 @@ export function Admin() {
               <TabsTrigger
                 key={value}
                 value={value}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs capitalize rounded-lg data-[state=active]:bg-[#6366f1] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
+                className="flex items-center gap-1.5 px-3 py-2 text-xs capitalize rounded-lg text-white/75 data-[state=active]:bg-[#6366f1] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
                 style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600 }}
               >
                 {icon}

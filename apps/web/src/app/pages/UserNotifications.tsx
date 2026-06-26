@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import { ArrowLeft, Bell, ShoppingBag, Tag, Truck, Star, Check } from 'lucide-react';
 
+
 const NOTIFICATION_SETTINGS = [
   {
     category: 'Orders',
@@ -45,6 +46,7 @@ const NOTIFICATION_SETTINGS = [
   },
 ];
 
+
 export function UserNotifications() {
   const [settings, setSettings] = useState(() => {
     const flat = {};
@@ -57,14 +59,17 @@ export function UserNotifications() {
   });
   const [saved, setSaved] = useState(false);
 
+
   const toggle = (id, type) => {
     setSettings(prev => ({ ...prev, [id]: { ...prev[id], [type]: !prev[id][type] } }));
   };
+
 
   const handleSave = () => {
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
+
 
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -75,6 +80,7 @@ export function UserNotifications() {
           </Link>
           <h1 className="text-xl font-bold text-[#111111]">Notifications</h1>
         </div>
+
 
         {/* Channel legend */}
         <div className="bg-white rounded-xl p-4 shadow-sm mb-4 flex items-center gap-6">
@@ -87,6 +93,7 @@ export function UserNotifications() {
             <span>SMS</span>
           </div>
         </div>
+
 
         {/* Settings */}
         <div className="space-y-4">
@@ -128,6 +135,7 @@ export function UserNotifications() {
           ))}
         </div>
 
+
         {/* Save button */}
         <button
           onClick={handleSave}
@@ -140,3 +148,4 @@ export function UserNotifications() {
     </div>
   );
 }
+

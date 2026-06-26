@@ -1,120 +1,34 @@
 // @ts-nocheck
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router';
-import { Package, ChevronRight, ArrowLeft, Search, Filter, Eye, AlertCircle } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { Package, ChevronRight, ArrowLeft, Search, Filter, Eye } from 'lucide-react';
+
+
+const ALL_ORDERS = [
+  { id: 'XON-2026-0041', date: 'June 18, 2026', status: 'Delivered', statusColor: '#22c55e', items: [{ name: 'Arduino Uno R3', qty: 1, price: '₱320.00' }, { name: 'DHT22 Sensor', qty: 1, price: '₱295.00' }], total: '₱615.00', address: '123 Mabini St, Quezon City' },
+  { id: 'XON-2026-0038', date: 'June 10, 2026', status: 'In Transit', statusColor: '#f59e0b', items: [{ name: 'ESP32 Dev Board', qty: 2, price: '₱570.00' }], total: '₱570.00', address: '123 Mabini St, Quezon City' },
+  { id: 'XON-2026-0031', date: 'May 29, 2026', status: 'Delivered', statusColor: '#22c55e', items: [{ name: 'OLED Display 0.96"', qty: 1, price: '₱199.00' }, { name: 'Resistor Pack', qty: 1, price: '₱49.00' }], total: '₱248.00', address: '123 Mabini St, Quezon City' },
+  { id: 'XON-2026-0024', date: 'May 10, 2026', status: 'Delivered', statusColor: '#22c55e', items: [{ name: 'Servo Motor SG90', qty: 3, price: '₱360.00' }], total: '₱360.00', address: '123 Mabini St, Quezon City' },
+  { id: 'XON-2026-0018', date: 'April 22, 2026', status: 'Cancelled', statusColor: '#ef4444', items: [{ name: 'Raspberry Pi 5 4GB', qty: 1, price: '₱4500.00' }], total: '₱4500.00', address: '123 Mabini St, Quezon City' },
+];
+
 
 export function UserOrders() {
-  const { user } = useAuth();
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
   const [selected, setSelected] = useState(null);
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  const statuses = ['All', 'Delivered', 'In Transit', 'Cancelled', 'pending', 'shipped'];
 
-  // Fetch orders from backend
-  useEffect(() => {
-    const fetchOrders = async () => {
-      if (!user?.email) {
-        setLoading(false);
-        return;
-      }
+  const statuses = ['All', 'Delivered', 'In Transit', 'Cancelled'];
 
-      try {
-        setLoading(true);
-        const apiUrl = process.env.VITE_API_URL || 'http://localhost/xontrix-backend/api';
-        const response = await fetch(`${apiUrl}/orders?email=${encodeURIComponent(user.email)}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`,
-            'Content-Type': 'application/json',
-          },
-        });
 
-        if (!response.ok) {
-          throw new Error('Failed to load orders');
-        }
-
-        const data = await response.json();
-        
-        // Map backend data to match UI format
-        const mappedOrders = data.map(order => ({
-          id: order.id,
-          date: new Date(order.created_at).toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' }),
-          status: order.status.charAt(0).toUpperCase() + order.status.slice(1), // capitalize status
-          statusColor: getStatusColor(order.status),
-          items: order.items || [],
-          total: `₱${parseFloat(order.total).toFixed(2)}`,
-          address: order.shipping_address || '123 Mabini St, Quezon City',
-          subtotal: order.subtotal,
-          shipping: order.shipping,
-        }));
-
-        setOrders(mappedOrders);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching orders:', err);
-        setError('Failed to load orders. Please try again.');
-        setOrders([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOrders();
-  }, [user?.email]);
-
-  const getStatusColor = (status) => {
-    const statusMap = {
-      delivered: '#22c55e',
-      shipped: '#f59e0b',
-      pending: '#3b82f6',
-      cancelled: '#ef4444',
-    };
-    return statusMap[status.toLowerCase()] || '#7d8184';
-  };
-
-  const filtered = orders.filter(o => {
+  const filtered = ALL_ORDERS.filter(o => {
     const matchSearch = o.id.toLowerCase().includes(search.toLowerCase()) ||
       o.items.some(i => i.name.toLowerCase().includes(search.toLowerCase()));
     const matchFilter = filter === 'All' || o.status === filter;
     return matchSearch && matchFilter;
   });
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center" style={{ fontFamily: 'Inter, sans-serif' }}>
-        <div className="text-center">
-          <div className="w-12 h-12 rounded-full border-4 border-[#f1b2b2] border-t-[#db4444] animate-spin mx-auto mb-4" />
-          <p className="text-[#7d8184] text-sm">Loading your orders...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-[#f5f5f5]" style={{ fontFamily: 'Inter, sans-serif' }}>
-        <div className="max-w-2xl mx-auto px-4 py-8">
-          <div className="flex items-center gap-3 mb-6">
-            <Link to="/profile" className="text-[#7d8184] hover:text-[#db4444] transition-colors">
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <h1 className="text-xl font-bold text-[#111111]">My Orders</h1>
-          </div>
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm font-semibold text-red-700">{error}</p>
-              <p className="text-xs text-red-600 mt-1">Make sure your backend is running and XAMPP is on.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (selected) {
     return (
@@ -139,12 +53,9 @@ export function UserOrders() {
                     <div className="w-8 h-8 bg-[#f5f5f5] rounded-lg flex items-center justify-center">
                       <Package className="w-4 h-4 text-[#7d8184]" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-[#111111] truncate">{item.name}</p>
-                      <p className="text-xs text-[#7d8184]">Qty: {item.quantity}</p>
-                    </div>
+                    <p className="text-sm font-semibold text-[#111111]">{item.name}</p>
                   </div>
-                  <p className="text-sm font-bold text-[#db4444]">₱{parseFloat(item.price).toFixed(2)}</p>
+                  <p className="text-sm font-bold text-[#db4444]">{item.price}</p>
                 </div>
               ))}
             </div>
@@ -152,19 +63,9 @@ export function UserOrders() {
               <p className="text-xs font-semibold text-[#7d8184] uppercase mb-2">Delivery Address</p>
               <p className="text-sm text-[#111111]">{selected.address}</p>
             </div>
-            <div className="p-5 space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <p className="text-[#7d8184]">Subtotal</p>
-                <p className="text-[#111111]">₱{parseFloat(selected.subtotal).toFixed(2)}</p>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <p className="text-[#7d8184]">Shipping</p>
-                <p className="text-[#111111]">₱{parseFloat(selected.shipping).toFixed(2)}</p>
-              </div>
-              <div className="border-t border-[#f5f5f5] pt-2 flex items-center justify-between">
-                <p className="text-sm font-semibold text-[#7d8184]">Total Amount</p>
-                <p className="text-lg font-bold text-[#db4444]">{selected.total}</p>
-              </div>
+            <div className="p-5 flex items-center justify-between">
+              <p className="text-sm font-semibold text-[#7d8184]">Total Amount</p>
+              <p className="text-lg font-bold text-[#db4444]">{selected.total}</p>
             </div>
           </div>
           {selected.status === 'Delivered' && (
@@ -177,6 +78,7 @@ export function UserOrders() {
     );
   }
 
+
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ fontFamily: 'Inter, sans-serif' }}>
       <div className="max-w-2xl mx-auto px-4 py-8">
@@ -186,6 +88,7 @@ export function UserOrders() {
           </Link>
           <h1 className="text-xl font-bold text-[#111111]">My Orders</h1>
         </div>
+
 
         {/* Search */}
         <div className="relative mb-4">
@@ -199,6 +102,7 @@ export function UserOrders() {
           />
         </div>
 
+
         {/* Filter */}
         <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
           {statuses.map(s => (
@@ -209,6 +113,7 @@ export function UserOrders() {
             </button>
           ))}
         </div>
+
 
         {/* Orders List */}
         <div className="space-y-3">
@@ -240,3 +145,4 @@ export function UserOrders() {
     </div>
   );
 }
+

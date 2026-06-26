@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import { ArrowLeft, Shield, Lock, Eye, EyeOff, Check, AlertCircle, Smartphone, Mail } from 'lucide-react';
 
+
 export function UserSecurity() {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
@@ -11,6 +12,7 @@ export function UserSecurity() {
   const [errors, setErrors] = useState({});
   const [saved, setSaved] = useState(false);
   const [twoFA, setTwoFA] = useState({ email: true, sms: false });
+
 
   const validate = () => {
     const e = {};
@@ -23,6 +25,7 @@ export function UserSecurity() {
     else if (form.newPass !== form.confirm) e.confirm = 'Passwords do not match.';
     return e;
   };
+
 
   const getStrength = (pass) => {
     if (!pass) return { level: 0, label: '', color: '#e5e5e5' };
@@ -37,7 +40,9 @@ export function UserSecurity() {
     return { level: 4, label: 'Strong', color: '#22c55e' };
   };
 
+
   const strength = getStrength(form.newPass);
+
 
   const handleSave = () => {
     const e = validate();
@@ -47,6 +52,7 @@ export function UserSecurity() {
     setForm({ current: '', newPass: '', confirm: '' });
     setTimeout(() => setSaved(false), 3000);
   };
+
 
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -58,6 +64,7 @@ export function UserSecurity() {
           <h1 className="text-xl font-bold text-[#111111]">Security</h1>
         </div>
 
+
         {/* Success banner */}
         {saved && (
           <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4 flex items-center gap-3">
@@ -65,6 +72,7 @@ export function UserSecurity() {
             <p className="text-sm font-semibold text-green-700">Password changed successfully!</p>
           </div>
         )}
+
 
         {/* Change Password */}
         <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-4">
@@ -74,6 +82,7 @@ export function UserSecurity() {
             </div>
             <p className="text-sm font-bold text-[#111111]">Change Password</p>
           </div>
+
 
           <div className="p-5 space-y-4">
             {/* Current Password */}
@@ -94,6 +103,7 @@ export function UserSecurity() {
               </div>
               {errors.current && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.current}</p>}
             </div>
+
 
             {/* New Password */}
             <div>
@@ -126,6 +136,7 @@ export function UserSecurity() {
               {errors.newPass && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.newPass}</p>}
             </div>
 
+
             {/* Confirm Password */}
             <div>
               <label className="text-xs font-semibold text-[#7d8184] uppercase mb-1.5 block">Confirm New Password</label>
@@ -144,6 +155,7 @@ export function UserSecurity() {
               </div>
               {errors.confirm && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.confirm}</p>}
             </div>
+
 
             {/* Password requirements */}
             <div className="bg-[#f5f5f5] rounded-xl p-3 space-y-1.5">
@@ -164,6 +176,7 @@ export function UserSecurity() {
               ))}
             </div>
 
+
             <button onClick={handleSave}
               className="w-full py-3 rounded-xl text-white text-sm font-bold transition-all"
               style={{ background: '#db4444' }}>
@@ -171,6 +184,7 @@ export function UserSecurity() {
             </button>
           </div>
         </div>
+
 
         {/* Two-Factor Authentication */}
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
@@ -209,3 +223,4 @@ export function UserSecurity() {
     </div>
   );
 }
+

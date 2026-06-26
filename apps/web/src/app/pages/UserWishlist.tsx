@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { Heart, ArrowLeft, ShoppingCart, Trash2, Package } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
+
 const INITIAL_WISHLIST = [
   { id: 1, name: 'Arduino Uno R3', price: 320, category: 'Microcontrollers', stock: 15, rating: 4.8, image: null },
   { id: 2, name: 'ESP32 Dev Board', price: 285, category: 'Microcontrollers', stock: 23, rating: 4.9, image: null },
@@ -12,20 +13,24 @@ const INITIAL_WISHLIST = [
   { id: 5, name: 'Resistor Pack 600pcs', price: 49, category: 'Resistors', stock: 50, rating: 4.9, image: null },
 ];
 
+
 export function UserWishlist() {
   const [wishlist, setWishlist] = useState(INITIAL_WISHLIST);
   const [added, setAdded] = useState({});
   const { addToCart } = useCart();
 
+
   const removeItem = (id) => {
     setWishlist(prev => prev.filter(item => item.id !== id));
   };
+
 
   const handleAddToCart = (item) => {
     addToCart({ id: item.id, name: item.name, price: item.price, image: '', quantity: 1 });
     setAdded(prev => ({ ...prev, [item.id]: true }));
     setTimeout(() => setAdded(prev => ({ ...prev, [item.id]: false })), 2000);
   };
+
 
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -37,6 +42,7 @@ export function UserWishlist() {
           <h1 className="text-xl font-bold text-[#111111]">Wishlist</h1>
           <span className="ml-auto text-xs text-[#7d8184] font-semibold">{wishlist.length} items</span>
         </div>
+
 
         {wishlist.length === 0 ? (
           <div className="bg-white rounded-xl p-12 text-center shadow-sm">
@@ -56,6 +62,7 @@ export function UserWishlist() {
                   <Package className="w-7 h-7 text-[#ccc]" />
                 </div>
 
+
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold text-[#111111] truncate">{item.name}</p>
@@ -67,6 +74,7 @@ export function UserWishlist() {
                     <p className="text-[10px] text-green-500 font-semibold mt-0.5">In Stock ({item.stock} units)</p>
                   )}
                 </div>
+
 
                 {/* Actions */}
                 <div className="flex flex-col gap-2 shrink-0">
@@ -90,6 +98,7 @@ export function UserWishlist() {
               </div>
             ))}
 
+
             {/* Shop more */}
             <Link to="/products" className="block w-full py-3 rounded-xl text-center text-sm font-bold text-[#db4444] border-2 border-[#db4444] hover:bg-[#fff5f5] transition-colors mt-2">
               Continue Shopping
@@ -100,3 +109,4 @@ export function UserWishlist() {
     </div>
   );
 }
+
