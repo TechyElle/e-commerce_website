@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  An integrated Electronics E-Commerce, Inventory & AI Business Intelligence platform featuring a component catalog, multi-channel checkout, sales analytics dashboard, and AI-powered advisor agents.
+  An integrated Electronics E-Commerce, Inventory &amp; AI Business Intelligence platform featuring a component catalog, multi-channel checkout, sales analytics dashboard, and AI-powered advisor agents.
 </p>
 
 <p align="center">
@@ -21,6 +21,7 @@
   <img src="https://img.shields.io/badge/Recharts-2.15-3178C6?style=flat-square&logo=recharts&logoColor=white" alt="Recharts" />
   <img src="https://img.shields.io/badge/PHP-8-777BB4?style=flat-square&logo=php&logoColor=white" alt="PHP" />
   <img src="https://img.shields.io/badge/MySQL-8-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="MySQL" />
+  <img src="https://img.shields.io/badge/Node.js-Express-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js" />
   <img src="https://img.shields.io/badge/Cordova-12-E0A100?style=flat-square&logo=apache-cordova&logoColor=white" alt="Cordova" />
   <img src="https://img.shields.io/badge/pnpm-9-F69220?style=flat-square&logo=pnpm&logoColor=white" alt="pnpm" />
 </p>
@@ -34,13 +35,13 @@
 
 <p align="center">
   <a href="#-introduction">Introduction</a> •
-  <a href="#-local-setup--credentials">Local Setup & Credentials</a> •
+  <a href="#-local-setup--credentials">Local Setup &amp; Credentials</a> •
   <a href="#-screenshots">Screenshots</a> •
   <a href="#-features">Features</a> •
   <a href="#️-architecture">Architecture</a> •
   <a href="#-design-patterns">Design Patterns</a> •
   <a href="#-tech-stack">Tech Stack</a> •
-  <a href="#-services--environment-configuration">Services & Environment Configuration</a> •
+  <a href="#-services--environment-configuration">Services &amp; Environment Configuration</a> •
   <a href="#-getting-started">Getting Started</a> •
   <a href="#-api-reference">API Reference</a> •
   <a href="#-database-schema">Database Schema</a> •
@@ -57,19 +58,20 @@
 
 **Xontrix** is a full-stack, monorepo-based electronic components e-commerce platform and business intelligence suite. Built to provide hobbyists and professional builders with an easy way to purchase microcontrollers, sensors, motors, and shields, Xontrix also delivers a powerful web portal for administrators to run sales analytics, track stock levels, and coordinate delivery calendars.
 
-The platform links a clean React web frontend and an Apache Cordova mobile client with a simple, high-performance PHP/MySQL API server. By integrating inventory capping checks, role-based access, and conversational AI advisor widgets (an Admin-side AI Strategic Advisor and a User-side AI Electronics Consultant), Xontrix is a comprehensive showcase of modern e-commerce engineering.
+The platform links a clean React web frontend and an Apache Cordova mobile client with a PHP/MySQL API server and a dedicated Node.js/Express authentication server. By integrating inventory capping checks, role-based access, a full user account dashboard, and conversational AI advisor widgets (an Admin-side AI Strategic Advisor and a User-side AI Electronics Consultant), Xontrix is a comprehensive showcase of modern e-commerce engineering.
 
-> 💡 **Designed for local & mobile deploy**, Xontrix utilizes XAMPP (Apache + MySQL) to keep backend setups simple and lightweight. This makes it easy to run local demonstrations, debug database states, and compile native Android packages directly against the local web API.
+> 💡 **Designed for local &amp; mobile deploy**, Xontrix utilizes XAMPP (Apache + MySQL) to keep backend setups simple and lightweight. This makes it easy to run local demonstrations, debug database states, and compile native Android packages directly against the local web API.
 
 ---
 
-## 🌐 Local Setup & Credentials
+## 🌐 Local Setup &amp; Credentials
 
 ### Local Services
 
 | Service | Address / Port | Technology | Location |
 |:--------|:---------------|:-----------|:---------|
 | 🌐 **Web Portal** | [http://localhost:5173](http://localhost:5173) | React 18 + Vite 6 + Tailwind 4 | `apps/web/` |
+| 🔐 **Auth Server** | [http://localhost:3001](http://localhost:3001) | Node.js + Express + JWT | `apps/auth-server/` |
 | ⚙️ **API Server** | [http://localhost/xontrix-backend/api](http://localhost/xontrix-backend/api) | PHP REST-like API | `apps/backend/xontrix-backend/` |
 | 💾 **Seed Installer** | [http://localhost/xontrix-backend/api/install.php](http://localhost/xontrix-backend/api/install.php) | Schema seed engine | `apps/backend/xontrix-backend/api/install.php` |
 | 📦 **Mobile App** | Target Android APK | Apache Cordova CLI wrapper | `apps/mobile/cordova-mobile/` |
@@ -89,84 +91,165 @@ The database installer includes seeded user records to speed up development. Run
 ## 📸 Screenshots
 
 <details open>
-<summary><strong>🏠 Homepage</strong></summary>
+<summary><strong>🔝 Navigation Header</strong></summary>
 <br/>
 <p align="center">
-  <img src="docs/screenshots/1_homepage.png" alt="Xontrix Homepage" width="90%" />
+  <img src="docs/screenshots/00_navigation_header.png" alt="Xontrix Navigation Header" width="90%" />
 </p>
-<p align="center"><em>Modern storefront landing page featuring catalog search, category grids, promo headers, and interactive deal banners.</em></p>
+<p align="center"><em>Persistent top navigation bar with logo, search field, category links, cart badge, and user account menu.</em></p>
 </details>
 
 <details>
-<summary><strong>🏠 Homepage (Alternative View)</strong></summary>
+<summary><strong>🏠 Homepage — Hero Section</strong></summary>
 <br/>
 <p align="center">
-  <img src="docs/screenshots/1.1_homepage.png" alt="Xontrix Homepage Alternative View" width="90%" />
+  <img src="docs/screenshots/01_homepage_hero.png" alt="Xontrix Homepage Hero" width="90%" />
 </p>
-<p align="center"><em>Responsive catalog highlights showing newly added components and quick-to-cart deals.</em></p>
+<p align="center"><em>Modern storefront hero featuring a full-width promo banner, headline copy, and a primary call-to-action to browse the catalog.</em></p>
+</details>
+
+<details>
+<summary><strong>🏠 Homepage — Categories Section</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/02_homepage_categories.png" alt="Xontrix Homepage Categories" width="90%" />
+</p>
+<p align="center"><em>Visual category grid showcasing all six electronics categories with icon cards and quick-navigate links.</em></p>
+</details>
+
+<details>
+<summary><strong>🏠 Homepage — Universities &amp; Featured Sections</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/03_homepage_sections.png" alt="Xontrix Homepage Sections" width="90%" />
+</p>
+<p align="center"><em>Mid-page highlights including university partnerships, featured component picks, and promotional deal rows.</em></p>
 </details>
 
 <details>
 <summary><strong>👣 Homepage Footer</strong></summary>
 <br/>
 <p align="center">
-  <img src="docs/screenshots/1.2_footer.png" alt="Xontrix Homepage Footer" width="90%" />
+  <img src="docs/screenshots/04_homepage_footer.png" alt="Xontrix Homepage Footer" width="90%" />
 </p>
 <p align="center"><em>Clean, descriptive footer layout listing store links, customer attributions, and design credits.</em></p>
 </details>
 
 <details>
-<summary><strong>🛍️ Shop / Products Page</strong></summary>
+<summary><strong>🛍️ Products Page — Catalog Listing</strong></summary>
 <br/>
 <p align="center">
-  <img src="docs/screenshots/2_shoppage.png" alt="Xontrix Shop Catalog" width="90%" />
+  <img src="docs/screenshots/05_products_page.png" alt="Xontrix Products Page" width="90%" />
 </p>
 <p align="center"><em>Product catalog screen featuring category sidebar filters, search bar, item ratings, stock status, and add-to-cart actions.</em></p>
 </details>
 
 <details>
-<summary><strong>🏷️ "Sulit Deal" / Promos</strong></summary>
+<summary><strong>🛍️ Products Page — Scrolled View</strong></summary>
 <br/>
 <p align="center">
-  <img src="docs/screenshots/3_sulitdealpage.png" alt="Xontrix Promos Page" width="90%" />
+  <img src="docs/screenshots/06_products_scroll.png" alt="Xontrix Products Scroll" width="90%" />
 </p>
-<p align="center"><em>Dedicated promos dashboard featuring discounted electronics bundles, bulk component packs, and time-sensitive offers.</em></p>
+<p align="center"><em>Lower catalog section showing additional products with consistent card layout and badge indicators.</em></p>
 </details>
 
 <details>
-<summary><strong>📘 About Page</strong></summary>
+<summary><strong>📦 Product Detail — Top View</strong></summary>
 <br/>
 <p align="center">
-  <img src="docs/screenshots/4_aboutpage.png" alt="Xontrix About Page" width="90%" />
+  <img src="docs/screenshots/07_product_detail.png" alt="Xontrix Product Detail" width="90%" />
 </p>
-<p align="center"><em>Frosted-glass UI details introducing the store's mission, quality standards, and technical partner attributions.</em></p>
+<p align="center"><em>Individual product page with high-res image, pricing, stock indicator, specification table, and add-to-cart controls.</em></p>
 </details>
 
 <details>
-<summary><strong>📞 Contact Page</strong></summary>
+<summary><strong>📦 Product Detail — Scrolled View</strong></summary>
 <br/>
 <p align="center">
-  <img src="docs/screenshots/5_contactpage.png" alt="Xontrix Contact Page" width="90%" />
+  <img src="docs/screenshots/08_product_detail_scroll.png" alt="Xontrix Product Detail Scroll" width="90%" />
 </p>
-<p align="center"><em>Clean contact page containing an interactive query form, customer support links, and office coordinates.</em></p>
+<p align="center"><em>Lower product detail area showing the full specifications breakdown, ratings summary, and customer reviews.</em></p>
 </details>
 
 <details>
-<summary><strong>🛒 Cart (Empty State)</strong></summary>
+<summary><strong>🛒 Cart — Empty State</strong></summary>
 <br/>
 <p align="center">
-  <img src="docs/screenshots/6_cartempty.png" alt="Xontrix Empty Cart" width="90%" />
+  <img src="docs/screenshots/09_cart_empty.png" alt="Xontrix Empty Cart" width="90%" />
 </p>
-<p align="center"><em>Empty cart state showing friendly placeholder illustrations and call-to-actions to prompt catalog exploration.</em></p>
+<p align="center"><em>Empty cart state with a friendly placeholder illustration and a call-to-action to continue browsing the catalog.</em></p>
+</details>
+
+<details>
+<summary><strong>ℹ️ About Page — Top View</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/10_about_page.png" alt="Xontrix About Page" width="90%" />
+</p>
+<p align="center"><em>Frosted-glass UI introducing the store's mission, quality standards, and core team overview.</em></p>
+</details>
+
+<details>
+<summary><strong>ℹ️ About Page — Scrolled View</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/11_about_scroll.png" alt="Xontrix About Scroll" width="90%" />
+</p>
+<p align="center"><em>Lower about section featuring technical partner attributions, community milestones, and social proof details.</em></p>
+</details>
+
+<details>
+<summary><strong>📬 Contact Page</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/12_contact_page.png" alt="Xontrix Contact Page" width="90%" />
+</p>
+<p align="center"><em>Clean contact page with an interactive query form, customer support links, and office location details.</em></p>
+</details>
+
+<details>
+<summary><strong>🔐 Login Page</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/13_login_page.png" alt="Xontrix Login Page" width="90%" />
+</p>
+<p align="center"><em>Authentication page supporting standard email/password login and Google sign-in via Firebase OAuth flow.</em></p>
+</details>
+
+<details>
+<summary><strong>🤖 Chatbot — Opened</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/14_chatbot_open.png" alt="Xontrix Chatbot Open" width="90%" />
+</p>
+<p align="center"><em>AI Electronics Consultant floating widget opened, ready to assist users with product compatibility questions.</em></p>
+</details>
+
+<details>
+<summary><strong>🤖 Chatbot — Active Conversation</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/15_chatbot_conversation.png" alt="Xontrix Chatbot Conversation" width="90%" />
+</p>
+<p align="center"><em>Live chatbot session demonstrating context-aware recommendations for selecting compatible microcontrollers and sensors.</em></p>
 </details>
 
 <details>
 <summary><strong>💳 Checkout Page</strong></summary>
 <br/>
 <p align="center">
-  <img src="docs/screenshots/7_checkout.png" alt="Xontrix Checkout Page" width="90%" />
+  <img src="docs/screenshots/16_checkout_page.png" alt="Xontrix Checkout Page" width="90%" />
 </p>
-<p align="center"><em>Checkout layout showing summary pricing, shipping calculations, and multi-channel payment method options.</em></p>
+<p align="center"><em>Checkout layout showing order summary, shipping calculation, and multi-channel payment method options (GCash, Maya, COD, Card).</em></p>
+</details>
+
+<details>
+<summary><strong>🚫 404 Not Found Page</strong></summary>
+<br/>
+<p align="center">
+  <img src="docs/screenshots/17_404_page.png" alt="Xontrix 404 Page" width="90%" />
+</p>
+<p align="center"><em>Styled not-found page with navigation shortcuts to guide users back to the catalog or homepage.</em></p>
 </details>
 
 ---
@@ -175,7 +258,7 @@ The database installer includes seeded user records to speed up development. Run
 
 | Feature | Description |
 |:--------|:------------|
-| 🛒 **Product Catalog & Filters** | Dynamic electronics catalog with category sorting, search, item ratings, reviews, stock labels, and new item flags. |
+| 🛒 **Product Catalog &amp; Filters** | Dynamic electronics catalog with category sorting, search, item ratings, reviews, stock labels, and new item flags. |
 | 💳 **Flexible Checkout Flow** | Step-by-step transaction form supporting GCash, Maya, Cash on Delivery (COD), and credit card configurations. |
 | 📦 **Real-Time Inventory Sync** | Automatic database checks that block purchases when quantities exceed stock, updating stock values on successful orders. |
 | 📊 **Admin Sales Analytics** | Business Intelligence dashboard with charts, MoM growth metrics, targets, pending/shipped order states, and low-stock warnings. |
@@ -183,9 +266,10 @@ The database installer includes seeded user records to speed up development. Run
 | 💬 **AI Electronics Consultant** | Customer-side floating chat widget that guides users on picking compatible microcontrollers and sensors. |
 | 📅 **Delivery Order Calendar** | Dynamic calendar displaying shipping statuses, order delivery deadlines, and priority warnings. |
 | 🏅 **Customer Loyalty Tiers** | Automatically places customers into Bronze, Silver, Gold, or Platinum tiers based on total spend and order counts. |
-| 🔐 **Multi-Auth Protocol** | Standard session-based login alongside Google Authentication via a complete Firebase Auth SDK pathway. |
+| 👤 **User Account Dashboard** | Full profile management with order history, saved addresses, wishlist, notifications, and security settings. |
+| 🔐 **Multi-Auth Protocol** | Session-based login, JWT authentication via Node.js/Express auth server, and Google OAuth via Firebase Auth SDK. |
 | 📱 **Cordova Mobile Wrapper** | Cordova project setup targeting Android platforms, allowing the web portal to be compiled into a native APK. |
-| 🏗️ **PNPM Monorepo Layout** | organized workspaces grouping web apps, API backends, documentation, and mobile build wrappers. |
+| 🏗️ **PNPM Monorepo Layout** | Organized workspaces grouping the web app, auth server, PHP API backend, documentation, and mobile build wrappers. |
 
 ---
 
@@ -198,6 +282,11 @@ graph TB
     subgraph Client ["🖥️ Client Layer"]
         WEB["React 18 & TypeScript<br/>Web Portal<br/>(Vite 6)"]
         MOBILE["Apache Cordova<br/>Mobile App<br/>(Android APK Target)"]
+    end
+
+    subgraph AuthSrv ["🔐 Auth Server (Node.js / Express)"]
+        JWT["JWT Token Issuer<br/>bcrypt Password Hashing"]
+        GOOGLE["Google Token Verifier<br/>(google-auth-library)"]
     end
 
     subgraph API ["⚙️ API Layer (Apache / XAMPP)"]
@@ -227,14 +316,17 @@ graph TB
     end
 
     WEB -->|"HTTP Requests"| API
+    WEB -->|"Auth Requests"| AuthSrv
     MOBILE -->|"HTTP Requests"| API
     WEB -->|"OAuth Tokens"| FIREBASE
+    AuthSrv -->|"SQL Queries"| MYSQL
     API -->|"SQL Queries"| MYSQL
     WEB -->|"Floating Chat"| CONSULTANT
     WEB -->|"Admin Chat"| ADVISOR
     ADVISOR -->|"Scans Context"| API
 
     style Client fill:#1e1b4b,stroke:#818cf8,color:#f8fafc
+    style AuthSrv fill:#1e293b,stroke:#22d3ee,color:#f8fafc
     style API fill:#111827,stroke:#10b981,color:#f8fafc
     style Data fill:#1e1b4b,stroke:#eab308,color:#f8fafc
     style Services fill:#111827,stroke:#f97316,color:#f8fafc
@@ -255,12 +347,17 @@ User / Admin Interaction
   │                                                          ├──→ Insert Order & Items (INSERT)
   │                                                          └──→ Return ApiOrder JSON
   │
+  ├─── [Login / Register] ────────→ Auth Server (Express) ─→ JWT Token
+  │                                                          ├──→ bcrypt password hash verify
+  │                                                          ├──→ Google token validation
+  │                                                          └──→ Return signed JWT cookie
+  │
   ├─── [AI Strategic Advice] ─────→ Admin Dashboard ─────→ salesApi.summary() ──→ sales.php
   │                                                          ├──→ Compute financial KPIs
   │                                                          ├──→ Retrieve daily/weekly/monthly charts
   │                                                          └──→ Strategic advice prompt context
   │
-  └─── [Google Authentication] ───→ Firebase Auth SDK ───→ usersApi.googleLogin() ──→ users.php
+  └─── [Google Authentication] ───→ Firebase Auth SDK ───→ Auth Server / users.php
                                                              ├──→ Create / Login User Record
                                                              └──→ Return Session Cookie
 ```
@@ -271,12 +368,12 @@ User / Admin Interaction
 
 | Pattern | Usage | Details |
 |:--------|:------|:--------|
-| 🔀 **Monorepo Structure** | Workspace Layout | Manages multiple applications (frontend, backend, mobile) within a single codebase using `pnpm-workspace.yaml`. |
+| 🔀 **Monorepo Structure** | Workspace Layout | Manages multiple applications (frontend, auth server, backend, mobile) within a single codebase using `pnpm-workspace.yaml`. |
 | 📋 **Model-View-Controller (MVC)** | Backend Routing | PHP controllers act as routers (Controllers), database queries represent data shapes (Models), and JSON outputs serve as views (Views). |
 | 🧱 **Type-Safe Contracts** | API Interface Client | TypeScript interfaces in the web app mirror MySQL schema fields exactly, creating an end-to-end data contract. |
-| 🔐 **Session-Based State** | User Authentication | Uses PHP sessions for login persistence combined with JWT/Firebase tokens for client-side API authorization. |
+| 🔐 **JWT + Session Auth** | User Authentication | Combines a dedicated Node.js JWT auth server with PHP sessions, plus Firebase tokens for Google OAuth client flows. |
 | 🛡️ **Guard / Policy Pattern** | Admin Route Protection | Middleware checks roles (e.g., admin role check) both in React Router (frontend) and on the PHP backend APIs (backend). |
-| 🎣 **State Synchronization** | React Hooks & Context | Syncs shopping cart state, session user profiles, and catalog cache across pages using React Context providers. |
+| 🎣 **State Synchronization** | React Hooks &amp; Context | Syncs shopping cart state, session user profiles, and catalog cache across pages using React Context providers. |
 | ⚙️ **Inventory Safety** | Optimistic Locking | Verifies quantity caps during cart updates and re-validates stock levels at the moment of checkout transaction. |
 | 🤖 **Conversational Interface Agent** | UI Chat Widgets | Integrates floating conversational UI components leveraging context-aware responses to guide users and advise admins. |
 
@@ -301,9 +398,10 @@ User / Admin Interaction
 |:-----------|:--------|
 | ![PHP](https://img.shields.io/badge/PHP_8-777BB4?style=flat-square&logo=php&logoColor=white) | Server-side script request routing, JSON generation, session management, and stock deduction. |
 | ![MySQL](https://img.shields.io/badge/MySQL_8-4479A1?style=flat-square&logo=mysql&logoColor=white) | Relational database engine storing products, user details, order lists, analytics, and feedback. |
+| ![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=flat-square&logo=node.js&logoColor=white) | Dedicated auth server handling JWT issuance, bcrypt password hashing, and Google token verification. |
 | ![Firebase](https://img.shields.io/badge/Firebase_Auth-FFCA28?style=flat-square&logo=firebase&logoColor=black) | Google sign-in provider SDK, handling client token flows for account login matching. |
 
-### 🧰 Mobile & Tooling
+### 🧰 Mobile &amp; Tooling
 
 | Technology | Purpose |
 |:-----------|:--------|
@@ -312,7 +410,7 @@ User / Admin Interaction
 
 ---
 
-## ☁️ Services & Environment Configuration
+## ☁️ Services &amp; Environment Configuration
 
 ### Deployment Workflow
 
@@ -321,10 +419,12 @@ Workspace (Local Edit)
    │
    ├─── Web Assets Build ──→ pnpm build ──→ dist/ ──→ Deploy to Static Apache Root
    │
+   ├─── Auth Server ───────→ node server.js (or nodemon) ──→ localhost:3001
+   │
    ├─── Mobile APK Build ──→ cordova build android ──→ platforms/android/app/.../app-debug.apk
    │
    └─── Backend Setup ─────→ Copy apps/backend/xontrix-backend to htdocs/
-                                └─── Trigger db seeder install.php
+                                 └─── Trigger db seeder install.php
 ```
 
 ### Service Roles
@@ -333,16 +433,20 @@ Workspace (Local Edit)
 |:-:|:--------|:-----|:---------------|:------------|
 | 1 | **Apache HTTP Server** | Web API Host | Local (XAMPP) | Hosts the PHP controllers and assets, handling API routing calls. |
 | 2 | **MySQL Database** | Relational Storage | Local (XAMPP) | Stores core entities: products, inventory, users, sales metrics, and logs. |
-| 3 | **Firebase Console** | Google Identity Provider | Cloud Service | Authenticates user clients and returns credentials for Google login sync. |
-| 4 | **Cordova Android SDK** | APK Compiler | Local CLI | Wraps frontend files into native Android app package configurations. |
+| 3 | **Node.js Auth Server** | JWT Authentication | Local (Express) | Handles password hashing, JWT token issuance, and Google token validation. |
+| 4 | **Firebase Console** | Google Identity Provider | Cloud Service | Authenticates user clients and returns credentials for Google login sync. |
+| 5 | **Cordova Android SDK** | APK Compiler | Local CLI | Wraps frontend files into native Android app package configurations. |
 
 ### Environment Configuration Reference
 
-To let the frontend web portal communicate with the backend PHP endpoints and Google Auth, create a `.env` file at the root or under `apps/web/` containing:
+To let the frontend web portal communicate with the backend PHP endpoints, auth server, and Google Auth, create a `.env` file under `apps/web/` containing:
 
 ```env
 # ── API Connection (XAMPP Local Server) ──
 VITE_API_URL=http://localhost/xontrix-backend/api
+
+# ── Auth Server Connection ──
+VITE_AUTH_URL=http://localhost:3001
 
 # ── Google Authentication (Firebase Console Setup) ──
 VITE_FIREBASE_API_KEY=your_firebase_api_key_here
@@ -366,7 +470,7 @@ Ensure you have the following software installed locally:
 | 🟢 **Node.js** | `≥ 18.0` | [nodejs.org](https://nodejs.org/) |
 | 📦 **pnpm** | `≥ 9.0` | [pnpm.io](https://pnpm.io/) |
 | 🎛️ **XAMPP / WampServer** | Latest (PHP 8+, MySQL) | [apachefriends.org](https://www.apachefriends.org/) |
-| 📱 **Android Studio / SDK** | Command Line Tools & Gradle | [developer.android.com](https://developer.android.com/studio) |
+| 📱 **Android Studio / SDK** | Command Line Tools &amp; Gradle | [developer.android.com](https://developer.android.com/studio) |
 | ☕ **Java JDK** | `17` | [oracle.com](https://www.oracle.com/java/) |
 
 ### ⚡ Local Project Setup
@@ -389,16 +493,23 @@ pnpm install
   ```
 - Open XAMPP Control Panel and start **Apache** and **MySQL**.
 
-**4. Generate & Seed the Database**
+**4. Generate &amp; Seed the Database**
 - Open your browser and navigate once to:
   ```
   http://localhost/xontrix-backend/api/install.php
   ```
   This creates the tables defined in `schema.sql` and inserts mock electronics products, orders, and users.
 
-**5. Start the Frontend Web App**
-- Ensure you configured your `.env` file under `apps/web/`.
-- Launch the development server:
+**5. Start the Auth Server**
+```bash
+cd apps/auth-server
+npm run dev
+```
+The auth server will be available at [http://localhost:3001](http://localhost:3001).
+
+**6. Start the Frontend Web App**
+- Ensure you have configured your `.env` file under `apps/web/`.
+- From the monorepo root, launch the development server:
   ```bash
   pnpm dev
   ```
@@ -406,7 +517,7 @@ pnpm install
 
 ### 📱 Building the Mobile App (Android)
 
-**1. Navigate to the cordova workspace**
+**1. Navigate to the Cordova workspace**
 ```bash
 cd apps/mobile/cordova-mobile/
 ```
@@ -427,7 +538,25 @@ cordova build android
 
 ## 📡 API Reference
 
-All backend REST endpoints are hosted at `http://localhost/xontrix-backend/api`.
+### PHP API — `http://localhost/xontrix-backend/api`
+
+| Endpoint | Method | Description |
+|:---------|:-------|:------------|
+| `/products.php` | `GET` | List all products with optional category/search filters |
+| `/products.php` | `POST / PUT / DELETE` | Admin product CRUD operations |
+| `/orders.php` | `GET` | Retrieve orders list |
+| `/orders.php` | `POST` | Place a new order with inventory deduction |
+| `/users.php` | `GET / POST` | User session management and login |
+| `/sales.php` | `GET` | Sales summary, revenue charts, and analytics KPIs |
+| `/upload.php` | `POST` | Admin product image file upload |
+
+### Auth Server — `http://localhost:3001`
+
+| Endpoint | Method | Description |
+|:---------|:-------|:------------|
+| `/auth/register` | `POST` | Register a new user with bcrypt password hashing |
+| `/auth/login` | `POST` | Login and receive a signed JWT token |
+| `/auth/google` | `POST` | Verify Google token and return a JWT |
 
 ---
 
@@ -512,14 +641,36 @@ erDiagram
 │   │   │   │   ├── 📂 components/ # UI Components (shadcn/ui + custom widgets)
 │   │   │   │   ├── 📂 context/    # React Contexts (AuthContext, CartContext, StoreContext)
 │   │   │   │   ├── 📂 hooks/      # Custom React hooks (useScrollReveal)
-│   │   │   │   ├── 📂 lib/        # API Client client wrapper (api.ts)
-│   │   │   │   ├── 📂 pages/      # Route pages (Home, Products, Admin, Dashboard, Cart, etc.)
+│   │   │   │   ├── 📂 lib/        # API Client wrapper (api.ts)
+│   │   │   │   ├── 📂 pages/      # Route pages:
+│   │   │   │   │   ├── 📄 Home.tsx
+│   │   │   │   │   ├── 📄 Products.tsx
+│   │   │   │   │   ├── 📄 ProductDetail.tsx
+│   │   │   │   │   ├── 📄 Cart.tsx
+│   │   │   │   │   ├── 📄 Checkout.tsx
+│   │   │   │   │   ├── 📄 About.tsx
+│   │   │   │   │   ├── 📄 Contact.tsx
+│   │   │   │   │   ├── 📄 Login.tsx
+│   │   │   │   │   ├── 📄 Admin.tsx
+│   │   │   │   │   ├── 📄 Dashboard.tsx
+│   │   │   │   │   ├── 📄 UserProfile.tsx
+│   │   │   │   │   ├── 📄 UserOrders.tsx
+│   │   │   │   │   ├── 📄 UserWishlist.tsx
+│   │   │   │   │   ├── 📄 UserAddresses.tsx
+│   │   │   │   │   ├── 📄 UserNotifications.tsx
+│   │   │   │   │   ├── 📄 UserSecurity.tsx
+│   │   │   │   │   └── 📄 NotFound.tsx
 │   │   │   │   ├── 📄 App.tsx     # Root app router provider
 │   │   │   │   └── 📄 routes.tsx  # Dynamic router configuration
 │   │   │   ├── 📂 imports/        # Image assets, logo, QR code
 │   │   │   ├── 📂 styles/         # Globals.css containing Tailwind utility theme config
 │   │   │   └── 📄 main.tsx        # React bootstrap entry point
 │   │   ├── 📄 vite.config.ts      # Vite 6 compiler and proxy settings
+│   │   └── 📄 package.json
+│   │
+│   ├── 🔐 auth-server/            # Node.js + Express JWT Auth Server (→ localhost:3001)
+│   │   ├── 📄 server.js           # Express routes: /auth/register, /auth/login, /auth/google
+│   │   ├── 📄 db.js               # MySQL2 connection pool
 │   │   └── 📄 package.json
 │   │
 │   ├── ⚙️ backend/
@@ -543,7 +694,7 @@ erDiagram
 │
 ├── 📂 docs/
 │   ├── 📂 planning/               # Architecture designs, planning checklists
-│   ├── 📂 screenshots/            # Showcase images of pages
+│   ├── 📂 screenshots/            # 18 showcase screenshots of all pages
 │   ├── 📄 Attributions.md         # Framework and asset attributions
 │   ├── 📄 PRODUCTS.pdf            # PDF documentation on electronic products
 │   ├── 📄 README.md               # Standard client setup guide
@@ -561,14 +712,14 @@ erDiagram
 
 Xontrix organizes its electronic components catalog into **6 core product categories**:
 
-| Icon | Category Name | Description & Key Examples |
+| Icon | Category Name | Description &amp; Key Examples |
 |:----:|:--------------|:---------------------------|
 | 🧠 | **Microcontrollers** | Core processor units: Arduino Uno, ESP8266 NodeMCU, ESP32, Arduino Nano |
 | 📡 | **Sensors** | Interaction modules: DHT11 Temp, MQ-2 Smoke, Ultrasonic HC-SR04, Soil Moisture |
-| ⚙️ | **Actuators & Motors** | Movement drivers: Stepper Motor, Servo Motor SG90, DC Gearbox Robot Motor |
-| 🛡️ | **Shields & Modules** | Expandable shield boards: Motor Driver L298N, RFID RC522, ESP8266 Expansion |
-| 🔌 | **Accessories & Cables** | Prototype tools: Breadboard, Jumper Wires, 5V Regulator LM7805, Logic ICs |
-| 🔋 | **Power & Switches** | Energy controllers: Rocker Switch 2-pin, 9V Battery Snap, Toggle buttons |
+| ⚙️ | **Actuators &amp; Motors** | Movement drivers: Stepper Motor, Servo Motor SG90, DC Gearbox Robot Motor |
+| 🛡️ | **Shields &amp; Modules** | Expandable shield boards: Motor Driver L298N, RFID RC522, ESP8266 Expansion |
+| 🔌 | **Accessories &amp; Cables** | Prototype tools: Breadboard, Jumper Wires, 5V Regulator LM7805, Logic ICs |
+| 🔋 | **Power &amp; Switches** | Energy controllers: Rocker Switch 2-pin, 9V Battery Snap, Toggle buttons |
 
 ---
 
@@ -577,11 +728,13 @@ Xontrix organizes its electronic components catalog into **6 core product catego
 - [x] Scaffolding monorepo layouts using PNPM workspaces
 - [x] Implementing React storefront components catalog
 - [x] Implementing PHP MySQL backend endpoints
+- [x] Adding Node.js/Express JWT authentication server
 - [x] Coding dynamic cart management cap-checked by available inventory
 - [x] Writing auto-deduct SQL orders transaction triggers
 - [x] Adding Firebase Google Auth SDK route configurations
 - [x] Adding Admin sales analytics charts and calendar views
 - [x] Designing strategic AI Advisor and user AI Consultant chatbot views
+- [x] Building full user account dashboard (profile, orders, wishlist, addresses, notifications, security)
 - [x] Building Cordova hybrid project configs to compile Android APK targets
 - [ ] Integrating GCash and Maya real payment gateway merchant APIs
 - [ ] Implementing real-time push notifications for delivery deadlines
@@ -630,10 +783,10 @@ This project follows [Conventional Commits](https://www.conventionalcommits.org/
 <table>
   <tr>
     <td align="center" width="33%">
-      <strong>Ghani Regina Gold San Luis </strong><br/>
+      <strong>Ghani Regina Gold San Luis</strong><br/>
       <sub>Quality Assurance Engineer</sub>
     </td>
-        <td align="center" width="33%">
+    <td align="center" width="33%">
       <strong>Cielle Mae Peñamora</strong><br/>
       <sub>Full-Stack Engineer</sub>
     </td>
@@ -643,8 +796,6 @@ This project follows [Conventional Commits](https://www.conventionalcommits.org/
     </td>
   </tr>
 </table>
-
-
 
 ---
 
@@ -685,6 +836,7 @@ SOFTWARE.
 - [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS styling
 - [PHP](https://www.php.net/) — Fast, general-purpose scripting language
 - [MySQL](https://www.mysql.com/) — Relational database system
+- [Express](https://expressjs.com/) — Fast, minimalist web framework for Node.js
 - [Apache Cordova](https://cordova.apache.org/) — Mobile application development framework
 - [Firebase Auth](https://firebase.google.com/docs/auth) — Google identity provider toolkit
 - [Recharts](https://recharts.org/) — Redefined chart library for React applications
@@ -698,6 +850,7 @@ SOFTWARE.
 <p align="center">
   <img src="https://img.shields.io/badge/Made_with-React_%2B_TypeScript-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
   <img src="https://img.shields.io/badge/Powered_by-PHP_%2B_MySQL-777BB4?style=for-the-badge&logo=php&logoColor=white" />
+  <img src="https://img.shields.io/badge/Auth_by-Node.js_%2B_JWT-339933?style=for-the-badge&logo=node.js&logoColor=white" />
   <img src="https://img.shields.io/badge/Wrapped_in-Apache_Cordova-E0A100?style=for-the-badge&logo=apache-cordova&logoColor=white" />
   <img src="https://img.shields.io/badge/Supported_by-Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" />
 </p>
